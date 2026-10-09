@@ -1,0 +1,16 @@
+[project]
+name = "fraudetection"
+version = "0.1.0"
+description = "Comparación reproducible de clasificadores para detectar fraude en tarjetas de crédito"
+requires-python = ">=3.12"
+dependencies = [
+    "imbalanced-learn>=0.14,<1",
+    "matplotlib>=3.10,<4",
+    "numpy>=2,<3",
+    "pandas>=2.3,<4",
+    "scikit-learn>=1.7,<2",
+]
+
+[build-system]
+requires = ["uv_build>=0.12.6,<0.13.0"]
+build-backend = "uv_build"
