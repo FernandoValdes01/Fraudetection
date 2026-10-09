@@ -2,6 +2,8 @@
 
 Ambos integrantes deben poder explicar el procedimiento completo y relacionar sus respuestas con el código y los resultados propios. El profesor hará cinco preguntas en total, distribuidas entre los dos, con posibles repreguntas.
 
+La [nota sobre el Random Forest propio](random-forest.md) explica el bootstrap, la diversidad entre árboles y la votación implementada.
+
 ## Preguntas para practicar
 
 1. ¿Por qué un clasificador que siempre predice transacciones legítimas logra aproximadamente 99,828 % de exactitud y 0 % de sensibilidad al fraude en el conjunto completo?
