@@ -1,74 +1,78 @@
 # Fraudetection
 
-Proyecto de INFO1185 para detectar fraude en transacciones con el conjunto [Credit Card Fraud Detection](https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud).
+Proyecto de INFO1185 para detectar transacciones fraudulentas en el conjunto [Credit Card Fraud Detection](https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud). La clase positiva es `Class = 1`; la prioridad es **aumentar la sensibilidad y reducir los falsos negativos**.
 
-> **Objetivo:** detectar la mayor cantidad posible de fraudes (`Class = 1`). La medida principal será la sensibilidad; minimizar la tasa de falsos negativos (`FNR = FN / (TP + FN)`) es equivalente.
+## Tech stack
 
-**Estado actual:** estructura, pauta y entorno listos. El entrenamiento, los resultados y las diapositivas todavía no están implementados.
+<p align="center">
+  <img alt="Python" src="https://img.shields.io/badge/PYTHON-1B2638?style=for-the-badge&amp;logo=python&amp;logoColor=9FB0C8">
+  <img alt="uv" src="https://img.shields.io/badge/UV-1B2638?style=for-the-badge&amp;logo=uv&amp;logoColor=9FB0C8">
+  <img alt="NumPy" src="https://img.shields.io/badge/NUMPY-1B2638?style=for-the-badge&amp;logo=numpy&amp;logoColor=9FB0C8">
+  <img alt="pandas" src="https://img.shields.io/badge/PANDAS-1B2638?style=for-the-badge&amp;logo=pandas&amp;logoColor=9FB0C8">
+</p>
+<p align="center">
+  <img alt="scikit-learn" src="https://img.shields.io/badge/SCIKIT--LEARN-1B2638?style=for-the-badge&amp;logo=scikitlearn&amp;logoColor=9FB0C8">
+  <img alt="imbalanced-learn" src="https://img.shields.io/badge/IMBALANCED--LEARN-1B2638?style=for-the-badge&amp;logo=python&amp;logoColor=9FB0C8">
+  <img alt="Matplotlib" src="https://img.shields.io/badge/MATPLOTLIB-1B2638?style=for-the-badge&amp;logo=python&amp;logoColor=9FB0C8">
+</p>
 
-## Tecnologías
+Python 3.12 y `uv` 0.12 gestionan el entorno. El proyecto usa NumPy 2, pandas 3, scikit-learn 1, imbalanced-learn 0.14 y Matplotlib 3; [`uv.lock`](uv.lock) fija las versiones exactas.
 
-![Python 3.12](https://img.shields.io/badge/Python-3.12-475569?style=flat-square)
-![uv 0.12](https://img.shields.io/badge/uv-0.12-475569?style=flat-square)
-![pandas 3](https://img.shields.io/badge/pandas-3-475569?style=flat-square)
-![NumPy 2](https://img.shields.io/badge/NumPy-2-475569?style=flat-square)
-![scikit-learn 1](https://img.shields.io/badge/scikit--learn-1-475569?style=flat-square)
-![imbalanced-learn 0.14](https://img.shields.io/badge/imbalanced--learn-0.14-475569?style=flat-square)
-![Matplotlib 3](https://img.shields.io/badge/Matplotlib-3-475569?style=flat-square)
+## Métodos
 
-- `uv` administra Python y las dependencias; [`uv.lock`](uv.lock) fija las versiones exactas.
-- pandas y NumPy procesarán el CSV. scikit-learn aportará modelos, árboles, selección y validación.
-- imbalanced-learn permitirá remuestrear dentro de cada pliegue. Matplotlib servirá para los gráficos.
+<p align="center">
+  <img alt="k-NN" src="https://img.shields.io/badge/K--NN-1B2638?style=for-the-badge">
+  <img alt="Árbol de decisión" src="https://img.shields.io/badge/%C3%81RBOL%20DE%20DECISI%C3%93N-1B2638?style=for-the-badge">
+  <img alt="SVM" src="https://img.shields.io/badge/SVM-1B2638?style=for-the-badge">
+  <img alt="Random Forest propio" src="https://img.shields.io/badge/RANDOM%20FOREST%20PROPIO-1B2638?style=for-the-badge">
+</p>
+<p align="center">
+  <img alt="Bootstrap" src="https://img.shields.io/badge/BOOTSTRAP-1B2638?style=for-the-badge">
+  <img alt="Bagging" src="https://img.shields.io/badge/BAGGING-1B2638?style=for-the-badge">
+  <img alt="Selección de variables" src="https://img.shields.io/badge/SELECCI%C3%93N%20DE%20VARIABLES-1B2638?style=for-the-badge">
+  <img alt="Validación estratificada" src="https://img.shields.io/badge/CV%20ESTRATIFICADA-1B2638?style=for-the-badge">
+</p>
+<p align="center">
+  <img alt="Compensación del desbalance" src="https://img.shields.io/badge/COMPENSACI%C3%93N%20DEL%20DESBALANCE-1B2638?style=for-the-badge">
+  <img alt="Búsqueda de hiperparámetros" src="https://img.shields.io/badge/B%C3%9ASQUEDA%20DE%20HIPERPAR%C3%81METROS-1B2638?style=for-the-badge">
+</p>
 
-La presentación se preparará en LibreOffice Impress o PowerPoint. Si se usa una herramienta en línea, también se entregará una copia en PDF.
+Se compararán **ocho experimentos**: cuatro clasificadores, cada uno con y sin compensación del desbalance. La selección usará cinco pliegues estratificados y elegirá la mayor sensibilidad media del fraude; la precisión del fraude resolverá empates. La tasa de falsos negativos se calculará como `FNR = FN / (TP + FN) = 1 − sensibilidad`.
 
-## Métodos previstos
+El [Random Forest propio](src/fraudetection/forest.py) usa árboles `DecisionTreeClassifier`, bootstrap, selección aleatoria de variables por división y votación. Un empate favorece la clase fraude. El ensamble no utiliza `RandomForestClassifier` ni `BaggingClassifier`.
 
-![k-NN](https://img.shields.io/badge/k--NN-64748B?style=flat-square)
-![Árbol de decisión](https://img.shields.io/badge/%C3%81rbol%20de%20decisi%C3%B3n-64748B?style=flat-square)
-![SVM](https://img.shields.io/badge/SVM-64748B?style=flat-square)
-![Random Forest propio](https://img.shields.io/badge/Random%20Forest%20propio-64748B?style=flat-square)
+## Avance
 
-![Bootstrap y bagging](https://img.shields.io/badge/Bootstrap%20y%20bagging-64748B?style=flat-square)
-![Selección de variables](https://img.shields.io/badge/Selecci%C3%B3n%20de%20variables-64748B?style=flat-square)
-![Validación estratificada](https://img.shields.io/badge/Validaci%C3%B3n%20estratificada-64748B?style=flat-square)
-![Compensación del desbalance](https://img.shields.io/badge/Compensaci%C3%B3n%20del%20desbalance-64748B?style=flat-square)
-![Búsqueda de hiperparámetros](https://img.shields.io/badge/B%C3%BAsqueda%20de%20hiperpar%C3%A1metros-64748B?style=flat-square)
+- [x] Pauta del PDF con criterios de aceptación y rúbrica.
+- [x] Inspección del CSV real: 284.807 filas, 492 fraudes, 0 faltantes y 1.081 duplicados exactos.
+- [x] Limpieza explícita de duplicados y partición estratificada 70/30 con semilla 42.
+- [x] Random Forest propio compatible con búsqueda de hiperparámetros; pruebas con datos sintéticos.
+- [ ] Selección de características y compensación dentro de cinco pliegues de validación.
+- [ ] Comparación de los ocho experimentos, evaluación final y presentación.
 
-Se compararán **ocho experimentos**: cada uno de los cuatro clasificadores, con y sin compensación del desbalance. La elección de hiperparámetros usará cinco pliegues estratificados y priorizará la sensibilidad media del fraude; en caso de empate, decidirá la precisión del fraude.
+Los datos y la decisión de limpieza están en la [exploración inicial](documentacion/informe/exploracion.md). El conjunto de prueba permanece reservado para la evaluación final.
 
-El Random Forest se programará en este repositorio con árboles `DecisionTreeClassifier`, muestras bootstrap y votación mayoritaria. No se utilizarán `RandomForestClassifier` ni `BaggingClassifier` para construir ese ensamble.
+## Ejecutar lo disponible
 
-## Preparar el proyecto
-
-1. Instala [`uv`](https://docs.astral.sh/uv/getting-started/installation/) y, desde la raíz, ejecuta:
+1. Instala [`uv`](https://docs.astral.sh/uv/getting-started/installation/) y descarga `creditcard.csv` desde [Kaggle](https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud). Guarda el CSV en `data/raw/creditcard.csv`; Git lo ignora.
+2. Desde la raíz del repositorio, ejecuta:
 
    ```bash
    uv sync --locked
+   uv run --locked fraudetection-inspect
+   uv run --locked pytest -q
    ```
 
-2. Descarga `creditcard.csv` desde [Kaggle](https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud) y ubícalo en `data/raw/creditcard.csv`. El CSV está excluido de Git.
-3. Cuando se incorpore el flujo de experimentación, ejecútalo en este orden: exploración, validación cruzada y evaluación final. La versión inicial aún no tiene un comando para entrenar.
-4. Guarda tablas y gráficos en `resultados/` y la presentación en `documentacion/presentacion/`.
+El comando muestra filas, características, faltantes, duplicados, clases y tamaños de la partición. Aún no entrena los cuatro clasificadores ni utiliza el test para comparar modelos. La configuración compartida está en [`config.py`](src/fraudetection/config.py).
 
-La configuración inicial está en [`config.py`](src/fraudetection/config.py): **semilla 42**, partición estratificada **70/30**, **cinco pliegues** y fraude como clase positiva. El conjunto de prueba conservará la distribución original y se reservará hasta la evaluación final.
+## Documentación
 
-## Dónde está cada cosa
-
-| Ruta | Contenido |
+| Archivo | Contenido |
 | --- | --- |
-| [`IA_2026_P2.pdf`](IA_2026_P2.pdf) | Enunciado original. |
-| [`documentacion/informe/pauta.md`](documentacion/informe/pauta.md) | Requisitos, criterios de aceptación y rúbrica. |
-| [`documentacion/presentacion/`](documentacion/presentacion/) | Guion y futura presentación. |
-| [`documentacion/estudio/`](documentacion/estudio/) | Preguntas para preparar la defensa. |
-| `data/raw/` | Ubicación local del dataset. |
-| `src/fraudetection/` | Código Python del proyecto. |
-| `resultados/` | Tablas y gráficos por generar. |
+| [Enunciado](IA_2026_P2.pdf) | PDF original. |
+| [Pauta](documentacion/informe/pauta.md) | Requisitos, criterios de aceptación y puntajes. |
+| [Exploración](documentacion/informe/exploracion.md) | Cifras del dataset y limpieza. |
+| [Presentación](documentacion/presentacion/README.md) | Guion de diapositivas. |
+| [Estudio](documentacion/estudio/README.md) | Preguntas para la defensa. |
 
-La carpeta `documentacion/informe/` contiene una pauta de trabajo. **El enunciado no pide un informe escrito.** La entrega final es por Blackboard e incluye código, README y presentación; ambos integrantes participan en la defensa.
-
-## Referencias técnicas
-
-- [Proyectos con uv](https://docs.astral.sh/uv/guides/projects/).
-- [Validación estratificada](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.StratifiedKFold.html) y [búsqueda de hiperparámetros](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.GridSearchCV.html) en scikit-learn.
-- [Cómo evitar fuga de información al remuestrear](https://imbalanced-learn.org/stable/common_pitfalls.html) en imbalanced-learn.
+La carpeta `documentacion/informe/` contiene material interno; el enunciado no pide informe escrito. La entrega final será por Blackboard e incluirá código, README y presentación. Ambos integrantes participarán en la defensa.
