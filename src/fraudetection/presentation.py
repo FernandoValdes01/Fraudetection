@@ -286,7 +286,7 @@ def create_deck(cv, test, results_dir: Path, deck_path: Path):
     )
     add_text(
         slide,
-        "Integrantes: [nombre 1] · [nombre 2]",
+        "Integrantes: Fernando Valdés Gomez · Juan Muñoz Veloso",
         0.85,
         6.35,
         7.0,
