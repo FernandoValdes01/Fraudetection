@@ -1,17 +1,15 @@
 # Guion de la presentación
 
-El enunciado sugiere entre 10 y 12 diapositivas principales. La defensa dura 10 a 12 minutos por dupla y participan ambas personas. La presentación principal es [`defensa_fraude.pdf`](defensa_fraude.pdf), creada desde [`defensa_fraude.tex`](defensa_fraude.tex) con Beamer. Tiene 12 diapositivas principales y dos de respaldo: parámetros y resultados de CV para las ocho condiciones, y las seis métricas completas de prueba. Usa una paleta de blanco, azul y gris. [`defensa_fraude.pptx`](defensa_fraude.pptx) se conserva como formato alternativo.
+El enunciado sugiere entre 10 y 12 diapositivas principales. La defensa dura 10 a 12 minutos por dupla y participan ambas personas. La presentación principal es [`defensa_fraude.pdf`](defensa_fraude.pdf), creada desde [`defensa_fraude.tex`](defensa_fraude.tex) con Beamer. Tiene 12 diapositivas principales y dos de respaldo: parámetros y resultados de CV para las ocho condiciones, y las seis métricas completas de prueba. Usa una paleta de blanco, azul y gris, textos breves y una guía visual discreta que recorre seis fases del proyecto. [`defensa_fraude.pptx`](defensa_fraude.pptx) se conserva como formato alternativo.
 
 | Diapositivas | Contenido |
 | --- | --- |
-| 1 | Portada, integrantes, objetivo y prioridad de minimizar falsos negativos. |
-| 2 | Tamaño del dataset, variables, clases y desbalance. |
-| 3 a 4 | División 70/30, limpieza, escalado, selección, compensación, cinco pliegues y prevención de fuga. |
-| 5 | Random Forest propio: bootstrap, árboles independientes, `max_features`, votación y parámetros. |
-| 6 a 7 | Selección por sensibilidad, configuración ganadora y resultados de validación. |
-| 8 a 10 | Resultados de prueba, comparación de métricas y matriz de confusión. |
-| 11 | Efecto de compensar el desbalance, falsas alarmas y comparación árbol frente a ensamble. |
-| 12 | Configuración elegida, resultados finales, límites y conclusión. |
+| 1 | Portada e integrantes. |
+| 2 a 4 | Reto, datos, limpieza y partición de entrenamiento, validación y prueba. |
+| 5 a 6 | Diseño de experimentos y bosque aleatorio propio. |
+| 7 a 8 | Criterio de selección y validación cruzada. |
+| 9 a 11 | Prueba reservada, costo de alertas y matriz de confusión. |
+| 12 | Resultados, limitación principal y conclusión. |
 | 13 a 14 | Respaldo: parámetros y métricas de CV, y métricas completas de prueba. |
 
 Se pueden añadir diapositivas de respaldo para tablas extensas, matrices de confusión y otras métricas. Todas las métricas exigidas deben aparecer en las diapositivas principales o de respaldo. Mantener separados los resultados de validación y los de prueba. La tabla de prueba presenta media y desviación estándar de cinco reajustes con distintas semillas sobre el mismo test; las repeticiones no son muestras independientes.

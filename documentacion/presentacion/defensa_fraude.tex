@@ -10,7 +10,6 @@
 \usepackage{array}
 \usepackage{colortbl}
 \usepackage{amssymb}
-\usepackage{tikz}
 
 \definecolor{FraudBlue}{HTML}{2E6F9E}
 \definecolor{FraudDark}{HTML}{263238}
@@ -22,8 +21,6 @@
 \usetheme{default}
 \setbeamertemplate{navigation symbols}{}
 \setbeamertemplate{headline}{}
-\setbeamertemplate{itemize item}{\color{FraudBlue}\scriptsize$\blacktriangleright$}
-\setbeamertemplate{itemize subitem}{\color{FraudGray}\tiny$\bullet$}
 \setbeamercolor{normal text}{fg=FraudDark,bg=white}
 \setbeamercolor{structure}{fg=FraudBlue}
 \setbeamercolor{frametitle}{fg=FraudDark,bg=white}
@@ -33,10 +30,10 @@
 \setbeamercolor{footline}{fg=FraudGray,bg=white}
 \setbeamertemplate{blocks}[rounded][shadow=false]
 \setbeamertemplate{frametitle}{%
-  \vspace{0.35em}%
-  \insertframetitle\par
+  \vspace{0.25em}%
+  \centering\insertframetitle\par
   \vspace{0.15em}%
-  {\color{FraudBlue}\rule{\textwidth}{0.55pt}}%
+  {\color{FraudBlue}\rule{0.82\textwidth}{0.55pt}}%
 }
 \setbeamertemplate{footline}{%
   \begin{beamercolorbox}[wd=\paperwidth,ht=2.5ex,dp=1.1ex,leftskip=0.65cm,rightskip=0.65cm]{footline}%
@@ -54,10 +51,34 @@
     {\small #2}
   \end{beamercolorbox}%
 }
-\newcommand{\cvrow}[5]{#1 & #2 & #3 & #4 & #5\\}
+\newcommand{\phasestep}[3]{%
+  \begin{minipage}[t]{0.158\textwidth}\centering
+    \ifnum#1<#2\color{FraudLine}\else\color{FraudBlue}\fi
+    \rule{0.14\textwidth}{1.4pt}\par\vspace{0.04cm}
+    \ifnum#1=#2
+      {\color{FraudBlue}\bfseries\scriptsize #3}%
+    \else
+      {\color{FraudGray}\tiny #3}%
+    \fi
+  \end{minipage}%
+}
+\newcommand{\phasebar}[1]{%
+  \vspace{0.03cm}
+  \begin{center}
+    \begin{tabular}{@{}c@{}c@{}c@{}c@{}c@{}c@{}}
+      \phasestep{#1}{1}{Problema} &
+      \phasestep{#1}{2}{Datos} &
+      \phasestep{#1}{3}{Preparación} &
+      \phasestep{#1}{4}{Modelos} &
+      \phasestep{#1}{5}{Evaluación} &
+      \phasestep{#1}{6}{Cierre}
+    \end{tabular}
+  \end{center}
+  \vspace{0.12cm}
+}
 
-\title[Detección de fraude]{Detección de fraude con aprendizaje supervisado}
-\subtitle{Comparación de clasificadores y prioridad en reducir falsos negativos}
+\title[Detección de fraude]{Detección de fraude}
+\subtitle{Aprendizaje supervisado para detectar operaciones sospechosas}
 \author{Fernando Valdés Gomez \and Juan Muñoz Veloso}
 \institute{INFO1185 \textbullet\ Inteligencia Artificial}
 \date{9 de octubre de 2026}
@@ -66,220 +87,188 @@
 
 % 1. Portada
 \begin{frame}[plain]
-  \vspace{0.85cm}
+  \vfill
   {\color{FraudBlue}\small\bfseries INFO1185 -- INTELIGENCIA ARTIFICIAL}\par
-  \vspace{0.8cm}
+  \vspace{0.55cm}
   {\Huge\bfseries\color{FraudDark} Detección de fraude}\par
-  \vspace{0.25cm}
-  {\Large\color{FraudGray} Comparación de clasificadores supervisados}\par
-  \vspace{0.8cm}
-  {\color{FraudBlue}\rule{0.62\textwidth}{1.2pt}}\par
-  \vspace{0.35cm}
-  {\large Prioridad: detectar fraudes y reducir falsos negativos}\par
+  \vspace{0.22cm}
+  {\large\color{FraudGray} Aprendizaje supervisado en transacciones desbalanceadas}\par
+  \vspace{0.55cm}
+  {\color{FraudBlue}\rule{0.42\textwidth}{1.2pt}}\par
+  \vspace{0.45cm}
+  {\normalsize Fernando Valdés Gomez \quad\textcolor{FraudLine}{|}\quad Juan Muñoz Veloso}\par
+  \vspace{0.22cm}
+  {\small\color{FraudGray} 9 de octubre de 2026}\par
+  \vfill
+\end{frame}
+
+% 2. Problema
+\begin{frame}{El reto}
+  \phasebar{1}
+  \vfill
+  {\color{FraudBlue}\fontsize{38}{42}\selectfont\bfseries 0,173\%}\par
+  \vspace{0.15cm}
+  {\large de las transacciones son fraude}\par
+  \vspace{0.65cm}
+  {\large\color{FraudGray} Detectarlos sin generar alertas innecesarias.}\par
+  \vfill
+\end{frame}
+
+% 3. Datos
+\begin{frame}{Los datos}
+  \phasebar{2}
+  \centering
+  \includegraphics[width=0.56\textwidth,height=0.46\textheight,keepaspectratio]{distribucion_clases.png}
+
+  \vspace{0.18cm}
+  \begin{columns}[c,onlytextwidth]
+    \column{0.32\textwidth}\metricbox{284.807}{transacciones}
+    \column{0.32\textwidth}\metricbox{492}{fraudes}
+    \column{0.32\textwidth}\metricbox{30}{variables predictoras}
+  \end{columns}
+  \vspace{0.12cm}
+  {\scriptsize\color{FraudGray}Tras quitar 1.081 duplicados exactos: 283.726 filas y 473 fraudes; sin valores faltantes.}\par
+\end{frame}
+
+% 4. Preparación
+\begin{frame}{Preparación y partición}
+  \phasebar{3}
   \vfill
   \begin{columns}[T,onlytextwidth]
-    \column{0.56\textwidth}
-      \normalsize Fernando Valdés Gomez\\ Juan Muñoz Veloso
-    \column{0.4\textwidth}
-      \raggedleft\color{FraudGray} 4 clasificadores -- 8 condiciones
+    \column{0.31\textwidth}
+      \metricbox{70/30}{partición estratificada · semilla 42}
+    \column{0.31\textwidth}
+      \metricbox{5 pliegues}{búsqueda sobre 50.000 filas fijas}
+    \column{0.31\textwidth}
+      \metricbox{85.118}{filas de prueba reservadas}
+  \end{columns}
+  \vspace{0.42cm}
+  \begin{center}
+    \large Limpieza \quad$\longrightarrow$\quad Entrenamiento \quad$\longrightarrow$\quad Validación \quad$\longrightarrow$\quad Prueba
+  \end{center}
+  \vspace{0.22cm}
+  {\small\color{FraudGray}El test no interviene en la selección; el ganador se reajusta con 198.608 filas.}\par
+  \vfill
+\end{frame}
+
+% 5. Diseño experimental
+\begin{frame}{Diseño experimental}
+  \phasebar{4}
+  \vfill
+  \centering
+  {\large 4 modelos $\times$ 2 condiciones}\par
+  \vspace{0.08cm}
+  {\color{FraudBlue}\LARGE\bfseries 8 experimentos}\par
+  \vspace{0.2cm}
+  {\large k-NN \quad\textcolor{FraudLine}{|}\quad Árbol \quad\textcolor{FraudLine}{|}\quad SVM lineal \quad\textcolor{FraudLine}{|}\quad Bosque propio}\par
+  \vspace{0.55cm}
+  \begin{columns}[c,onlytextwidth]
+    \column{0.31\textwidth}\metricbox{Estándar}{escalado para k-NN y SVM}
+    \column{0.31\textwidth}\metricbox{ANOVA F}{20 de 30 variables}
+    \column{0.31\textwidth}\metricbox{1:10}{submuestreo solo al entrenar}
+  \end{columns}
+  \vfill
+\end{frame}
+
+% 6. Modelo implementado
+\begin{frame}{Bosque aleatorio propio}
+  \phasebar{4}
+  \vfill
+  \begin{columns}[c,onlytextwidth]
+    \column{0.29\textwidth}
+      {\color{FraudBlue}\Large\bfseries 01}\par\vspace{0.12cm}
+      {\large Bootstrap}\par{\small\color{FraudGray}Muestras con reemplazo}
+    \column{0.07\textwidth}\centering{\Large\color{FraudLine}$\longrightarrow$}
+    \column{0.29\textwidth}
+      {\color{FraudBlue}\Large\bfseries 02}\par\vspace{0.12cm}
+      {\large Árboles}\par{\small\color{FraudGray}$\sqrt{p}$ variables por división}
+    \column{0.07\textwidth}\centering{\Large\color{FraudLine}$\longrightarrow$}
+    \column{0.25\textwidth}
+      {\color{FraudBlue}\Large\bfseries 03}\par\vspace{0.12cm}
+      {\large Votación}\par{\small\color{FraudGray}Mayoría; empate = fraude}
+  \end{columns}
+  \vspace{0.65cm}
+  \metricbox{21 árboles · profundidad 6}{Implementación del proyecto}
+  \vfill
+\end{frame}
+
+% 7. Selección
+\begin{frame}{Selección del modelo}
+  \phasebar{5}
+  \vfill
+  {\large Criterio: maximizar sensibilidad media en cinco pliegues.}\par
+  {\normalsize\color{FraudGray}Desempate: mayor precisión de fraude.}\par
+  \vspace{0.55cm}
+  {\color{FraudBlue}\Large\bfseries Bosque propio + submuestreo 1:10}\par
+  \vspace{0.32cm}
+  \begin{columns}[c,onlytextwidth]
+    \column{0.44\textwidth}\metricbox{87,9\% $\pm$ 5,5\%}{sensibilidad en validación}
+    \column{0.44\textwidth}\metricbox{45,0\%}{precisión en validación}
+  \end{columns}
+  \vfill
+\end{frame}
+
+% 8. Validación
+\begin{frame}{Validación cruzada}
+  \phasebar{5}
+  \centering
+  \includegraphics[width=0.9\textwidth,height=0.60\textheight,keepaspectratio]{sensibilidad_validacion.png}
+
+  \vspace{0.08cm}{\small\color{FraudGray}Sensibilidad de fraude · cinco pliegues compartidos}\par
+\end{frame}
+
+% 9. Evaluación en test
+\begin{frame}{Prueba reservada}
+  \phasebar{5}
+  \centering
+  \includegraphics[width=0.9\textwidth,height=0.64\textheight,keepaspectratio]{sensibilidad_fnr_prueba.png}
+
+  \vspace{0.08cm}{\small\color{FraudGray}Mismo test fijo · media de cinco semillas}\par
+\end{frame}
+
+% 10. Coste de las alertas
+\begin{frame}{El costo de detectar más}
+  \phasebar{5}
+  \centering
+  \includegraphics[width=0.9\textwidth,height=0.64\textheight,keepaspectratio]{precision_especificidad_prueba.png}
+
+  \vspace{0.08cm}{\small\color{FraudGray}Más sensibilidad también implica más falsas alarmas.}\par
+\end{frame}
+
+% 11. Casos detectados y omitidos
+\begin{frame}{Casos del modelo elegido}
+  \phasebar{5}
+  \begin{columns}[c,onlytextwidth]
+    \column{0.51\textwidth}
+      \includegraphics[width=\linewidth,height=0.58\textheight,keepaspectratio]{matriz_confusion_seleccion_cv.png}
+    \column{0.45\textwidth}
+      \begin{minipage}[t]{0.47\linewidth}\metricbox{115}{detectados}\vspace{0.18cm}\metricbox{27}{omitidos}\end{minipage}\hfill
+      \begin{minipage}[t]{0.47\linewidth}\metricbox{53}{falsas alarmas}\vspace{0.18cm}\metricbox{84.923}{legítimos reconocidos}\end{minipage}
+  \end{columns}
+  \centering{\scriptsize\color{FraudGray}Bosque con submuestreo · primer ajuste de prueba · semilla 42}\par
+\end{frame}
+
+% 12. Conclusión
+\begin{frame}{Cierre}
+  \phasebar{6}
+  \vfill
+  \begin{columns}[c,onlytextwidth]
+    \column{0.31\textwidth}\metricbox{80,4\%}{sensibilidad}
+    \column{0.31\textwidth}\metricbox{19,6\%}{fraudes omitidos}
+    \column{0.31\textwidth}\metricbox{67,5\%}{precisión}
   \end{columns}
   \vspace{0.55cm}
+  \centering{\large\bfseries El bosque compensado detecta 4 de cada 5 fraudes.}\par
+  \vspace{0.2cm}
+  {\small\color{FraudGray}La exactitud sola engaña: predecir todo como legítimo da 99,833\% y sensibilidad 0\%.}\par
+  \vspace{0.14cm}
+  {\small\color{FraudGray}El test contiene 142 fraudes; la estimación tiene incertidumbre.}\par
+  \vfill
 \end{frame}
 
-% 2. Datos
-\begin{frame}{El fraude es poco frecuente}
-  \begin{columns}[T,onlytextwidth]
-    \column{0.63\textwidth}
-      \includegraphics[width=\linewidth,height=0.64\textheight,keepaspectratio]{distribucion_clases.png}
-    \column{0.34\textwidth}
-      \begin{block}{Datos originales}
-        \begin{itemize}
-          \item 284.807 transacciones.
-          \item 492 fraudes (0,173\%).
-          \item 30 variables predictoras.
-        \end{itemize}
-      \end{block}
-      \vspace{0.15cm}
-      \begin{block}{Limpieza}
-        1.081 duplicados exactos eliminados; cero valores faltantes.\\[0.15em]
-        Quedaron 283.726 filas y 473 fraudes.
-      \end{block}
-  \end{columns}
-\end{frame}
-
-% 3. Partición y fuga
-\begin{frame}{Partición fija y prueba reservada}
-  \begin{columns}[T,onlytextwidth]
-    \column{0.32\textwidth}\metricbox{198.608}{filas de entrenamiento completo}
-    \column{0.32\textwidth}\metricbox{50.000}{filas estratificadas para búsqueda}
-    \column{0.32\textwidth}\metricbox{85.118}{filas en prueba reservada}
-  \end{columns}
-  \vspace{0.5cm}
-  \begin{block}{Protocolo}
-    \begin{itemize}
-      \item División estratificada 70/30 con semilla 42; los ocho experimentos comparten la misma partición.
-      \item Búsqueda con cinco pliegues estratificados compartidos sobre una submuestra fija del entrenamiento.
-      \item Cada ganador se reajusta con todo el entrenamiento antes de evaluar la prueba.
-      \item La prueba conserva la prevalencia natural y no participa en ningún ajuste.
-    \end{itemize}
-  \end{block}
-\end{frame}
-
-% 4. Matriz experimental y pipeline
-\begin{frame}{Ocho experimentos, una misma validación}
-  \begin{columns}[T,onlytextwidth]
-    \column{0.44\textwidth}
-      \begin{block}{Matriz de comparación}
-        \small
-        \textbf{Modelos}\par\vspace{0.1cm}
-        k-NN, árbol de decisión, SVM lineal y Random Forest propio.
-        \vspace{0.25cm}
-
-        \textbf{Condiciones por modelo}\par\vspace{0.1cm}
-        Sin compensación y con submuestreo aleatorio 1:10.\\[0.25em]
-        \textcolor{FraudBlue}{\bfseries 4 modelos $\times$ 2 condiciones = 8 experimentos}
-      \end{block}
-    \column{0.52\textwidth}
-      \begin{block}{Dentro de cada pliegue}
-        \begin{itemize}
-          \item Escalado estándar para k-NN y SVM.
-          \item ANOVA F-test: selección de 20 de 30 variables.
-          \item RandomUnderSampler con proporción 1:10 solo en entrenamiento.
-          \item Validación y prueba no se remuestrean.
-        \end{itemize}
-      \end{block}
-  \end{columns}
-\end{frame}
-
-% 5. Random Forest
-\begin{frame}{Random Forest implementado para el proyecto}
-  \begin{columns}[T,onlytextwidth]
-    \column{0.32\textwidth}
-      \begin{block}{1. Bootstrap}
-        Para cada árbol, extraer $n$ filas con reemplazo desde el entrenamiento disponible.
-      \end{block}
-    \column{0.32\textwidth}
-      \begin{block}{2. Árbol independiente}
-        Usar \texttt{DecisionTreeClassifier}; elegir $\sqrt{p}$ variables candidatas en cada división.
-      \end{block}
-    \column{0.32\textwidth}
-      \begin{block}{3. Votación}
-        Combinar predicciones por mayoría. En empate, asignar clase fraude.
-      \end{block}
-  \end{columns}
-  \vspace{0.45cm}
-  \begin{center}
-    \large Configuración elegida: \texttt{n\_estimators=21}, \texttt{max\_depth=6}
-  \end{center}
-  \begin{center}\small No se utilizan \texttt{RandomForestClassifier} ni \texttt{BaggingClassifier}.\end{center}
-\end{frame}
-
-% 6. Selección
-\begin{frame}{Selección por sensibilidad y precisión}
-  \begin{columns}[T,onlytextwidth]
-    \column{0.56\textwidth}
-      \begin{block}{Regla de selección}
-        \begin{enumerate}
-          \item Maximizar la sensibilidad media de la clase fraude en cinco pliegues.
-          \item Si hay empate, elegir mayor precisión media de fraude.
-        \end{enumerate}
-        \vspace{0.2cm}
-        Elegida: \textbf{Random Forest propio con submuestreo 1:10}.\\
-        Sensibilidad CV: \textbf{87,9\% $\pm$ 5,5\%}; precisión: \textbf{45,0\%}.
-      \end{block}
-    \column{0.41\textwidth}
-      \begin{block}{Búsqueda acotada}
-        \small
-        k-NN: $k\in\{3,5,7\}$.\\
-        Árbol: profundidad $\{5,10,\text{sin límite}\}$; hojas $\{1,5\}$.\\
-        SVM lineal: $C\in\{0{,}1;\ 1;\ 10\}$.\\
-        Bosque: árboles $\{11,21\}$; profundidad $\{6,12\}$.
-      \end{block}
-  \end{columns}
-  \vspace{0.15cm}
-  \centering\scriptsize Selección ANOVA de las 20 variables y parámetros ajustados solo dentro del entrenamiento de cada pliegue.
-\end{frame}
-
-% 7. Validación
-\begin{frame}{Validación cruzada: detección de fraude}
-  \centering
-  \includegraphics[width=0.96\textwidth,height=0.75\textheight,keepaspectratio]{sensibilidad_validacion.png}
-
-  \vspace{0.1cm}\small Barras: media de cinco pliegues. Líneas: una desviación estándar.
-\end{frame}
-
-% 8. Sensibilidad y FNR
-\begin{frame}{Prueba reservada: sensibilidad y falsos negativos}
-  \centering
-  \includegraphics[width=0.96\textwidth,height=0.76\textheight,keepaspectratio]{sensibilidad_fnr_prueba.png}
-
-  \vspace{0.05cm}\small Media $\pm$ desviación estándar entre cinco semillas; el mismo test se usa en todas las repeticiones.
-\end{frame}
-
-% 9. Precisión y especificidad
-\begin{frame}{Detectar más fraudes genera más alertas}
-  \centering
-  \includegraphics[width=0.96\textwidth,height=0.76\textheight,keepaspectratio]{precision_especificidad_prueba.png}
-
-  \vspace{0.05cm}\small El submuestreo eleva la sensibilidad y aumenta las falsas alarmas; la precisión muestra ese costo.
-\end{frame}
-
-% 10. Matriz de confusión
-\begin{frame}{Matriz de confusión de la configuración elegida}
-  \begin{columns}[c,onlytextwidth]
-    \column{0.54\textwidth}
-      \includegraphics[width=\linewidth,height=0.61\textheight,keepaspectratio]{matriz_confusion_seleccion_cv.png}
-    \column{0.42\textwidth}
-      \begin{columns}[T,onlytextwidth]
-        \column{0.48\textwidth}
-          \metricbox{115}{fraudes detectados (TP)}
-          \vspace{0.2cm}
-          \metricbox{27}{fraudes omitidos (FN)}
-        \column{0.48\textwidth}
-          \metricbox{53}{falsas alarmas (FP)}
-          \vspace{0.2cm}
-          \metricbox{84.923}{legítimas reconocidas (TN)}
-      \end{columns}
-  \end{columns}
-  \centering\scriptsize Bosque con submuestreo 1:10; primer ajuste de prueba, semilla 42.
-\end{frame}
-
-% 11. Análisis
-\begin{frame}{Lectura crítica de los resultados}
-  \begin{columns}[T,onlytextwidth]
-    \column{0.31\textwidth}\metricbox{99,833\%}{exactitud si todo se predice legítimo en el test; sensibilidad 0\%}
-    \column{0.31\textwidth}\metricbox{76,2\% $\to$ 80,4\%}{sensibilidad del bosque sin/con submuestreo}
-    \column{0.31\textwidth}\metricbox{67,5\%}{precisión del bosque compensado}
-  \end{columns}
-  \vspace{0.35cm}
-  \begin{itemize}
-    \item La exactitud sola oculta los fraudes que el modelo deja pasar.
-    \item El árbol compensado detecta 83,1\% de los fraudes, pero su precisión es 33,6\%; el bosque detecta 80,4\% con precisión 67,5\%.
-    \item Clasificar todo como fraude marcaría como falsas alarmas las 84.976 transacciones legítimas de prueba.
-  \end{itemize}
-\end{frame}
-
-% 12. Cierre
-\begin{frame}{Conclusiones y límites}
-  \begin{columns}[T,onlytextwidth]
-    \column{0.32\textwidth}\metricbox{80,4\%}{sensibilidad del modelo elegido en prueba}
-    \column{0.32\textwidth}\metricbox{19,6\%}{tasa de falsos negativos}
-    \column{0.32\textwidth}\metricbox{67,5\%}{precisión en detección de fraude}
-  \end{columns}
-  \vspace{0.4cm}
-  \begin{block}{Conclusiones}
-    \begin{itemize}
-      \item CV seleccionó el Random Forest propio con submuestreo por mayor sensibilidad media.
-      \item El test contiene solo 142 fraudes; la sensibilidad puede cambiar con pocos casos.
-      \item El dataset no identifica transacciones: filas idénticas podrían ser operaciones reales repetidas.
-      \item Ambos integrantes deben poder explicar el modelo, las métricas y el costo de las alertas.
-    \end{itemize}
-  \end{block}
-\end{frame}
-
-% 13. Respaldo CV
-\begin{frame}{Respaldo: parámetros y resultados de validación}
-  \centering\scriptsize Cinco pliegues estratificados compartidos sobre 50.000 filas de entrenamiento.
+% 13. Respaldo: validación cruzada
+\begin{frame}{Respaldo · Validación}
+  \centering\scriptsize Cinco pliegues compartidos sobre una submuestra fija de 50.000 filas.
   \vspace{0.2cm}
 
   \begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{2.45cm} >{\raggedright\arraybackslash}p{1.8cm} X >{\centering\arraybackslash}p{2.35cm} >{\centering\arraybackslash}p{1.65cm}}
@@ -302,8 +291,8 @@
   \end{tabularx}
 \end{frame}
 
-% 14. Respaldo prueba
-\begin{frame}{Respaldo: métricas completas de prueba}
+% 14. Respaldo: métricas de prueba
+\begin{frame}{Respaldo · Métricas de prueba}
   \centering\scriptsize Media $\pm$ desviación estándar en puntos porcentuales entre cinco semillas sobre el mismo test fijo.
   \vspace{0.3cm}
 
