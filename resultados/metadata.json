@@ -1,0 +1,21 @@
+{
+  "dataset": "data/raw/creditcard.csv",
+  "dataset_sha256": "76274b691b16a6c49d3f159c883398e03ccd6d1ee12d9d8ee38f4b4b98551a89",
+  "rows_raw": 284807,
+  "duplicates_removed": 1081,
+  "rows_after_cleaning": 283726,
+  "train_rows": 198608,
+  "test_rows": 85118,
+  "search_sample_rows": 50000,
+  "cv_folds": 5,
+  "final_seeds": [
+    42,
+    101,
+    202,
+    303,
+    404
+  ],
+  "selected_by_cv": "forest_submuestreo",
+  "selected_test_sensitivity_mean": 0.8042253521126762,
+  "selected_test_fnr_mean": 0.1957746478873239
+}

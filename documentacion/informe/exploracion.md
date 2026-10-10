@@ -40,4 +40,16 @@ La prevalencia cambia ligeramente, de 0,173 % a 0,167 %. No se balancea la muest
 | Entrenamiento | 198.608 | 331 |
 | Prueba reservada | 85.118 | 142 |
 
-El comando solo inspecciona y divide. Aún no ajusta transformaciones, selecciona características ni entrena modelos con el test. La validación cruzada de cinco pliegues se hará dentro del entrenamiento.
+La búsqueda de hiperparámetros tomará una submuestra estratificada y fija de **50.000 filas** desde estas 198.608 filas de entrenamiento. La submuestra contiene las dos clases y permite ejecutar cinco pliegues para comparar k-NN sin apartarse de la distribución natural. Los ocho experimentos reutilizarán exactamente los mismos pliegues.
+
+La submuestra tiene **49.917 legítimas y 83 fraudes**. En cada pliegue se aplica submuestreo aleatorio con `sampling_strategy=0.1`: en los dos primeros pliegues se pasa de 39.933 legítimas y 67 fraudes a 670 y 67; en los otros tres, de 39.934 y 66 a 660 y 66. Al reajustar sobre todo el entrenamiento, quedan **3.310 legítimas y 331 fraudes**. La validación conserva su prevalencia natural.
+
+Cada configuración ganadora se reajustará con las 198.608 filas completas de entrenamiento. La evaluación final utilizará las 85.118 filas de prueba sin remuestreo. El escalado, selección estadística por ANOVA (`f_classif`, mejores 20 de 30 variables) y submuestreo se ajustan dentro de cada pliegue durante la búsqueda.
+
+## Búsqueda y evaluación ejecutadas
+
+Se compararon cuatro clasificadores con y sin submuestreo: k-NN (`n_neighbors` 3, 5 o 7; pesos por distancia), árbol (`max_depth` 5, 10 o sin límite; `min_samples_leaf` 1 o 5), SVM lineal (`C` 0,1; 1 o 10) y Random Forest propio (`n_estimators` 11 o 21; `max_depth` 6 o 12; `max_features=√p`). El escalado estándar se usa para k-NN y SVM. La selección ANOVA y el remuestreo están dentro de una tubería de `imbalanced-learn` para evitar fuga entre pliegues.
+
+La configuración se elige maximizando sensibilidad media en validación y usando precisión media como desempate. La elegida fue **Random Forest propio con submuestreo 1:10**, con 21 árboles y profundidad máxima 6: sensibilidad **87,9 % ± 5,5 %** y precisión **45,0 %** en validación. Los resultados exactos de las ocho configuraciones están en [`../../resultados/cv_resumen.csv`](../../resultados/cv_resumen.csv).
+
+La prueba fija contiene 84.976 transacciones legítimas y 142 fraudes. Cada modelo se reajustó cinco veces con las semillas 42, 101, 202, 303 y 404, sin cambiar la prueba ni tomar decisiones a partir de sus resultados. La configuración elegida obtuvo sensibilidad **80,4 % ± 0,3 %**, especificidad **99,935 % ± 0,014 %**, precisión **67,5 % ± 4,6 %**, F1 **73,3 % ± 2,8 %**, exactitud **99,902 % ± 0,014 %** y FNR **19,6 % ± 0,3 %**. La matriz del primer ajuste (semilla 42) es TN=84.923, FP=53, FN=27 y TP=115. Las medias y desviaciones de las ocho condiciones están en [`../../resultados/test_resumen.csv`](../../resultados/test_resumen.csv); cada repetición está en [`../../resultados/test_repeticiones.csv`](../../resultados/test_repeticiones.csv).
