@@ -396,16 +396,18 @@ def save_plots(
 ) -> None:
     plt.rcParams.update(
         {
-            "figure.facecolor": "#121b2a",
-            "axes.facecolor": "#1c2a3d",
-            "axes.edgecolor": "#64748b",
-            "axes.labelcolor": "#eaf0f6",
-            "text.color": "#eaf0f6",
-            "xtick.color": "#eaf0f6",
-            "ytick.color": "#eaf0f6",
-            "grid.color": "#94a3b8",
+            "figure.facecolor": "#ffffff",
+            "axes.facecolor": "#ffffff",
+            "axes.edgecolor": "#cbd5e1",
+            "axes.labelcolor": "#475569",
+            "text.color": "#263238",
+            "xtick.color": "#475569",
+            "ytick.color": "#475569",
+            "grid.color": "#dbe3eb",
         }
     )
+    blue = "#2e6f9e"
+    gray = "#a8b4c0"
     plot_dir = output_dir / "graficos"
     plot_dir.mkdir(parents=True, exist_ok=True)
 
@@ -418,13 +420,20 @@ def save_plots(
         axis.bar(
             ["Legítimas", "Fraudes"],
             [report.class_counts[0], report.class_counts[1]],
-            color=["#56718f", "#e8874b"],
+            color=[gray, blue],
         )
         axis.set_title(title)
         axis.set_ylabel("Transacciones")
         axis.ticklabel_format(axis="y", style="plain")
         for index, value in enumerate((report.class_counts[0], report.class_counts[1])):
-            axis.text(index, value, f"{value:,}", ha="center", va="bottom", fontsize=9)
+            axis.text(
+                index,
+                value,
+                f"{value:,}".replace(",", "."),
+                ha="center",
+                va="bottom",
+                fontsize=9,
+            )
     fig.suptitle("El desbalance se conserva en los datos de evaluación")
     fig.savefig(plot_dir / "distribucion_clases.png", dpi=180)
     plt.close(fig)
@@ -442,7 +451,7 @@ def save_plots(
         yerr=cv_results["cv_sensitivity_std"],
         capsize=4,
         color=[
-            "#e8874b" if row.compensated else "#56718f"
+            blue if row.compensated else gray
             for row in cv_results.itertuples()
         ],
     )
@@ -470,7 +479,7 @@ def save_plots(
             yerr=test_summary[f"{metric}_std"],
             capsize=3,
             color=[
-                "#e8874b" if row.compensated else "#56718f"
+                blue if row.compensated else gray
                 for row in test_summary.itertuples()
             ],
         )
@@ -502,7 +511,7 @@ def save_plots(
                 yerr=test_summary[f"{metric}_std"],
                 capsize=3,
                 color=[
-                    "#e8874b" if row.compensated else "#56718f"
+                    blue if row.compensated else gray
                     for row in test_summary.itertuples()
                 ],
             )
@@ -516,7 +525,8 @@ def save_plots(
         fig.savefig(plot_dir / filename, dpi=180)
         plt.close(fig)
 
-    selected = cv_results.loc[cv_results["selected_by_cv"], "experiment"].iloc[0]
+    selected_row = cv_results.loc[cv_results["selected_by_cv"]].iloc[0]
+    selected = selected_row["experiment"]
     tn, fp, fn, tp = confusion_matrix(
         y_test, primary_predictions[selected], labels=[0, 1]
     ).ravel()
@@ -525,13 +535,13 @@ def save_plots(
     axis.imshow(matrix, cmap="Blues")
     axis.set_xticks([0, 1], ["Predice legítima", "Predice fraude"])
     axis.set_yticks([0, 1], ["Real legítima", "Real fraude"])
-    axis.set_title(f"Matriz de confusión: {selected}, semilla {FINAL_SEEDS[0]}")
+    axis.set_title(f"Matriz de confusión, semilla {FINAL_SEEDS[0]}")
     for (row, col), value in np.ndenumerate(matrix):
         text_color = "#ffffff" if value > matrix.max() * 0.35 else "#102030"
         axis.text(
             col,
             row,
-            f"{value:,}",
+            f"{value:,}".replace(",", "."),
             ha="center",
             va="center",
             fontsize=13,

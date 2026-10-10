@@ -15,10 +15,12 @@ Proyecto de INFO1185 para detectar transacciones fraudulentas en el conjunto [Cr
   <img alt="imbalanced-learn" src="https://img.shields.io/badge/IMBALANCED--LEARN-1B2638?style=for-the-badge&amp;logo=python&amp;logoColor=9FB0C8">
   <img alt="Matplotlib" src="https://img.shields.io/badge/MATPLOTLIB-1B2638?style=for-the-badge&amp;logo=python&amp;logoColor=9FB0C8">
   <img alt="python-pptx" src="https://img.shields.io/badge/PYTHON--PPTX-1B2638?style=for-the-badge&amp;logo=python&amp;logoColor=9FB0C8">
+  <img alt="Docker" src="https://img.shields.io/badge/DOCKER-1B2638?style=for-the-badge&amp;logo=docker&amp;logoColor=9FB0C8">
+  <img alt="LaTeX Beamer" src="https://img.shields.io/badge/LATEX%20%2F%20BEAMER-1B2638?style=for-the-badge">
   <img alt="pytest" src="https://img.shields.io/badge/PYTEST-1B2638?style=for-the-badge&amp;logo=pytest&amp;logoColor=9FB0C8">
 </p>
 
-Python 3.12 y `uv` 0.12 gestionan el entorno. El proyecto usa NumPy 2, pandas 3, scikit-learn 1, imbalanced-learn 0.14 y Matplotlib 3. `python-pptx` genera la presentación; [`uv.lock`](uv.lock) fija las versiones exactas.
+Python 3.12 y `uv` 0.12 gestionan el entorno. El proyecto usa NumPy 2, pandas 3, scikit-learn 1, imbalanced-learn 0.14 y Matplotlib 3. `python-pptx` genera una copia alternativa; Beamer compila la presentación principal. [`uv.lock`](uv.lock) fija las versiones exactas.
 
 ## Métodos
 
@@ -56,9 +58,9 @@ El [Random Forest propio](src/fraudetection/forest.py) usa árboles `DecisionTre
 - [x] Random Forest propio compatible con búsqueda de hiperparámetros; pruebas con datos sintéticos.
 - [x] Ocho búsquedas con selección ANOVA y submuestreo dentro de cinco pliegues compartidos.
 - [x] Evaluación de prueba con los ocho modelos reajustados con todo el entrenamiento.
-- [x] Tablas, gráficos y presentación PowerPoint de 12 diapositivas principales y dos de respaldo.
+- [x] Tablas, gráficos y presentación Beamer de 12 diapositivas principales y dos de respaldo.
 
-Los datos y la decisión de limpieza están en la [exploración inicial](documentacion/informe/exploracion.md). Los resultados completos están en [`resultados/`](resultados/) y el conjunto de prueba permaneció reservado hasta la evaluación final. La portada aún tiene campos editables para los nombres de ambos integrantes.
+Los datos y la decisión de limpieza están en la [exploración inicial](documentacion/informe/exploracion.md). Los resultados completos están en [`resultados/`](resultados/) y el conjunto de prueba permaneció reservado hasta la evaluación final. El PDF Beamer es la presentación principal; el PowerPoint queda como formato alternativo.
 
 ## Resultado actual
 
@@ -77,7 +79,7 @@ La validación eligió **Random Forest propio con submuestreo 1:10** (`max_depth
    uv run --locked pytest -q
    ```
 
-`fraudetection-run` ejecuta las búsquedas y la evaluación, guarda tablas y gráficos en `resultados/`. La búsqueda toma 50.000 filas estratificadas del entrenamiento para limitar el costo de k-NN; luego cada modelo se reajusta con las 198.608 filas completas de entrenamiento. `fraudetection-report` genera el PowerPoint y los gráficos desde esos resultados. La configuración está en [`config.py`](src/fraudetection/config.py).
+`fraudetection-run` ejecuta las búsquedas y la evaluación, guarda tablas y gráficos en `resultados/`. La búsqueda toma 50.000 filas estratificadas del entrenamiento para limitar el costo de k-NN; luego cada modelo se reajusta con las 198.608 filas completas de entrenamiento. `fraudetection-report` genera gráficos y el PowerPoint alternativo. El PDF principal se compila desde [`defensa_fraude.tex`](documentacion/presentacion/defensa_fraude.tex) con Docker y `blang/latex:ubuntu`; ver [instrucciones de presentación](documentacion/presentacion/README.md). La configuración está en [`config.py`](src/fraudetection/config.py).
 
 ## Documentación
 
@@ -89,6 +91,8 @@ La validación eligió **Random Forest propio con submuestreo 1:10** (`max_depth
 | [Presentación](documentacion/presentacion/README.md) | Guion de diapositivas. |
 | [Estudio](documentacion/estudio/README.md) | Preguntas para la defensa. |
 | [Resultados de prueba](resultados/test_resumen.csv) | Seis métricas para los ocho experimentos, media y desviación estándar. |
-| [Presentación PowerPoint](documentacion/presentacion/defensa_fraude.pptx) | 12 diapositivas principales y dos de respaldo con validación y prueba completas. |
+| [Presentación Beamer (PDF)](documentacion/presentacion/defensa_fraude.pdf) | 12 diapositivas principales y dos de respaldo, en paleta blanca, azul y gris. |
+| [Fuente Beamer](documentacion/presentacion/defensa_fraude.tex) | Archivo editable que genera el PDF. |
+| [PowerPoint alternativo](documentacion/presentacion/defensa_fraude.pptx) | Copia editable con el mismo contenido y paleta. |
 
 La carpeta `documentacion/informe/` contiene material interno; el enunciado no pide informe escrito. La entrega final será por Blackboard e incluirá código, README y presentación. Ambos integrantes participarán en la defensa.

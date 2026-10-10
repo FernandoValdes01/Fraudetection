@@ -1,6 +1,6 @@
 # Guion de la presentación
 
-El enunciado sugiere entre 10 y 12 diapositivas principales. La defensa dura 10 a 12 minutos por dupla y participan ambas personas. Los resultados y su análisis deben aparecer aquí; los comentarios del código no los reemplazan. El archivo [`defensa_fraude.pptx`](defensa_fraude.pptx) contiene 12 diapositivas principales, una tabla de respaldo con los parámetros y resultados de validación de los ocho experimentos, y otra con las seis métricas de prueba.
+El enunciado sugiere entre 10 y 12 diapositivas principales. La defensa dura 10 a 12 minutos por dupla y participan ambas personas. La presentación principal es [`defensa_fraude.pdf`](defensa_fraude.pdf), creada desde [`defensa_fraude.tex`](defensa_fraude.tex) con Beamer. Tiene 12 diapositivas principales y dos de respaldo: parámetros y resultados de CV para las ocho condiciones, y las seis métricas completas de prueba. Usa una paleta de blanco, azul y gris. [`defensa_fraude.pptx`](defensa_fraude.pptx) se conserva como formato alternativo.
 
 | Diapositivas | Contenido |
 | --- | --- |
@@ -16,6 +16,15 @@ El enunciado sugiere entre 10 y 12 diapositivas principales. La defensa dura 10 
 
 Se pueden añadir diapositivas de respaldo para tablas extensas, matrices de confusión y otras métricas. Todas las métricas exigidas deben aparecer en las diapositivas principales o de respaldo. Mantener separados los resultados de validación y los de prueba. La tabla de prueba presenta media y desviación estándar de cinco reajustes con distintas semillas sobre el mismo test; las repeticiones no son muestras independientes.
 
-Entregar PowerPoint o equivalente. Si la presentación se crea con una herramienta en línea, adjuntar también un PDF exportado. Reservar tiempo para preguntas y para mostrar o ejecutar el código durante la defensa.
+Entregar la presentación Beamer en PDF junto con su fuente `.tex`. Reservar tiempo para preguntas y para mostrar o ejecutar el código durante la defensa.
 
-Para regenerar tablas, gráficos y diapositivas después de ejecutar los experimentos, usar `uv run --locked fraudetection-report`. Antes de la entrega, completar los nombres de integrantes en la portada y practicar la exposición de ambos integrantes.
+Para regenerar los gráficos y el PowerPoint alternativo después de ejecutar los experimentos, usar `uv run --locked fraudetection-report`. Para recompilar el PDF desde la raíz del repositorio, ejecutar:
+
+```bash
+docker run --rm --user "$(id -u):$(id -g)" \
+  -v "$(pwd)":/work -w /work/documentacion/presentacion \
+  blang/latex:ubuntu \
+  latexmk -pdf -interaction=nonstopmode -halt-on-error defensa_fraude.tex
+```
+
+La portada ya incluye los nombres de ambos integrantes. Antes de la entrega, practicar la exposición de ambos.

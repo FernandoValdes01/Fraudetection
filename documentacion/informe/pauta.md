@@ -2,7 +2,7 @@
 
 Fuente: [`IA_2026_P2.pdf`](../../IA_2026_P2.pdf), "Problema 2: Detección de fraude usando técnicas de aprendizaje supervisado", INFO1185, 9 de octubre de 2026. Este documento convierte la consigna en comprobaciones de trabajo. El PDF manda si hay diferencias. La carpeta se llama `informe` para organizar la documentación; **no se solicita informe escrito**.
 
-**Estado del repositorio al 9 de octubre de 2026:** el pipeline, las ocho comparaciones, las métricas, los gráficos y una presentación PowerPoint están preparados. Quedan tareas de la dupla que requieren participación personal: confirmar los nombres de portada, ensayar la exposición de 10–12 minutos y entregar el material en Blackboard antes del plazo.
+**Estado del repositorio al 9 de octubre de 2026:** el pipeline, las ocho comparaciones, las métricas, los gráficos y la presentación Beamer están preparados. Quedan tareas de la dupla que requieren participación personal: ensayar la exposición de 10–12 minutos y entregar el material en Blackboard antes del plazo.
 
 ## Encargo y condiciones generales
 
@@ -116,7 +116,7 @@ Después de seleccionar las configuraciones con validación, reajustarlas sobre 
 | Presentación | PowerPoint o equivalente con metodología, resultados, análisis y conclusiones. Si se usa una herramienta en línea, adjuntar además PDF exportado. |
 | Defensa | Exposición de 10 a 12 minutos por dupla, seguida de preguntas. Ambos participan y conocen todo el desarrollo. Se puede pedir ejecutar o revisar código. |
 
-**Estado de entrega:** código, README y presentación PowerPoint están en el repositorio. Pendientes antes de la fecha de entrega: completar los nombres en la portada, ensayar la defensa y subir el material final a Blackboard.
+**Estado de entrega:** código, README, fuente Beamer, PDF y copia PowerPoint están en el repositorio. Pendientes antes de la fecha de entrega: ensayar la defensa y subir el material final a Blackboard.
 
 La entrega es por **Blackboard el 26 de octubre de 2026 a las 23:59 horas**. La defensa requiere reservar cita entre el **27 y el 28 de octubre de 2026**. El PDF no pide informe escrito.
 

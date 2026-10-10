@@ -21,13 +21,13 @@ from fraudetection.data import (
 )
 from fraudetection.experiments import MODEL_LABELS, save_plots, sha256
 
-BG = RGBColor(18, 27, 42)
-PANEL = RGBColor(28, 42, 61)
-TEXT = RGBColor(235, 240, 246)
-MUTED = RGBColor(171, 185, 199)
-BLUE = RGBColor(90, 137, 178)
-ORANGE = RGBColor(232, 135, 75)
-TEAL = RGBColor(74, 184, 167)
+BG = RGBColor(255, 255, 255)
+PANEL = RGBColor(241, 245, 249)
+TEXT = RGBColor(38, 50, 56)
+MUTED = RGBColor(100, 116, 139)
+BLUE = RGBColor(46, 111, 158)
+ORANGE = RGBColor(168, 180, 192)
+TEAL = RGBColor(46, 111, 158)
 FONT = "Arial"
 
 
@@ -221,7 +221,7 @@ def add_table(slide, headers, rows, x, y, width, height, *, font_size=12, widths
             cell.margin_top = Inches(0.025)
             cell.margin_bottom = Inches(0.025)
             cell.fill.solid()
-            cell.fill.fore_color.rgb = PANEL if row_index else RGBColor(42, 62, 82)
+            cell.fill.fore_color.rgb = PANEL if row_index else RGBColor(220, 232, 241)
             for paragraph in cell.text_frame.paragraphs:
                 paragraph.alignment = PP_ALIGN.LEFT
                 for run in paragraph.runs:
