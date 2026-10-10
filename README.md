@@ -14,9 +14,11 @@ Proyecto de INFO1185 para detectar transacciones fraudulentas en el conjunto [Cr
   <img alt="scikit-learn" src="https://img.shields.io/badge/SCIKIT--LEARN-1B2638?style=for-the-badge&amp;logo=scikitlearn&amp;logoColor=9FB0C8">
   <img alt="imbalanced-learn" src="https://img.shields.io/badge/IMBALANCED--LEARN-1B2638?style=for-the-badge&amp;logo=python&amp;logoColor=9FB0C8">
   <img alt="Matplotlib" src="https://img.shields.io/badge/MATPLOTLIB-1B2638?style=for-the-badge&amp;logo=python&amp;logoColor=9FB0C8">
+  <img alt="python-pptx" src="https://img.shields.io/badge/PYTHON--PPTX-1B2638?style=for-the-badge&amp;logo=python&amp;logoColor=9FB0C8">
+  <img alt="pytest" src="https://img.shields.io/badge/PYTEST-1B2638?style=for-the-badge&amp;logo=pytest&amp;logoColor=9FB0C8">
 </p>
 
-Python 3.12 y `uv` 0.12 gestionan el entorno. El proyecto usa NumPy 2, pandas 3, scikit-learn 1, imbalanced-learn 0.14 y Matplotlib 3; [`uv.lock`](uv.lock) fija las versiones exactas.
+Python 3.12 y `uv` 0.12 gestionan el entorno. El proyecto usa NumPy 2, pandas 3, scikit-learn 1, imbalanced-learn 0.14 y Matplotlib 3. `python-pptx` genera la presentación; [`uv.lock`](uv.lock) fija las versiones exactas.
 
 ## Métodos
 
@@ -36,10 +38,15 @@ Python 3.12 y `uv` 0.12 gestionan el entorno. El proyecto usa NumPy 2, pandas 3,
   <img alt="Compensación del desbalance" src="https://img.shields.io/badge/COMPENSACI%C3%93N%20DEL%20DESBALANCE-1B2638?style=for-the-badge">
   <img alt="Búsqueda de hiperparámetros" src="https://img.shields.io/badge/B%C3%9ASQUEDA%20DE%20HIPERPAR%C3%81METROS-1B2638?style=for-the-badge">
 </p>
+<p align="center">
+  <img alt="ANOVA F-test" src="https://img.shields.io/badge/ANOVA%20F--TEST-1B2638?style=for-the-badge">
+  <img alt="Submuestreo aleatorio 1 a 10" src="https://img.shields.io/badge/SUBMUESTREO%20ALEATORIO%201%3A10-1B2638?style=for-the-badge">
+  <img alt="Sensibilidad y tasa de falsos negativos" src="https://img.shields.io/badge/SENSIBILIDAD%20%2F%20FNR-1B2638?style=for-the-badge">
+</p>
 
-Se compararán **ocho experimentos**: cuatro clasificadores, cada uno con y sin compensación del desbalance. La selección usará cinco pliegues estratificados y elegirá la mayor sensibilidad media del fraude; la precisión del fraude resolverá empates. La tasa de falsos negativos se calculará como `FNR = FN / (TP + FN) = 1 − sensibilidad`.
+Se compararon **ocho experimentos**: cuatro clasificadores, cada uno con y sin compensación del desbalance. La selección utilizó cinco pliegues estratificados y eligió la mayor sensibilidad media del fraude; la precisión del fraude resolvió empates. La tasa de falsos negativos se calcula como `FNR = FN / (TP + FN) = 1 − sensibilidad`.
 
-El [Random Forest propio](src/fraudetection/forest.py) usa árboles `DecisionTreeClassifier`, bootstrap, selección aleatoria de variables por división y votación. Un empate favorece la clase fraude. El ensamble no utiliza `RandomForestClassifier` ni `BaggingClassifier`.
+El [Random Forest propio](src/fraudetection/forest.py) usa árboles `DecisionTreeClassifier`, bootstrap, selección aleatoria de variables por división y votación. Un empate favorece la clase fraude. El ensamble no utiliza `RandomForestClassifier` ni `BaggingClassifier`. Las variables se filtran con ANOVA F-test (`f_classif`); el submuestreo aleatorio mantiene una proporción de 1:10 entre fraude y transacciones legítimas.
 
 ## Avance
 
@@ -47,10 +54,15 @@ El [Random Forest propio](src/fraudetection/forest.py) usa árboles `DecisionTre
 - [x] Inspección del CSV real: 284.807 filas, 492 fraudes, 0 faltantes y 1.081 duplicados exactos.
 - [x] Limpieza explícita de duplicados y partición estratificada 70/30 con semilla 42.
 - [x] Random Forest propio compatible con búsqueda de hiperparámetros; pruebas con datos sintéticos.
-- [ ] Selección de características y compensación dentro de cinco pliegues de validación.
-- [ ] Comparación de los ocho experimentos, evaluación final y presentación.
+- [x] Ocho búsquedas con selección ANOVA y submuestreo dentro de cinco pliegues compartidos.
+- [x] Evaluación de prueba con los ocho modelos reajustados con todo el entrenamiento.
+- [x] Tablas, gráficos y presentación PowerPoint de 12 diapositivas principales y dos de respaldo.
 
-Los datos y la decisión de limpieza están en la [exploración inicial](documentacion/informe/exploracion.md). El conjunto de prueba permanece reservado para la evaluación final.
+Los datos y la decisión de limpieza están en la [exploración inicial](documentacion/informe/exploracion.md). Los resultados completos están en [`resultados/`](resultados/) y el conjunto de prueba permaneció reservado hasta la evaluación final. La portada aún tiene campos editables para los nombres de ambos integrantes.
+
+## Resultado actual
+
+La validación eligió **Random Forest propio con submuestreo 1:10** (`max_depth=6`, `n_estimators=21`), con sensibilidad **87,9 % ± 5,5 %** y precisión **45,0 %**. En los cinco reajustes sobre la misma prueba, obtuvo sensibilidad **80,4 % ± 0,3 %**, FNR **19,6 % ± 0,3 %** y precisión **67,5 % ± 4,6 %**. En la matriz del primer ajuste detectó 115 fraudes, omitió 27 y generó 53 falsas alarmas. Ver [métricas de los ocho experimentos](resultados/test_resumen.csv) y [predicciones para la matriz](resultados/predicciones_configuracion_cv.csv).
 
 ## Ejecutar lo disponible
 
@@ -60,10 +72,12 @@ Los datos y la decisión de limpieza están en la [exploración inicial](documen
    ```bash
    uv sync --locked
    uv run --locked fraudetection-inspect
+   uv run --locked fraudetection-run
+   uv run --locked fraudetection-report
    uv run --locked pytest -q
    ```
 
-El comando muestra filas, características, faltantes, duplicados, clases y tamaños de la partición. Aún no entrena los cuatro clasificadores ni utiliza el test para comparar modelos. La configuración compartida está en [`config.py`](src/fraudetection/config.py).
+`fraudetection-run` ejecuta las búsquedas y la evaluación, guarda tablas y gráficos en `resultados/`. La búsqueda toma 50.000 filas estratificadas del entrenamiento para limitar el costo de k-NN; luego cada modelo se reajusta con las 198.608 filas completas de entrenamiento. `fraudetection-report` genera el PowerPoint y los gráficos desde esos resultados. La configuración está en [`config.py`](src/fraudetection/config.py).
 
 ## Documentación
 
@@ -74,5 +88,7 @@ El comando muestra filas, características, faltantes, duplicados, clases y tama
 | [Exploración](documentacion/informe/exploracion.md) | Cifras del dataset y limpieza. |
 | [Presentación](documentacion/presentacion/README.md) | Guion de diapositivas. |
 | [Estudio](documentacion/estudio/README.md) | Preguntas para la defensa. |
+| [Resultados de prueba](resultados/test_resumen.csv) | Seis métricas para los ocho experimentos, media y desviación estándar. |
+| [Presentación PowerPoint](documentacion/presentacion/defensa_fraude.pptx) | 12 diapositivas principales y dos de respaldo con validación y prueba completas. |
 
 La carpeta `documentacion/informe/` contiene material interno; el enunciado no pide informe escrito. La entrega final será por Blackboard e incluirá código, README y presentación. Ambos integrantes participarán en la defensa.
