@@ -8,9 +8,25 @@ dependencies = [
     "matplotlib>=3.10,<4",
     "numpy>=2,<3",
     "pandas>=2.3,<4",
+    "python-pptx>=1.0.2",
     "scikit-learn>=1.7,<2",
 ]
 
 [build-system]
 requires = ["uv_build>=0.12.6,<0.13.0"]
 build-backend = "uv_build"
+
+[project.scripts]
+fraudetection = "fraudetection.cli:main"
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+    "ruff>=0.17.0",
+]

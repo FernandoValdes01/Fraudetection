@@ -1,0 +1,32 @@
+{
+  "status": "complete",
+  "started_utc": "2026-10-11T04:14:21.037149+00:00",
+  "sample_size_requested": 100000,
+  "random_seed": 42,
+  "test_size": 0.3,
+  "cv_folds": 5,
+  "cv_shuffle": true,
+  "final_seeds": [
+    42,
+    43,
+    44
+  ],
+  "selection": "SelectKBest ANOVA F, k=20, ajustado dentro de cada pliegue",
+  "compensation": "RandomUnderSampler, ratio minoritaria/mayoritaria=0.1",
+  "selection_rule": "Sensibilidad media, precisión media en empate exacto, orden estable",
+  "cv_std_ddof": 0,
+  "test_std_ddof": 1,
+  "test_protocol": "Tres reajustes prefijados, mismo test; ninguna selección por test",
+  "python": "3.12.12",
+  "versions": {
+    "fraudetection": "0.1.0",
+    "numpy": "2.5.3",
+    "pandas": "3.0.6",
+    "scikit-learn": "1.9.1",
+    "imbalanced-learn": "0.14.2",
+    "matplotlib": "3.11.2"
+  },
+  "jobs": 2,
+  "elapsed_seconds": 144.4652065119999,
+  "dataset_sha256": "76274b691b16a6c49d3f159c883398e03ccd6d1ee12d9d8ee38f4b4b98551a89"
+}

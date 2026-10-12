@@ -1,18 +1,13 @@
-# Guion de la presentación
+# Presentación y defensa
 
-El enunciado sugiere entre 10 y 12 diapositivas principales. La defensa dura 10 a 12 minutos por dupla y participan ambas personas. Los resultados y su análisis deben aparecer aquí; los comentarios del código no los reemplazan.
+La presentación final pertenece a Fernando Alonso Valdés Gómez y Juan Francisco Muñoz Veloso.
 
-| Diapositivas sugeridas | Contenido mínimo |
-| --- | --- |
-| 1 | Portada, integrantes, objetivo y prioridad de minimizar falsos negativos. |
-| 2 | Tamaño del dataset, variables, clases y desbalance. |
-| 3 a 4 | División 70/30, limpieza, escalado, selección, compensación, cinco pliegues y prevención de fuga. |
-| 5 a 6 | Random Forest propio: bootstrap, árboles independientes, `max_features`, bagging, votación y parámetros. |
-| 7 | Espacios de búsqueda, mejor configuración por condición, sensibilidad media y desviación estándar de validación. |
-| 8 a 9 | Tabla comparativa de los ocho experimentos en prueba, métricas exigidas y gráficos o matrices de confusión. |
-| 10 | Efecto de compensar el desbalance, falsas alarmas y comparación árbol frente a ensamble. |
-| 11 | Configuración elegida, resultados finales, límites y posibles mejoras. |
+- [fraudetection.pptx](fraudetection.pptx): 12 diapositivas principales y cuatro de respaldo, editables.
+- [fraudetection.pdf](fraudetection.pdf): exportación de las mismas diapositivas.
+- [guion_defensa.md](guion_defensa.md): notas de exposición por diapositiva, también incluidas en el PPTX.
 
-Se pueden añadir diapositivas de respaldo para tablas extensas, matrices de confusión y otras métricas. Todas las métricas exigidas deben aparecer en las diapositivas principales o de respaldo. Mantener separados los resultados de validación y los de prueba.
+Las tablas y gráficos provienen de `resultados/ejecucion/`, sin métricas inventadas. El ganador se eligió por validación; las seis métricas de test se muestran por separado, con tres reajustes sobre un test fijo. Las matrices de confusión y variables finales aparecen en respaldo.
 
-Entregar PowerPoint o equivalente. Si la presentación se crea con una herramienta en línea, adjuntar también un PDF exportado. Reservar tiempo para preguntas y para mostrar o ejecutar el código durante la defensa.
+Para regenerar el PPTX y el guion ejecutar `uv run --locked fraudetection report` desde la raíz. Para el PDF usar el comando de LibreOffice documentado en el README principal. Si se cambian manualmente las diapositivas, volver a exportar el PDF; regenerar el PPTX reemplaza las ediciones manuales.
+
+Reparto sugerido: integrante 1, diapositivas 1–4; integrante 2, 5–11; ambos, conclusiones y preguntas. Practicar 5–6 minutos por persona. Ambos deben conocer todo el desarrollo y poder explicar o ejecutar cualquier archivo.

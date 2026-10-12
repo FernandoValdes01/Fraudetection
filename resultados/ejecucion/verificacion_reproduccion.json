@@ -1,0 +1,13 @@
+{
+  "verified_utc": "2026-10-11T04:32:25.640073+00:00",
+  "sample_rows": 100000,
+  "experiments": 8,
+  "cv_fit_count": 80,
+  "final_fit_count": 24,
+  "same_protocol_without_retuning": true,
+  "predictions_exact_match": true,
+  "metrics_exact_match": true,
+  "searches_equal_excluding_runtime": true,
+  "partitions_exact_match": true,
+  "selected_parameters_exact_match": true
+}

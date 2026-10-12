@@ -1,0 +1,66 @@
+{
+  "raw_rows": 284807,
+  "predictors": 30,
+  "missing_by_column": {
+    "Time": 0,
+    "V1": 0,
+    "V2": 0,
+    "V3": 0,
+    "V4": 0,
+    "V5": 0,
+    "V6": 0,
+    "V7": 0,
+    "V8": 0,
+    "V9": 0,
+    "V10": 0,
+    "V11": 0,
+    "V12": 0,
+    "V13": 0,
+    "V14": 0,
+    "V15": 0,
+    "V16": 0,
+    "V17": 0,
+    "V18": 0,
+    "V19": 0,
+    "V20": 0,
+    "V21": 0,
+    "V22": 0,
+    "V23": 0,
+    "V24": 0,
+    "V25": 0,
+    "V26": 0,
+    "V27": 0,
+    "V28": 0,
+    "Amount": 0,
+    "Class": 0
+  },
+  "raw_class_counts": {
+    "0": 284315,
+    "1": 492
+  },
+  "duplicate_rows_removed": 1081,
+  "clean_rows": 283726,
+  "clean_class_counts": {
+    "0": 283253,
+    "1": 473
+  },
+  "sample_rows": 100000,
+  "sample_class_counts": {
+    "0": 99833,
+    "1": 167
+  },
+  "train_rows": 70000,
+  "test_rows": 30000,
+  "train_class_counts": {
+    "0": 69883,
+    "1": 117
+  },
+  "test_class_counts": {
+    "0": 29950,
+    "1": 50
+  },
+  "sample_fraud_fraction": 0.00167,
+  "dataset_sha256": "76274b691b16a6c49d3f159c883398e03ccd6d1ee12d9d8ee38f4b4b98551a89",
+  "cleaning": "Eliminar duplicados exactos antes de muestrear y dividir; sin imputación.",
+  "sampling": "Muestra estratificada sin reemplazo con prevalencia original y semilla 42."
+}
