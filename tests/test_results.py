@@ -5,7 +5,7 @@ from pathlib import Path
 import pandas as pd
 import pytest
 
-from fraudetection.audit import audit_results
+from fraudetection.reproduction.audit import audit_results
 
 
 @pytest.mark.skipif(

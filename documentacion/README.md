@@ -1,11 +1,15 @@
 # Documentación
 
 - [`informe/pauta.md`](informe/pauta.md): transcripción operativa del enunciado, con criterios de aceptación y rúbrica. Es documentación de trabajo, no un informe para entregar.
-- [`presentacion/README.md`](presentacion/README.md): PPTX, PDF y guion de defensa con resultados reales.
+- [`informe/exploracion.md`](informe/exploracion.md): cifras reales del CSV, decisión sobre duplicados, partición fija y resultados.
+- [`presentacion/README.md`](presentacion/README.md): fuente Beamer, PDF final, esquema de diapositivas y compilación.
 - [`estudio/README.md`](estudio/README.md): conceptos y preguntas para preparar la defensa de ambos integrantes.
-- [`estudio/respuestas.md`](estudio/respuestas.md): respuestas vinculadas al código y los resultados.
-- [`estado_entrega.md`](estado_entrega.md): desarrollo completado y acciones pendientes de la dupla.
-
-- [`revision_final.md`](revision_final.md): cumplimiento requisito por requisito y comprobaciones de reproducción.
 
 El [PDF original](../IA_2026_P2.pdf) prevalece si surge una diferencia de interpretación.
+
+## Ejecución independiente de 100.000 filas
+
+- [Reproducción](reproduccion.md): comandos, protocolo y resultados de `resultados/ejecucion/`.
+- [Revisión final](revision_final.md): criterios verificados para esa ejecución independiente.
+- [Estado de entrega](estado_entrega.md): desarrollo comprobado y acciones pendientes.
+- [Respuestas de estudio](estudio/respuestas.md): respuestas basadas exclusivamente en esa ejecución.

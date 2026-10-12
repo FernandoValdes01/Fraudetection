@@ -17,7 +17,7 @@ files = [
         "IA_2026_P2.pdf",
     )
 ]
-for directory in ("src", "tests", "scripts", "documentacion", "resultados/ejecucion"):
+for directory in ("src", "tests", "scripts", "documentacion", "resultados"):
     files.extend(
         path
         for path in (ROOT / directory).rglob("*")

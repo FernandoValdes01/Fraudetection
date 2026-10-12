@@ -14,8 +14,8 @@ from sklearn.metrics import (
     recall_score,
 )
 
-from fraudetection.metrics import METRIC_NAMES
-from fraudetection.reporting import load_json
+from fraudetection.reproduction.metrics import METRIC_NAMES
+from fraudetection.reproduction.reporting import load_json
 
 
 def require(condition, message):

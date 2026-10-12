@@ -1,3 +1,3 @@
-from fraudetection.cli import main
+from fraudetection.reproduction.cli import main
 
 main()

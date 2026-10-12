@@ -1,0 +1,9 @@
+experiment,model,model_label,compensation,compensated,search_rows,cv_folds,best_parameters,cv_sensitivity_mean,cv_sensitivity_std,cv_precision_mean,selected_by_cv
+knn_sin_compensacion,knn,k-NN,ninguna,False,50000,5,"{""n_neighbors"": 3}",0.7933823529411764,0.08563572565612157,0.9124686716791979,False
+knn_submuestreo,knn,k-NN,submuestreo 1:10,True,50000,5,"{""n_neighbors"": 3}",0.8661764705882353,0.06136953416136863,0.37480446334415274,False
+tree_sin_compensacion,tree,Árbol de decisión,ninguna,False,50000,5,"{""max_depth"": 5, ""min_samples_leaf"": 5}",0.6963235294117648,0.18358219452149688,0.7983116883116883,False
+tree_submuestreo,tree,Árbol de decisión,submuestreo 1:10,True,50000,5,"{""max_depth"": 5, ""min_samples_leaf"": 5}",0.8544117647058822,0.0641688947919748,0.18577328923083197,False
+svm_sin_compensacion,svm,SVM lineal,ninguna,False,50000,5,"{""C"": 10.0}",0.586764705882353,0.15598983530898153,0.8851515151515151,False
+svm_submuestreo,svm,SVM lineal,submuestreo 1:10,True,50000,5,"{""C"": 10.0}",0.8654411764705883,0.09328677368913944,0.21192766421724046,False
+forest_sin_compensacion,forest,Random Forest propio,ninguna,False,50000,5,"{""max_depth"": 12, ""n_estimators"": 21}",0.7433823529411765,0.1472131543129491,0.9157142857142857,False
+forest_submuestreo,forest,Random Forest propio,submuestreo 1:10,True,50000,5,"{""max_depth"": 6, ""n_estimators"": 21}",0.8786764705882353,0.05522053928093702,0.4499389429781946,True

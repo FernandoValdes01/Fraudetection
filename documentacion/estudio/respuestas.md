@@ -1,5 +1,7 @@
 # Respuestas para preparar la defensa
 
+Este documento corresponde exclusivamente al protocolo independiente de 100.000 filas de `src/fraudetection/reproduction/`, con resultados en `resultados/ejecucion/`. El protocolo principal y la presentación Beamer se documentan en el README de la raíz.
+
 Estas notas se apoyan en el experimento realizado. Deben practicarlas ambos integrantes junto con el código.
 
 1. **La exactitud engaña.** En test hay 29.950 legítimas y 50 fraudes. Predecir siempre legítimo da 99,833 % de exactitud y sensibilidad 0 %. Omite los 50 fraudes. Predecir siempre fraude detecta los 50, pero genera 29.950 falsas alarmas.

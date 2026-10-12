@@ -1,76 +1,62 @@
-"""Comandos de descarga, experimentación, presentación y predicción."""
+"""Comando de inspección inicial del dataset."""
 
 import argparse
 from pathlib import Path
 
-import joblib
-import pandas as pd
+from fraudetection.data import (
+    inspect_dataset,
+    load_dataset,
+    remove_exact_duplicates,
+    split_dataset,
+)
 
-from fraudetection.config import FEATURES, SAMPLE_SIZE
-from fraudetection.data import download_dataset
-from fraudetection.experiments import run_experiments
+DEFAULT_DATASET = Path("data/raw/creditcard.csv")
 
 
-def main():
-    parser = argparse.ArgumentParser(description="Comparación reproducible de detección de fraude")
-    commands = parser.add_subparsers(dest="command", required=True)
-    download = commands.add_parser(
-        "download", help="Descargar el CSV público utilizado por TensorFlow"
+def main() -> None:
+    parser = argparse.ArgumentParser(
+        description="Inspecciona el dataset y comprueba la partición 70/30"
     )
-    download.add_argument("--destination", type=Path, default=Path("data/raw/creditcard.csv"))
-    run = commands.add_parser("run", help="Ejecutar búsquedas y evaluación final")
-    run.add_argument("--data", type=Path, default=Path("data/raw/creditcard.csv"))
-    run.add_argument("--output", type=Path, default=Path("resultados/ejecucion"))
-    run.add_argument(
-        "--sample-size",
-        type=int,
-        default=SAMPLE_SIZE,
-        help="Filas de la muestra estratificada; 0 utiliza todo el conjunto limpio",
+    parser.add_argument(
+        "--dataset", type=Path, default=DEFAULT_DATASET, help="ruta de creditcard.csv"
     )
-    run.add_argument("--jobs", type=int, default=2)
-    report = commands.add_parser("report", help="Generar gráficos, análisis HTML y presentación")
-    report.add_argument("--input", type=Path, default=Path("resultados/ejecucion"))
-    report.add_argument(
-        "--presentation", type=Path, default=Path("documentacion/presentacion/fraudetection.pptx")
-    )
-    audit = commands.add_parser("audit", help="Verificar resultados guardados sin reentrenar")
-    audit.add_argument("--input", type=Path, default=Path("resultados/ejecucion"))
-    predict = commands.add_parser("predict", help="Predecir sin reajustar el modelo elegido")
-    predict.add_argument(
-        "--model", type=Path, default=Path("resultados/ejecucion/modelo_elegido.joblib")
-    )
-    predict.add_argument("--data", type=Path, required=True)
-    predict.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
-    if args.command == "download":
-        print(f"Descarga verificada. SHA256: {download_dataset(args.destination)}")
-    elif args.command == "run":
-        if args.jobs == 0 or args.jobs < -1:
-            parser.error("--jobs debe ser positivo o -1")
-        output = run_experiments(
-            args.data,
-            args.output,
-            sample_size=args.sample_size or None,
-            jobs=args.jobs,
+
+    try:
+        frame = load_dataset(args.dataset)
+        report = inspect_dataset(frame)
+        clean_frame = remove_exact_duplicates(frame)
+        clean_report = inspect_dataset(clean_frame)
+        X_train, X_test, y_train, y_test = split_dataset(clean_frame)
+    except (OSError, ValueError) as error:
+        parser.exit(2, f"Error al inspeccionar {args.dataset}: {error}\n")
+
+    print(f"Registros: {report.records:,} | Características: {report.features}")
+    print(
+        f"Duplicados exactos: {report.duplicate_rows:,} "
+        f"(clase 0: {report.duplicates_by_class[0]:,}; clase 1: {report.duplicates_by_class[1]:,})"
+    )
+    if report.missing_by_column:
+        print(
+            "Faltantes: "
+            + ", ".join(f"{name}={count}" for name, count in report.missing_by_column.items())
         )
-        print(f"Experimentos completos: {output}")
-    elif args.command == "report":
-        from fraudetection.reporting import generate_report
-
-        generate_report(args.input, args.presentation)
-        print(f"Resultados: {args.input / 'analisis.html'}; presentación: {args.presentation}")
-    elif args.command == "audit":
-        from fraudetection.audit import audit_results
-
-        print(audit_results(args.input))
-    elif args.command == "predict":
-        frame = pd.read_csv(args.data)
-        if not set(FEATURES).issubset(frame.columns):
-            parser.error("El CSV requiere los 30 predictores originales")
-        model = joblib.load(args.model)
-        prediction = model.predict(frame.loc[:, FEATURES].to_numpy(dtype=float))
-        args.output.parent.mkdir(parents=True, exist_ok=True)
-        pd.DataFrame({"Class_predicted": prediction}).to_csv(args.output, index=False)
+    else:
+        print("Faltantes: 0")
+    for label in (0, 1):
+        print(
+            f"Clase {label}: {report.class_counts[label]:,} ({report.class_proportions[label]:.3%})"
+        )
+    print(f"Tras quitar duplicados: {clean_report.records:,} registros")
+    for label in (0, 1):
+        print(
+            f"Clase {label} limpia: {clean_report.class_counts[label]:,} "
+            f"({clean_report.class_proportions[label]:.3%})"
+        )
+    print(f"Entrenamiento: {len(X_train):,} filas, {int(y_train.sum()):,} fraudes")
+    print(f"Prueba reservada: {len(X_test):,} filas, {int(y_test.sum()):,} fraudes")
+    if report.records < 10_000:
+        print("Aviso: el enunciado exige utilizar al menos 10 000 registros.")
 
 
 if __name__ == "__main__":

@@ -1,291 +1,623 @@
-"""Búsqueda completa en entrenamiento antes de abrir el test reservado."""
+"""Búsqueda CV y evaluación final de los ocho experimentos del proyecto."""
 
-import importlib.metadata
+import argparse
+import hashlib
 import json
-import platform
-import time
-from datetime import UTC, datetime
 from pathlib import Path
 
-import joblib
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from imblearn.pipeline import Pipeline
 from imblearn.under_sampling import RandomUnderSampler
 from sklearn.feature_selection import SelectKBest, f_classif
-from sklearn.model_selection import GridSearchCV
+from sklearn.metrics import (
+    accuracy_score,
+    confusion_matrix,
+    f1_score,
+    make_scorer,
+    precision_score,
+    recall_score,
+)
+from sklearn.model_selection import GridSearchCV, StratifiedKFold, train_test_split
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.preprocessing import StandardScaler
-from sklearn.svm import SVC
+from sklearn.svm import LinearSVC
 from sklearn.tree import DecisionTreeClassifier
-from threadpoolctl import threadpool_limits
 
-from fraudetection.config import FEATURES, FINAL_SEEDS, RANDOM_SEED, SELECTED_FEATURES
-from fraudetection.data import class_counts, prepare_data
-from fraudetection.forest import OwnRandomForestClassifier
-from fraudetection.metrics import METRIC_NAMES, best_candidate, binary_metrics, scoring
+from fraudetection.config import (
+    CV_FOLDS,
+    FEATURE_SELECTION_K,
+    FINAL_SEEDS,
+    PREDICTION_BATCH_SIZE,
+    RANDOM_SEED,
+    SEARCH_SAMPLE_SIZE,
+    UNDERSAMPLE_RATIO,
+)
+from fraudetection.data import (
+    inspect_dataset,
+    load_dataset,
+    remove_exact_duplicates,
+    split_dataset,
+)
+from fraudetection.forest import BootstrapRandomForest
 
-MODEL_LABELS = {"knn": "k-NN", "tree": "Árbol", "svm": "SVM", "forest": "Bosque propio"}
+MODEL_LABELS = {
+    "knn": "k-NN",
+    "tree": "Árbol de decisión",
+    "svm": "SVM lineal",
+    "forest": "Random Forest propio",
+}
+MODEL_ORDER = tuple(MODEL_LABELS)
+COMPENSATION_ORDER = (False, True)
+METRIC_NAMES = ("sensitivity", "specificity", "precision", "f1", "accuracy", "fnr")
+
+PARAMETER_GRIDS = {
+    "knn": {"model__n_neighbors": [3, 5, 7]},
+    "tree": {
+        "model__max_depth": [5, 10, None],
+        "model__min_samples_leaf": [1, 5],
+    },
+    "svm": {"model__C": [0.1, 1.0, 10.0]},
+    "forest": {
+        "model__n_estimators": [11, 21],
+        "model__max_depth": [6, 12],
+    },
+}
 
 
-def model_specs(seed=RANDOM_SEED):
-    """Dos candidatos por modelo; todos prefijados antes de evaluar.
-
-    Se comparan vecindades pequeña/mayor, profundidad limitada/libre y
-    regularización SVM moderada/menor. El bosque fija 31 árboles impares
-    y sqrt variables por división. El resto se mantiene constante.
-    """
-    return {
-        "knn": (KNeighborsClassifier(n_jobs=1), {"model__n_neighbors": [3, 7]}),
-        "tree": (
-            DecisionTreeClassifier(min_samples_leaf=2, random_state=seed),
-            {"model__max_depth": [6, None]},
-        ),
-        "svm": (
-            SVC(kernel="rbf", gamma="scale", cache_size=512, random_state=seed),
-            {"model__C": [1.0, 10.0]},
-        ),
-        "forest": (
-            OwnRandomForestClassifier(n_estimators=31, min_samples_leaf=2, random_state=seed),
-            {"model__max_depth": [8, None]},
-        ),
-    }
+def make_classifier(model_name: str, seed: int):
+    if model_name == "knn":
+        return KNeighborsClassifier(n_neighbors=5, weights="distance", n_jobs=4)
+    if model_name == "tree":
+        return DecisionTreeClassifier(random_state=seed)
+    if model_name == "svm":
+        return LinearSVC(C=1.0, dual="auto", max_iter=10_000, random_state=seed)
+    if model_name == "forest":
+        return BootstrapRandomForest(random_state=seed)
+    raise ValueError(f"Clasificador desconocido: {model_name}")
 
 
-def make_pipeline(model_name, balanced, seed=RANDOM_SEED):
-    model, grid = model_specs(seed)[model_name]
-    pipeline = Pipeline(
+def make_pipeline(model_name: str, compensate: bool, seed: int, parameters=None):
+    scale = "passthrough" if model_name in {"tree", "forest"} else StandardScaler()
+    sampler = (
+        RandomUnderSampler(sampling_strategy=UNDERSAMPLE_RATIO, random_state=seed)
+        if compensate
+        else "passthrough"
+    )
+    selector = SelectKBest(
+        score_func=f_classif,
+        k=FEATURE_SELECTION_K,
+    )
+    estimator = make_classifier(model_name, seed)
+    if parameters:
+        estimator.set_params(**parameters)
+    return Pipeline(
         [
-            ("scale", StandardScaler() if model_name in ("knn", "svm") else "passthrough"),
-            # ANOVA F selecciona diferencias marginales de medias. No aprende sobre test.
-            ("select", SelectKBest(score_func=f_classif, k=SELECTED_FEATURES)),
-            # 0.1 = un fraude por diez legítimas. Solo elimina ejemplos mayoritarios.
-            (
-                "balance",
-                RandomUnderSampler(sampling_strategy=0.1, random_state=seed)
-                if balanced
-                else "passthrough",
-            ),
-            ("model", model),
+            ("scale", scale),
+            ("sampler", sampler),
+            ("select", selector),
+            ("model", estimator),
         ]
     )
-    return pipeline, grid
 
 
-def write_json(path, value):
-    Path(path).write_text(json.dumps(value, indent=2, ensure_ascii=False), encoding="utf-8")
+def choose_by_sensitivity_then_precision(cv_results: dict[str, np.ndarray]) -> int:
+    """Elige sensibilidad media y desempata por precisión media de fraude."""
+    sensitivity = np.asarray(cv_results["mean_test_sensitivity"], dtype=float)
+    precision = np.asarray(cv_results["mean_test_precision"], dtype=float)
+    best_sensitivity = np.nanmax(sensitivity)
+    candidates = np.flatnonzero(sensitivity == best_sensitivity)
+    best_precision = np.nanmax(precision[candidates])
+    return int(candidates[np.flatnonzero(precision[candidates] == best_precision)[0]])
 
 
-def run_experiments(dataset, output, sample_size=100_000, jobs=2, final_seeds=FINAL_SEEDS):
-    output = Path(output)
-    output.mkdir(parents=True, exist_ok=True)
-    if len(final_seeds) < 2 or len(set(final_seeds)) != len(final_seeds):
-        raise ValueError("Se requieren al menos dos semillas finales distintas.")
-    if (output / "protocolo.json").exists():
-        raise FileExistsError("El directorio ya contiene una ejecución. Use otro --output.")
-    started = time.monotonic()
-    protocol = {
-        "status": "running",
-        "started_utc": datetime.now(UTC).isoformat(),
-        "sample_size_requested": sample_size,
-        "random_seed": RANDOM_SEED,
-        "test_size": 0.3,
-        "cv_folds": 5,
-        "cv_shuffle": True,
-        "final_seeds": list(final_seeds),
-        "selection": "SelectKBest ANOVA F, k=20, ajustado dentro de cada pliegue",
-        "compensation": "RandomUnderSampler, ratio minoritaria/mayoritaria=0.1",
-        "selection_rule": "Sensibilidad media, precisión media en empate exacto, orden estable",
-        "cv_std_ddof": 0,
-        "test_std_ddof": 1,
-        "test_protocol": "Tres reajustes prefijados, mismo test; ninguna selección por test",
-        "python": platform.python_version(),
-        "versions": {
-            name: importlib.metadata.version(name)
-            for name in (
-                "fraudetection",
-                "numpy",
-                "pandas",
-                "scikit-learn",
-                "imbalanced-learn",
-                "matplotlib",
-            )
-        },
-        "jobs": jobs,
-    }
-    write_json(output / "protocolo.json", protocol)
-    X_train, X_test, y_train, y_test, test_ids, folds, exploration = prepare_data(
-        dataset,
-        sample_size,
-        output,
+def take_search_sample(X: pd.DataFrame, y: pd.Series, size: int):
+    if size < 10_000:
+        raise ValueError("La búsqueda debe utilizar al menos 10 000 filas")
+    if size > len(y):
+        raise ValueError(f"La muestra solicitada ({size}) excede el entrenamiento ({len(y)})")
+    split = train_test_split(
+        X,
+        y,
+        train_size=size,
+        stratify=y,
+        random_state=RANDOM_SEED,
     )
-    selected, cv_rows, cv_fold_rows, sampling_rows = [], [], [], []
-    (output / "busquedas").mkdir()
-    # Primera fase: buscar TODAS las configuraciones sin evaluar X_test.
-    for name in MODEL_LABELS:
-        for balanced in (False, True):
-            condition = "con_compensacion" if balanced else "sin_compensacion"
-            print(f"Validación: {name} / {condition}", flush=True)
-            pipeline, grid = make_pipeline(name, balanced)
+    return split[0], split[2]
+
+
+def run_searches(X_search, y_search, output_dir: Path) -> pd.DataFrame:
+    splits = list(
+        StratifiedKFold(
+            n_splits=CV_FOLDS,
+            shuffle=True,
+            random_state=RANDOM_SEED,
+        ).split(X_search, y_search)
+    )
+    scorers = {
+        "sensitivity": make_scorer(recall_score, pos_label=1, zero_division=0),
+        "precision": make_scorer(precision_score, pos_label=1, zero_division=0),
+    }
+    rows = []
+
+    for model_name in MODEL_ORDER:
+        for compensate in COMPENSATION_ORDER:
+            condition = "submuestreo" if compensate else "sin_compensacion"
+            experiment = f"{model_name}_{condition}"
+            print(f"CV {experiment}: iniciando búsqueda", flush=True)
             search = GridSearchCV(
-                pipeline,
-                grid,
-                scoring=scoring(),
-                cv=folds,
-                refit=False,
-                n_jobs=jobs,
+                estimator=make_pipeline(model_name, compensate, RANDOM_SEED),
+                param_grid=PARAMETER_GRIDS[model_name],
+                scoring=scorers,
+                refit=choose_by_sensitivity_then_precision,
+                cv=splits,
+                n_jobs=1,
                 error_score="raise",
                 return_train_score=False,
             )
-            with joblib.parallel_backend("loky", inner_max_num_threads=1):
-                search.fit(X_train, y_train)
-            index = best_candidate(search.cv_results_)
-            params = search.cv_results_["params"][index]
-            result = {
-                "model": name,
-                "condition": condition,
-                "balanced": balanced,
-                "params": params,
-                "candidate_index": index,
+            search.fit(X_search, y_search)
+            index = search.best_index_
+            model_parameters = {
+                name.removeprefix("model__"): value
+                for name, value in search.cv_results_["params"][index].items()
             }
-            cv_row = {"model": name, "condition": condition, "params": json.dumps(params)}
-            for metric in METRIC_NAMES:
-                cv_row[f"{metric}_mean"] = float(search.cv_results_[f"mean_test_{metric}"][index])
-                cv_row[f"{metric}_std"] = float(search.cv_results_[f"std_test_{metric}"][index])
-            for fold_id, (train_ids, valid_ids) in enumerate(folds):
-                cv_fold_rows.append(
-                    {
-                        "model": name,
-                        "condition": condition,
-                        "fold": fold_id,
-                        **{
-                            m: float(search.cv_results_[f"split{fold_id}_test_{m}"][index])
-                            for m in METRIC_NAMES
-                        },
-                    }
-                )
-                before = class_counts(y_train[train_ids])
-                after = before.copy()
-                if balanced:
-                    _, balanced_y = RandomUnderSampler(
-                        sampling_strategy=0.1,
-                        random_state=RANDOM_SEED,
-                    ).fit_resample(X_train[train_ids], y_train[train_ids])
-                    after = class_counts(balanced_y)
-                sampling_rows.append(
-                    {
-                        "model": name,
-                        "condition": condition,
-                        "fold": fold_id,
-                        "train_rows": len(train_ids),
-                        "validation_rows": len(valid_ids),
-                        "before_0": before["0"],
-                        "before_1": before["1"],
-                        "after_0": after["0"],
-                        "after_1": after["1"],
-                    }
-                )
-            pd.DataFrame(search.cv_results_).to_csv(
-                output / "busquedas" / f"{name}_{condition}.csv",
-                index=False,
-            )
-            cv_rows.append(cv_row)
-            selected.append(result)
-    cv = pd.DataFrame(cv_rows)
-    cv.to_csv(output / "validacion.csv", index=False)
-    pd.DataFrame(cv_fold_rows).to_csv(output / "validacion_pliegues.csv", index=False)
-    pd.DataFrame(sampling_rows).to_csv(output / "remuestreo_pliegues.csv", index=False)
-    winner_index = max(
-        range(len(cv_rows)),
-        key=lambda i: (
-            cv_rows[i]["sensitivity_mean"],
-            cv_rows[i]["precision_mean"],
-            -i,
-        ),
-    )
-    write_json(
-        output / "seleccion.json",
-        {
-            "experiments": selected,
-            "winner": selected[winner_index],
-            "frozen_before_test": True,
-        },
-    )
-    # Segunda fase: configuraciones congeladas; no cambiar grillas ni umbrales.
-    test_rows, feature_rows, forest_diagnostics = [], [], []
-    predictions = pd.DataFrame({"row_id": test_ids, "Class": y_test})
-    for experiment_index, experiment in enumerate(selected):
-        name, balanced = experiment["model"], experiment["balanced"]
-        condition = experiment["condition"]
-        for seed in final_seeds:
-            print(f"Prueba final: {name} / {condition} / semilla {seed}", flush=True)
-            pipeline, _ = make_pipeline(name, balanced, seed)
-            pipeline.set_params(**experiment["params"])
-            with threadpool_limits(limits=1):
-                pipeline.fit(X_train, y_train)
-                prediction = pipeline.predict(X_test)
-            row = {
-                "model": name,
-                "condition": condition,
-                "seed": seed,
-                **binary_metrics(y_test, prediction),
-            }
-            test_rows.append(row)
-            predictions[f"{name}_{condition}_{seed}"] = prediction
-            support = pipeline.named_steps["select"].get_support()
-            features = np.asarray(FEATURES)[support].tolist()
-            sampler = pipeline.named_steps["balance"]
-            after = (
-                class_counts(y_train[sampler.sample_indices_])
-                if balanced
-                else class_counts(y_train)
-            )
-            feature_rows.append(
+            rows.append(
                 {
-                    "model": name,
-                    "condition": condition,
-                    "seed": seed,
-                    "selected_features": features,
-                    "before": class_counts(y_train),
-                    "after": after,
+                    "experiment": experiment,
+                    "model": model_name,
+                    "model_label": MODEL_LABELS[model_name],
+                    "compensation": "submuestreo 1:10" if compensate else "ninguna",
+                    "compensated": compensate,
+                    "search_rows": len(X_search),
+                    "cv_folds": CV_FOLDS,
+                    "best_parameters": json.dumps(model_parameters, ensure_ascii=False),
+                    "cv_sensitivity_mean": float(
+                        search.cv_results_["mean_test_sensitivity"][index]
+                    ),
+                    "cv_sensitivity_std": float(search.cv_results_["std_test_sensitivity"][index]),
+                    "cv_precision_mean": float(search.cv_results_["mean_test_precision"][index]),
                 }
             )
-            if name == "forest":
-                forest = pipeline.named_steps["model"]
-                forest_diagnostics.append(
-                    {
-                        "condition": condition,
-                        "seed": seed,
-                        "bootstrap_size": forest.bootstrap_size_,
-                        "tree_seeds": forest.tree_seeds_,
-                        "unique_counts": forest.bootstrap_unique_counts_,
-                    }
-                )
-            if experiment_index == winner_index and seed == final_seeds[0]:
-                joblib.dump(pipeline, output / "modelo_elegido.joblib")
-    test = pd.DataFrame(test_rows)
-    test.to_csv(output / "prueba_repeticiones.csv", index=False)
-    summary_rows = []
-    for (name, condition), group in test.groupby(["model", "condition"], sort=False):
-        summary_row = {"model": name, "condition": condition, "repetitions": len(group)}
-        for metric in (*METRIC_NAMES, "tn", "fp", "fn", "tp"):
-            summary_row[f"{metric}_mean"] = float(group[metric].mean())
-            summary_row[f"{metric}_std"] = float(group[metric].std(ddof=1))
-        summary_rows.append(summary_row)
-    summary = pd.DataFrame(summary_rows)
-    summary.to_csv(output / "prueba_resumen.csv", index=False)
-    predictions.to_csv(output / "predicciones.csv.gz", index=False, compression="gzip")
-    write_json(output / "caracteristicas.json", feature_rows)
-    write_json(output / "bosque_diagnostico.json", forest_diagnostics)
-    baselines = {
-        "always_legitimate": binary_metrics(y_test, np.zeros_like(y_test)),
-        "always_fraud": binary_metrics(y_test, np.ones_like(y_test)),
-    }
-    write_json(output / "referencias_triviales.json", baselines)
-    protocol.update(
-        status="complete",
-        elapsed_seconds=time.monotonic() - started,
-        dataset_sha256=exploration["dataset_sha256"],
+            current = pd.DataFrame(rows)
+            current["selected_by_cv"] = False
+            best_index = max(
+                current.index,
+                key=lambda row_index: (
+                    current.loc[row_index, "cv_sensitivity_mean"],
+                    current.loc[row_index, "cv_precision_mean"],
+                ),
+            )
+            current.loc[best_index, "selected_by_cv"] = True
+            current.to_csv(output_dir / "cv_resumen.csv", index=False)
+            print(
+                f"CV {experiment}: sensibilidad {rows[-1]['cv_sensitivity_mean']:.3f} "
+                f"± {rows[-1]['cv_sensitivity_std']:.3f}; "
+                f"precisión {rows[-1]['cv_precision_mean']:.3f}; "
+                f"parámetros {model_parameters}",
+                flush=True,
+            )
+
+    results = pd.DataFrame(rows)
+    best_index = max(
+        results.index,
+        key=lambda index: (
+            results.loc[index, "cv_sensitivity_mean"],
+            results.loc[index, "cv_precision_mean"],
+        ),
     )
-    write_json(output / "protocolo.json", protocol)
-    return output
+    results["selected_by_cv"] = False
+    results.loc[best_index, "selected_by_cv"] = True
+    results.to_csv(output_dir / "cv_resumen.csv", index=False)
+    return results
+
+
+def predict_in_batches(estimator, X: pd.DataFrame) -> np.ndarray:
+    predictions = []
+    for start in range(0, len(X), PREDICTION_BATCH_SIZE):
+        stop = start + PREDICTION_BATCH_SIZE
+        predictions.append(estimator.predict(X.iloc[start:stop]))
+    return np.concatenate(predictions)
+
+
+def calculate_metrics(y_true: np.ndarray, y_pred: np.ndarray) -> dict[str, float | int]:
+    tn, fp, fn, tp = confusion_matrix(y_true, y_pred, labels=[0, 1]).ravel()
+    sensitivity = recall_score(y_true, y_pred, pos_label=1, zero_division=0)
+    specificity = tn / (tn + fp) if tn + fp else 0.0
+    return {
+        "tn": int(tn),
+        "fp": int(fp),
+        "fn": int(fn),
+        "tp": int(tp),
+        "sensitivity": float(sensitivity),
+        "specificity": float(specificity),
+        "precision": float(precision_score(y_true, y_pred, pos_label=1, zero_division=0)),
+        "f1": float(f1_score(y_true, y_pred, pos_label=1, zero_division=0)),
+        "accuracy": float(accuracy_score(y_true, y_pred)),
+        "fnr": float(1.0 - sensitivity),
+    }
+
+
+def run_final_evaluations(
+    cv_results: pd.DataFrame,
+    X_train: pd.DataFrame,
+    y_train: pd.Series,
+    X_test: pd.DataFrame,
+    y_test: pd.Series,
+    output_dir: Path,
+) -> tuple[pd.DataFrame, pd.DataFrame, dict[str, np.ndarray], dict[str, list[str]]]:
+    rows = []
+    feature_rows = []
+    primary_predictions = {}
+    feature_sets = {}
+
+    for result in cv_results.to_dict(orient="records"):
+        model_name = result["model"]
+        compensate = bool(result["compensated"])
+        parameters = json.loads(result["best_parameters"])
+        experiment = result["experiment"]
+        print(f"Prueba {experiment}: reajustando con todo el entrenamiento", flush=True)
+
+        deterministic_knn = model_name == "knn" and not compensate
+        run_seeds = FINAL_SEEDS[:1] if deterministic_knn else FINAL_SEEDS
+        for repeat, seed in enumerate(run_seeds, start=1):
+            pipeline = make_pipeline(model_name, compensate, seed, parameters)
+            pipeline.fit(X_train, y_train)
+            predictions = predict_in_batches(pipeline, X_test)
+            rows.append(
+                {
+                    "experiment": experiment,
+                    "model": model_name,
+                    "model_label": MODEL_LABELS[model_name],
+                    "compensation": result["compensation"],
+                    "repeat": repeat,
+                    "seed": seed,
+                    **calculate_metrics(y_test.to_numpy(), predictions),
+                }
+            )
+            selected = pipeline.named_steps["select"]
+            feature_names = list(X_train.columns[selected.get_support()])
+            feature_rows.append(
+                {
+                    "experiment": experiment,
+                    "repeat": repeat,
+                    "seed": seed,
+                    "selected_features": ", ".join(feature_names),
+                }
+            )
+            if seed == FINAL_SEEDS[0]:
+                primary_predictions[experiment] = predictions
+                feature_sets[experiment] = feature_names
+            print(
+                f"Prueba {experiment}, repetición {repeat}: "
+                f"sensibilidad {rows[-1]['sensitivity']:.3f}, "
+                f"FNR {rows[-1]['fnr']:.3f}, precisión {rows[-1]['precision']:.3f}",
+                flush=True,
+            )
+
+        if deterministic_knn:
+            base = rows[-1].copy()
+            for repeat, seed in enumerate(FINAL_SEEDS[1:], start=2):
+                rows.append({**base, "repeat": repeat, "seed": seed})
+            base_features = feature_rows[-1].copy()
+            for repeat, seed in enumerate(FINAL_SEEDS[1:], start=2):
+                feature_rows.append({**base_features, "repeat": repeat, "seed": seed})
+
+        pd.DataFrame(rows).to_csv(output_dir / "test_repeticiones.csv", index=False)
+        pd.DataFrame(feature_rows).to_csv(
+            output_dir / "caracteristicas_seleccionadas.csv", index=False
+        )
+
+    repetitions = pd.DataFrame(rows)
+    summary_rows = []
+    for experiment, group in repetitions.groupby("experiment", sort=False):
+        summary = {
+            "experiment": experiment,
+            "model": group.iloc[0]["model"],
+            "model_label": group.iloc[0]["model_label"],
+            "compensation": group.iloc[0]["compensation"],
+            "compensated": group.iloc[0]["compensation"] != "ninguna",
+            "test_repeats": len(group),
+        }
+        for metric in METRIC_NAMES:
+            summary[f"{metric}_mean"] = group[metric].mean()
+            summary[f"{metric}_std"] = group[metric].std(ddof=1) if len(group) > 1 else 0.0
+        for count in ("tn", "fp", "fn", "tp"):
+            summary[f"{count}_mean"] = group[count].mean()
+            summary[f"{count}_std"] = group[count].std(ddof=1) if len(group) > 1 else 0.0
+        summary_rows.append(summary)
+
+    summary = pd.DataFrame(summary_rows).merge(
+        cv_results[
+            [
+                "experiment",
+                "best_parameters",
+                "cv_sensitivity_mean",
+                "cv_sensitivity_std",
+                "cv_precision_mean",
+                "selected_by_cv",
+            ]
+        ],
+        on="experiment",
+        how="left",
+    )
+    summary.to_csv(output_dir / "test_resumen.csv", index=False)
+    repetitions.to_csv(output_dir / "test_repeticiones.csv", index=False)
+    pd.DataFrame(feature_rows).to_csv(output_dir / "caracteristicas_seleccionadas.csv", index=False)
+
+    chosen_experiment = cv_results.loc[cv_results["selected_by_cv"], "experiment"].iloc[0]
+    pd.DataFrame(
+        {
+            "dataset_index": X_test.index.to_numpy(),
+            "class_true": y_test.to_numpy(),
+            "class_predicted": primary_predictions[chosen_experiment],
+        }
+    ).to_csv(output_dir / "predicciones_configuracion_cv.csv", index=False)
+    (output_dir / "seleccion_cv.json").write_text(
+        json.dumps(
+            {
+                "selected_experiment": chosen_experiment,
+                "selected_features_seed_42": feature_sets[chosen_experiment],
+                "selection_criterion": "sensibilidad media CV; precisión media como desempate",
+                "test_seed_for_confusion_matrix": FINAL_SEEDS[0],
+            },
+            indent=2,
+            ensure_ascii=False,
+        )
+        + "\n"
+    )
+    return repetitions, summary, primary_predictions, feature_sets
+
+
+def save_plots(
+    raw_report,
+    clean_report,
+    cv_results: pd.DataFrame,
+    test_summary: pd.DataFrame,
+    y_test: pd.Series,
+    primary_predictions: dict[str, np.ndarray],
+    output_dir: Path,
+) -> None:
+    plt.rcParams.update(
+        {
+            "figure.facecolor": "#ffffff",
+            "axes.facecolor": "#ffffff",
+            "axes.edgecolor": "#cbd5e1",
+            "axes.labelcolor": "#475569",
+            "text.color": "#263238",
+            "xtick.color": "#475569",
+            "ytick.color": "#475569",
+            "grid.color": "#dbe3eb",
+        }
+    )
+    blue = "#2e6f9e"
+    gray = "#a8b4c0"
+    plot_dir = output_dir / "graficos"
+    plot_dir.mkdir(parents=True, exist_ok=True)
+
+    fig, axes = plt.subplots(1, 2, figsize=(10, 4), constrained_layout=True)
+    for axis, report, title in zip(
+        axes,
+        (raw_report, clean_report),
+        ("CSV original", "Después de eliminar duplicados"),
+        strict=False,
+    ):
+        axis.bar(
+            ["Legítimas", "Fraudes"],
+            [report.class_counts[0], report.class_counts[1]],
+            color=[gray, blue],
+        )
+        axis.set_title(title)
+        axis.set_ylabel("Transacciones")
+        axis.ticklabel_format(axis="y", style="plain")
+        for index, value in enumerate((report.class_counts[0], report.class_counts[1])):
+            axis.text(
+                index,
+                value,
+                f"{value:,}".replace(",", "."),
+                ha="center",
+                va="bottom",
+                fontsize=9,
+            )
+    fig.suptitle("El desbalance se conserva en los datos de evaluación")
+    fig.savefig(plot_dir / "distribucion_clases.png", dpi=180)
+    plt.close(fig)
+
+    short_model_labels = {"knn": "k-NN", "tree": "Árbol", "svm": "SVM", "forest": "Bosque"}
+    labels = [
+        f"{short_model_labels[row.model]}\n{'subm.' if row.compensated else 'sin comp.'}"
+        for row in cv_results.itertuples()
+    ]
+    positions = np.arange(len(cv_results))
+    fig, axis = plt.subplots(figsize=(11, 5), constrained_layout=True)
+    axis.bar(
+        positions,
+        cv_results["cv_sensitivity_mean"],
+        yerr=cv_results["cv_sensitivity_std"],
+        capsize=4,
+        color=[blue if row.compensated else gray for row in cv_results.itertuples()],
+    )
+    axis.set_xticks(positions, labels, fontsize=9)
+    axis.set_ylim(0, 1.05)
+    axis.set_ylabel("Sensibilidad media ± DE")
+    axis.set_title("Validación cruzada: detección de fraude")
+    axis.grid(axis="y", alpha=0.2)
+    fig.savefig(plot_dir / "sensibilidad_validacion.png", dpi=180)
+    plt.close(fig)
+
+    metric_titles = {
+        "sensitivity": "Sensibilidad",
+        "specificity": "Especificidad",
+        "precision": "Precisión",
+        "f1": "F1-score",
+        "accuracy": "Exactitud",
+        "fnr": "FNR",
+    }
+    fig, axes = plt.subplots(2, 3, figsize=(15, 8), constrained_layout=True)
+    for axis, metric in zip(axes.flat, METRIC_NAMES, strict=False):
+        axis.bar(
+            positions,
+            test_summary[f"{metric}_mean"],
+            yerr=test_summary[f"{metric}_std"],
+            capsize=3,
+            color=[blue if row.compensated else gray for row in test_summary.itertuples()],
+        )
+        axis.set_title(metric_titles[metric])
+        axis.set_xticks(positions, labels, fontsize=7)
+        axis.grid(axis="y", alpha=0.2)
+        axis.set_ylim(0, 1.05)
+    fig.suptitle("Prueba reservada: media y desviación estándar entre semillas")
+    fig.savefig(plot_dir / "metricas_prueba.png", dpi=180)
+    plt.close(fig)
+
+    for filename, metrics, titles in (
+        (
+            "sensibilidad_fnr_prueba.png",
+            ("sensitivity", "fnr"),
+            ("Sensibilidad", "Tasa de falsos negativos"),
+        ),
+        (
+            "precision_especificidad_prueba.png",
+            ("precision", "specificity"),
+            ("Precisión", "Especificidad"),
+        ),
+    ):
+        fig, axes = plt.subplots(1, 2, figsize=(12, 4.4), constrained_layout=True)
+        for axis, metric, title in zip(axes, metrics, titles, strict=False):
+            axis.bar(
+                positions,
+                test_summary[f"{metric}_mean"],
+                yerr=test_summary[f"{metric}_std"],
+                capsize=3,
+                color=[blue if row.compensated else gray for row in test_summary.itertuples()],
+            )
+            axis.set_title(title)
+            axis.set_xticks(positions, labels, fontsize=9)
+            axis.grid(axis="y", alpha=0.2)
+            axis.set_ylim(0, 1.05)
+            if metric == "specificity":
+                axis.set_ylim(0.99, 1.001)
+                axis.set_ylabel("Zoom 99–100 %")
+        fig.savefig(plot_dir / filename, dpi=180)
+        plt.close(fig)
+
+    selected_row = cv_results.loc[cv_results["selected_by_cv"]].iloc[0]
+    selected = selected_row["experiment"]
+    tn, fp, fn, tp = confusion_matrix(y_test, primary_predictions[selected], labels=[0, 1]).ravel()
+    matrix = np.array([[tn, fp], [fn, tp]])
+    fig, axis = plt.subplots(figsize=(5, 4), constrained_layout=True)
+    axis.imshow(matrix, cmap="Blues")
+    axis.set_xticks([0, 1], ["Predice legítima", "Predice fraude"])
+    axis.set_yticks([0, 1], ["Real legítima", "Real fraude"])
+    axis.set_title(f"Matriz de confusión, semilla {FINAL_SEEDS[0]}")
+    for (row, col), value in np.ndenumerate(matrix):
+        text_color = "#ffffff" if value > matrix.max() * 0.35 else "#102030"
+        axis.text(
+            col,
+            row,
+            f"{value:,}".replace(",", "."),
+            ha="center",
+            va="center",
+            fontsize=13,
+            color=text_color,
+        )
+    fig.savefig(plot_dir / "matriz_confusion_seleccion_cv.png", dpi=180)
+    plt.close(fig)
+
+
+def sha256(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as stream:
+        for chunk in iter(lambda: stream.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(
+        description="Busca hiperparámetros y evalúa los ocho experimentos de fraude"
+    )
+    parser.add_argument("--dataset", type=Path, default=Path("data/raw/creditcard.csv"))
+    parser.add_argument("--output-dir", type=Path, default=Path("resultados"))
+    parser.add_argument("--search-sample-size", type=int, default=SEARCH_SAMPLE_SIZE)
+    args = parser.parse_args()
+    args.output_dir.mkdir(parents=True, exist_ok=True)
+
+    frame = load_dataset(args.dataset)
+    raw_report = inspect_dataset(frame)
+    clean_frame = remove_exact_duplicates(frame)
+    clean_report = inspect_dataset(clean_frame)
+    X_train, X_test, y_train, y_test = split_dataset(clean_frame)
+    X_search, y_search = take_search_sample(X_train, y_train, args.search_sample_size)
+
+    print(
+        f"Búsqueda: {len(X_search):,} filas estratificadas del entrenamiento; "
+        f"partición de prueba reservada: {len(X_test):,} filas.",
+        flush=True,
+    )
+    cv_results = run_searches(X_search, y_search, args.output_dir)
+    _, test_summary, predictions, _ = run_final_evaluations(
+        cv_results, X_train, y_train, X_test, y_test, args.output_dir
+    )
+    save_plots(
+        raw_report,
+        clean_report,
+        cv_results,
+        test_summary,
+        y_test,
+        predictions,
+        args.output_dir,
+    )
+    metadata = {
+        "dataset": str(args.dataset),
+        "dataset_sha256": sha256(args.dataset),
+        "rows_raw": raw_report.records,
+        "duplicates_removed": raw_report.duplicate_rows,
+        "rows_after_cleaning": clean_report.records,
+        "train_rows": len(X_train),
+        "test_rows": len(X_test),
+        "search_sample_rows": len(X_search),
+        "search_sample_fraud": int(y_search.sum()),
+        "cv_folds": CV_FOLDS,
+        "cv_seed": RANDOM_SEED,
+        "final_seeds": list(FINAL_SEEDS),
+        "feature_selection": f"ANOVA F-test, top {FEATURE_SELECTION_K}",
+        "compensation": f"RandomUnderSampler ratio 1:{int(1 / UNDERSAMPLE_RATIO)}",
+        "test_repetitions": len(FINAL_SEEDS),
+    }
+    (args.output_dir / "metadata.json").write_text(
+        json.dumps(metadata, indent=2, ensure_ascii=False) + "\n"
+    )
+    print("Resultados guardados en", args.output_dir, flush=True)
+    print("Configuración elegida por validación:")
+    print(
+        cv_results.loc[
+            cv_results["selected_by_cv"],
+            [
+                "experiment",
+                "best_parameters",
+                "cv_sensitivity_mean",
+                "cv_sensitivity_std",
+                "cv_precision_mean",
+            ],
+        ].to_string(index=False)
+    )
+    print("Resumen de prueba:")
+    print(
+        test_summary[
+            [
+                "experiment",
+                "sensitivity_mean",
+                "sensitivity_std",
+                "specificity_mean",
+                "precision_mean",
+                "f1_mean",
+                "accuracy_mean",
+                "fnr_mean",
+            ]
+        ].to_string(index=False)
+    )
+
+
+if __name__ == "__main__":
+    main()

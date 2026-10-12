@@ -1,0 +1,27 @@
+{
+  "selected_experiment": "forest_submuestreo",
+  "selected_features_seed_42": [
+    "V1",
+    "V2",
+    "V3",
+    "V4",
+    "V5",
+    "V6",
+    "V7",
+    "V8",
+    "V9",
+    "V10",
+    "V11",
+    "V12",
+    "V14",
+    "V16",
+    "V17",
+    "V18",
+    "V19",
+    "V20",
+    "V21",
+    "V27"
+  ],
+  "selection_criterion": "sensibilidad media CV; precisión media como desempate",
+  "test_seed_for_confusion_matrix": 42
+}

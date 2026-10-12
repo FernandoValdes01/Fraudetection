@@ -1,5 +1,7 @@
 # Estado de la entrega
 
+Este documento corresponde exclusivamente al protocolo independiente de 100.000 filas de `src/fraudetection/reproduction/`, con resultados en `resultados/ejecucion/`. El protocolo principal y la presentación Beamer se documentan en el README de la raíz.
+
 Integrantes: Fernando Alonso Valdés Gómez y Juan Francisco Muñoz Veloso.
 
 ## Desarrollo realizado

@@ -1,76 +1,66 @@
-"""Verificaciones del algoritmo propio, independientes de su rendimiento estadístico."""
-
 import numpy as np
 import pytest
-from sklearn.base import clone, is_classifier
+from sklearn.base import clone
 from sklearn.datasets import make_classification
-from sklearn.exceptions import NotFittedError
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.utils import check_random_state
+from sklearn.model_selection import GridSearchCV, StratifiedKFold
 
-from fraudetection.forest import OwnRandomForestClassifier
+from fraudetection.forest import BootstrapRandomForest
 
 
 @pytest.fixture
-def data():
-    return make_classification(n_samples=150, n_features=8, random_state=8)
+def sample_data():
+    return make_classification(
+        n_samples=180,
+        n_features=8,
+        n_informative=4,
+        n_redundant=0,
+        weights=[0.8, 0.2],
+        random_state=7,
+    )
 
 
-def test_bootstrap_and_independent_trees_match_reference(data):
-    X, y = data
-    forest = OwnRandomForestClassifier(n_estimators=5, max_depth=3, random_state=42).fit(X, y)
-    assert len(set(forest.tree_seeds_)) == 5
-    assert forest.bootstrap_size_ == len(y)
-    assert len({id(t) for t in forest.estimators_}) == 5
-    votes = []
-    for seed, actual_tree, unique_count in zip(
-        forest.tree_seeds_,
-        forest.estimators_,
-        forest.bootstrap_unique_counts_,
-        strict=True,
-    ):
-        indices = check_random_state(seed).randint(0, len(y), size=len(y))
-        assert len(np.unique(indices)) == unique_count < len(y)
-        expected_tree = DecisionTreeClassifier(max_depth=3, max_features="sqrt", random_state=seed)
-        expected_tree.fit(X[indices], y[indices])
-        np.testing.assert_array_equal(actual_tree.predict(X), expected_tree.predict(X))
-        votes.append(expected_tree.predict(X))
-    expected = (np.sum(votes, axis=0) > 2).astype(int)
-    np.testing.assert_array_equal(forest.predict(X), expected)
-    np.testing.assert_allclose(forest.predict_proba(X).sum(axis=1), 1)
+def test_forest_uses_distinct_bootstraps_and_repeats_with_same_seed(sample_data):
+    X, y = sample_data
+    forest = BootstrapRandomForest(n_estimators=9, max_depth=4, random_state=42).fit(X, y)
+    repeat = clone(forest).fit(X, y)
+
+    assert len(forest.estimators_) == 9
+    assert len(set(forest.tree_seeds_)) == 9
+    assert all(count < len(X) for count in forest.bootstrap_unique_counts_)
+    assert all(tree.max_features_ < X.shape[1] for tree in forest.estimators_)
+    assert forest.tree_seeds_ == repeat.tree_seeds_
+    np.testing.assert_array_equal(forest.predict(X), repeat.predict(X))
 
 
-def test_clone_reproducibility_refit_and_arbitrary_binary_labels(data):
-    X, y = data
-    y = np.where(y, "fraude", "legitima")
-    forest = OwnRandomForestClassifier(n_estimators=7, random_state=8)
-    assert is_classifier(forest)
-    first = forest.fit(X, y).predict(X)
-    np.testing.assert_array_equal(first, clone(forest).fit(X, y).predict(X))
-    forest.fit(X, y)
-    assert len(forest.estimators_) == 7
-    np.testing.assert_array_equal(first, forest.predict(X))
+def test_forest_works_in_stratified_hyperparameter_search(sample_data):
+    X, y = sample_data
+    search = GridSearchCV(
+        BootstrapRandomForest(random_state=42),
+        {"n_estimators": [3, 5], "max_depth": [2, 4]},
+        scoring="recall",
+        cv=StratifiedKFold(n_splits=3, shuffle=True, random_state=42),
+    ).fit(X, y)
+
+    assert isinstance(search.best_estimator_, BootstrapRandomForest)
+    assert search.best_estimator_.predict(X).shape == (len(X),)
 
 
-@pytest.mark.parametrize("count", [0, 2, -3, 2.5, True])
-def test_reject_invalid_tree_count(data, count):
-    with pytest.raises(ValueError, match="impar"):
-        OwnRandomForestClassifier(n_estimators=count).fit(*data)
+def test_even_vote_ties_favor_fraud(sample_data):
+    X, y = sample_data
+    forest = BootstrapRandomForest(n_estimators=2).fit(X, y)
+
+    class FixedTree:
+        def __init__(self, prediction):
+            self.prediction = prediction
+
+        def predict(self, rows):
+            return np.full(len(rows), self.prediction)
+
+    forest.estimators_ = [FixedTree(0), FixedTree(1)]
+    np.testing.assert_array_equal(forest.predict(X[:3]), [1, 1, 1])
 
 
-def test_binary_bootstrap_can_omit_minority():
-    X = np.arange(120).reshape(30, 4)
-    y = np.zeros(30, dtype=int)
-    y[-1] = 1
-    forest = OwnRandomForestClassifier(n_estimators=31, random_state=42).fit(X, y)
-    assert any(len(t.classes_) == 1 for t in forest.estimators_)
-    assert forest.predict_proba(X).shape == (30, 2)
-
-
-def test_unfitted_and_all_features_rejected(data):
-    with pytest.raises(NotFittedError):
-        OwnRandomForestClassifier().predict(data[0])
-    with pytest.raises(ValueError, match="subconjunto"):
-        OwnRandomForestClassifier(max_features=None).fit(*data)
-    # El entero 1 significa una característica, no la fracción 100 %.
-    OwnRandomForestClassifier(n_estimators=3, max_features=1).fit(*data)
+def test_forest_rejects_using_all_features_at_each_split(sample_data):
+    X, y = sample_data
+    with pytest.raises(ValueError, match="menos variables"):
+        BootstrapRandomForest(max_features=X.shape[1], n_estimators=1).fit(X, y)

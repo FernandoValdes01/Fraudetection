@@ -15,9 +15,9 @@ from pptx import Presentation
 from pptx.dml.color import RGBColor
 from pptx.util import Inches, Pt
 
-from fraudetection.config import AUTHORS
-from fraudetection.experiments import MODEL_LABELS
-from fraudetection.metrics import METRIC_NAMES
+from fraudetection.reproduction.config import AUTHORS
+from fraudetection.reproduction.experiments import MODEL_LABELS
+from fraudetection.reproduction.metrics import METRIC_NAMES
 
 METRIC_LABELS = {
     "sensitivity": "Sensibilidad",

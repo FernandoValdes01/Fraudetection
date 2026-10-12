@@ -1,113 +1,111 @@
 # Fraudetection
 
-Proyecto de INFO1185 de **Fernando Alonso Valdés Gómez** y **Juan Francisco Muñoz Veloso**. Compara k-NN, árbol de decisión, SVM y un Random Forest propio para detectar fraude en tarjetas de crédito. Se elige por sensibilidad del fraude y se desempata por precisión, conforme a [la consigna](IA_2026_P2.pdf).
+Proyecto de INFO1185 para detectar transacciones fraudulentas en el conjunto [Credit Card Fraud Detection](https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud). La clase positiva es `Class = 1`; la prioridad es **aumentar la sensibilidad y reducir los falsos negativos**.
 
-El procedimiento está implementado y ejecutado con datos reales. Se incluyen los ocho experimentos, búsquedas, métricas, gráficos, análisis y presentación. No se necesita informe escrito.
+## Tech stack
 
-## Ejecución
+<p align="center">
+  <img alt="Python" src="https://img.shields.io/badge/PYTHON-1B2638?style=for-the-badge&amp;logo=python&amp;logoColor=9FB0C8">
+  <img alt="uv" src="https://img.shields.io/badge/UV-1B2638?style=for-the-badge&amp;logo=uv&amp;logoColor=9FB0C8">
+  <img alt="NumPy" src="https://img.shields.io/badge/NUMPY-1B2638?style=for-the-badge&amp;logo=numpy&amp;logoColor=9FB0C8">
+  <img alt="pandas" src="https://img.shields.io/badge/PANDAS-1B2638?style=for-the-badge&amp;logo=pandas&amp;logoColor=9FB0C8">
+</p>
+<p align="center">
+  <img alt="scikit-learn" src="https://img.shields.io/badge/SCIKIT--LEARN-1B2638?style=for-the-badge&amp;logo=scikitlearn&amp;logoColor=9FB0C8">
+  <img alt="imbalanced-learn" src="https://img.shields.io/badge/IMBALANCED--LEARN-1B2638?style=for-the-badge&amp;logo=python&amp;logoColor=9FB0C8">
+  <img alt="Matplotlib" src="https://img.shields.io/badge/MATPLOTLIB-1B2638?style=for-the-badge&amp;logo=python&amp;logoColor=9FB0C8">
+  <img alt="python-pptx" src="https://img.shields.io/badge/PYTHON--PPTX-1B2638?style=for-the-badge&amp;logo=python&amp;logoColor=9FB0C8">
+  <img alt="Docker" src="https://img.shields.io/badge/DOCKER-1B2638?style=for-the-badge&amp;logo=docker&amp;logoColor=9FB0C8">
+  <img alt="LaTeX Beamer" src="https://img.shields.io/badge/LATEX%20%2F%20BEAMER-1B2638?style=for-the-badge">
+  <img alt="pytest" src="https://img.shields.io/badge/PYTEST-1B2638?style=for-the-badge&amp;logo=pytest&amp;logoColor=9FB0C8">
+</p>
 
-Requiere Python 3.12 y `uv`. El desarrollo se verificó con Python 3.12.12 y uv 0.9.18. `uv.lock` fija todas las dependencias, incluidas pandas 3.0.6, NumPy 2.5.3, scikit-learn 1.9.1, imbalanced-learn 0.14.2, Matplotlib 3.11.2 y python-pptx 1.0.2.
+Python 3.12 y `uv` 0.12 gestionan el entorno. El proyecto usa NumPy 2, pandas 3, scikit-learn 1, imbalanced-learn 0.14 y Matplotlib 3. `python-pptx` genera una copia alternativa; Beamer compila la presentación principal. [`uv.lock`](uv.lock) fija las versiones exactas.
 
-Desde la raíz del repositorio:
+## Métodos
+
+<p align="center">
+  <img alt="k-NN" src="https://img.shields.io/badge/K--NN-1B2638?style=for-the-badge">
+  <img alt="Árbol de decisión" src="https://img.shields.io/badge/%C3%81RBOL%20DE%20DECISI%C3%93N-1B2638?style=for-the-badge">
+  <img alt="SVM" src="https://img.shields.io/badge/SVM-1B2638?style=for-the-badge">
+  <img alt="Random Forest propio" src="https://img.shields.io/badge/RANDOM%20FOREST%20PROPIO-1B2638?style=for-the-badge">
+</p>
+<p align="center">
+  <img alt="Bootstrap" src="https://img.shields.io/badge/BOOTSTRAP-1B2638?style=for-the-badge">
+  <img alt="Bagging" src="https://img.shields.io/badge/BAGGING-1B2638?style=for-the-badge">
+  <img alt="Selección de variables" src="https://img.shields.io/badge/SELECCI%C3%93N%20DE%20VARIABLES-1B2638?style=for-the-badge">
+  <img alt="Validación estratificada" src="https://img.shields.io/badge/CV%20ESTRATIFICADA-1B2638?style=for-the-badge">
+</p>
+<p align="center">
+  <img alt="Compensación del desbalance" src="https://img.shields.io/badge/COMPENSACI%C3%93N%20DEL%20DESBALANCE-1B2638?style=for-the-badge">
+  <img alt="Búsqueda de hiperparámetros" src="https://img.shields.io/badge/B%C3%9ASQUEDA%20DE%20HIPERPAR%C3%81METROS-1B2638?style=for-the-badge">
+</p>
+<p align="center">
+  <img alt="ANOVA F-test" src="https://img.shields.io/badge/ANOVA%20F--TEST-1B2638?style=for-the-badge">
+  <img alt="Submuestreo aleatorio 1 a 10" src="https://img.shields.io/badge/SUBMUESTREO%20ALEATORIO%201%3A10-1B2638?style=for-the-badge">
+  <img alt="Sensibilidad y tasa de falsos negativos" src="https://img.shields.io/badge/SENSIBILIDAD%20%2F%20FNR-1B2638?style=for-the-badge">
+</p>
+
+Se compararon **ocho experimentos**: cuatro clasificadores, cada uno con y sin compensación del desbalance. La selección utilizó cinco pliegues estratificados y eligió la mayor sensibilidad media del fraude; la precisión del fraude resolvió empates. La tasa de falsos negativos se calcula como `FNR = FN / (TP + FN) = 1 − sensibilidad`.
+
+El [Random Forest propio](src/fraudetection/forest.py) usa árboles `DecisionTreeClassifier`, bootstrap, selección aleatoria de variables por división y votación. Un empate favorece la clase fraude. El ensamble no utiliza `RandomForestClassifier` ni `BaggingClassifier`. Las variables se filtran con ANOVA F-test (`f_classif`); el submuestreo aleatorio mantiene una proporción de 1:10 entre fraude y transacciones legítimas.
+
+## Avance
+
+- [x] Pauta del PDF con criterios de aceptación y rúbrica.
+- [x] Inspección del CSV real: 284.807 filas, 492 fraudes, 0 faltantes y 1.081 duplicados exactos.
+- [x] Limpieza explícita de duplicados y partición estratificada 70/30 con semilla 42.
+- [x] Random Forest propio compatible con búsqueda de hiperparámetros; pruebas con datos sintéticos.
+- [x] Ocho búsquedas con selección ANOVA y submuestreo dentro de cinco pliegues compartidos.
+- [x] Evaluación de prueba con los ocho modelos reajustados con todo el entrenamiento.
+- [x] Tablas, gráficos y presentación Beamer de 12 diapositivas principales y dos de respaldo.
+
+Los datos y la decisión de limpieza están en la [exploración inicial](documentacion/informe/exploracion.md). Los resultados completos están en [`resultados/`](resultados/) y el conjunto de prueba permaneció reservado hasta la evaluación final. El PDF Beamer es la presentación principal; el PowerPoint queda como formato alternativo.
+
+## Resultado actual
+
+La validación eligió **Random Forest propio con submuestreo 1:10** (`max_depth=6`, `n_estimators=21`), con sensibilidad **87,9 % ± 5,5 %** y precisión **45,0 %**. En los cinco reajustes sobre la misma prueba, obtuvo sensibilidad **80,4 % ± 0,3 %**, FNR **19,6 % ± 0,3 %** y precisión **67,5 % ± 4,6 %**. En la matriz del primer ajuste detectó 115 fraudes, omitió 27 y generó 53 falsas alarmas. Ver [métricas de los ocho experimentos](resultados/test_resumen.csv) y [predicciones para la matriz](resultados/predicciones_configuracion_cv.csv).
+
+## Ejecutar lo disponible
+
+1. Instala [`uv`](https://docs.astral.sh/uv/getting-started/installation/) y descarga `creditcard.csv` desde [Kaggle](https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud). Guarda el CSV en `data/raw/creditcard.csv`; Git lo ignora.
+2. Desde la raíz del repositorio, ejecuta:
+
+   ```bash
+   uv sync --locked
+   uv run --locked fraudetection-inspect
+   uv run --locked fraudetection-run
+   uv run --locked fraudetection-report
+   uv run --locked pytest -q
+   ```
+
+`fraudetection-run` ejecuta las búsquedas y la evaluación, guarda tablas y gráficos en `resultados/`. La búsqueda toma 50.000 filas estratificadas del entrenamiento para limitar el costo de k-NN; luego cada modelo se reajusta con las 198.608 filas completas de entrenamiento. `fraudetection-report` genera gráficos y el PowerPoint alternativo. El PDF principal se compila desde [`defensa_fraude.tex`](documentacion/presentacion/defensa_fraude.tex) con Docker y `blang/latex:ubuntu`; ver [instrucciones de presentación](documentacion/presentacion/README.md). La configuración está en [`config.py`](src/fraudetection/config.py).
+
+## Documentación
+
+| Archivo | Contenido |
+| --- | --- |
+| [Enunciado](IA_2026_P2.pdf) | PDF original. |
+| [Pauta](documentacion/informe/pauta.md) | Requisitos, criterios de aceptación y puntajes. |
+| [Exploración](documentacion/informe/exploracion.md) | Cifras del dataset y limpieza. |
+| [Presentación](documentacion/presentacion/README.md) | Guion de diapositivas. |
+| [Estudio](documentacion/estudio/README.md) | Preguntas para la defensa. |
+| [Resultados de prueba](resultados/test_resumen.csv) | Seis métricas para los ocho experimentos, media y desviación estándar. |
+| [Presentación Beamer (PDF)](documentacion/presentacion/defensa_fraude.pdf) | 12 diapositivas principales y dos de respaldo, en paleta blanca, azul y gris. |
+| [Fuente Beamer](documentacion/presentacion/defensa_fraude.tex) | Archivo editable que genera el PDF. |
+| [PowerPoint alternativo](documentacion/presentacion/defensa_fraude.pptx) | Copia editable con el mismo contenido y paleta. |
+
+La carpeta `documentacion/informe/` contiene material interno; el enunciado no pide informe escrito. La entrega final será por Blackboard e incluirá código, README y presentación. Ambos integrantes participarán en la defensa.
+
+## Verificación independiente y entrega
+
+Se conserva además una ejecución independiente con una muestra estratificada de 100.000 filas, tres semillas finales y resultados auditables en [`resultados/ejecucion/`](resultados/ejecucion/). Este protocolo tiene su propia selección por validación y su propia presentación `fraudetection.pptx`/`fraudetection.pdf`; sus métricas se mantienen separadas de la ejecución principal y de Beamer. El código está en [`src/fraudetection/reproduction/`](src/fraudetection/reproduction/).
 
 ```bash
-uv sync --locked
-# Omitir download si data/raw/creditcard.csv ya existe.
-uv run --locked fraudetection download
+uv run --locked fraudetection audit
 uv run --locked fraudetection run --output resultados/reproduccion --sample-size 100000 --jobs 2
-uv run --locked fraudetection audit --input resultados/reproduccion
-uv run --locked fraudetection report --input resultados/reproduccion --presentation documentacion/presentacion/reproduccion.pptx
-```
-
-La descarga obtiene la copia pública del dataset Kaggle usada por [TensorFlow](https://www.tensorflow.org/tutorials/structured_data/imbalanced_data), comprueba columnas y recuentos y no sobrescribe archivos. También se puede descargar `creditcard.csv` desde [Kaggle](https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud) y guardarlo en `data/raw/creditcard.csv`. No hace falta una cuenta de Kaggle para el comando de descarga. El CSV no se adjunta a la entrega ni se versiona.
-
-Cada ejecución necesita un directorio de salida nuevo para conservar los experimentos anteriores. `--sample-size 0` utiliza todo el conjunto limpio, con mayor costo. La ejecución entregada de 100.000 filas tardó unos 2,4 minutos en esta máquina; el tiempo depende del equipo. `--jobs 1` reduce el paralelismo.
-
-Los resultados ya obtenidos están en [resultados/ejecucion](resultados/ejecucion/). Para inspeccionarlos sin reentrenar:
-
-```bash
-uv run --locked fraudetection audit
 uv run --locked fraudetection report
-```
-
-El segundo comando regenera los gráficos, `analisis.html`, `analisis.md`, la presentación y el guion de defensa. Para exportar las diapositivas a PDF se requiere LibreOffice, disponible en el equipo donde se preparó la entrega:
-
-```bash
-libreoffice -env:UserInstallation=file:///tmp/fraudetection-office --headless --convert-to pdf --outdir documentacion/presentacion documentacion/presentacion/fraudetection.pptx
-```
-
-También se puede abrir el PPTX en PowerPoint o LibreOffice y exportarlo manualmente.
-
-## Metodología
-
-1. Validar los 30 predictores numéricos y `Class`, sin valores faltantes ni infinitos. El dataset original tiene 284.807 filas y 492 fraudes. Se eliminan 1.081 duplicados exactos antes de dividir para evitar copias entre train y test; quedan 283.726 filas y 473 fraudes. Esta limpieza no aprende parámetros.
-2. Obtener una muestra estratificada sin reemplazo de 100.000 filas, semilla 42. Conserva 167 fraudes, sin enriquecer artificialmente la prevalencia. El tamaño acota el costo de SVM y k-NN, a cambio de perder positivos.
-3. Separar una sola vez 70.000 filas de entrenamiento y 30.000 de prueba, con estratificación y semilla 42. Quedan 117 y 50 fraudes respectivamente. Guardar los índices originales y reutilizar los mismos cinco pliegues estratificados para los ocho experimentos.
-4. Dentro de cada pliegue, ajustar `StandardScaler` para k-NN/SVM y `SelectKBest(f_classif, k=20)` para todos. ANOVA detecta diferencias marginales entre clases, tiene bajo costo y no aplica un PCA nuevo. El número 20 se prefijó para reducir variables conservando dos tercios; no se eligió usando test. Árboles y bosque no requieren escalado.
-5. Comparar sin compensación y con `RandomUnderSampler(sampling_strategy=0.1)`. La condición compensada conserva todos los fraudes del train disponible y diez legítimas por fraude. Se seleccionan variables antes de remuestrear. Validación y prueba nunca se balancean. Los recuentos por pliegue y por reajuste están guardados.
-6. Buscar dos candidatos por modelo en cinco pliegues. Maximizar sensibilidad media, desempatar por precisión media y, en empate completo, conservar el primer candidato de la grilla. El ganador entre las ocho condiciones usa la misma regla y el orden documentado k-NN, árbol, SVM, bosque, primero sin y luego con compensación.
-7. Terminar las ocho búsquedas y congelar todas las configuraciones antes de evaluar test. Reajustar cada una con semillas 42, 43 y 44, definidas de antemano. No cambiar parámetros, compensación ni umbrales tras observar prueba.
-
-| Modelo | Búsqueda | Parámetros fijos y motivo |
-| --- | --- | --- |
-| k-NN | `n_neighbors`: 3, 7 | Vecindades pequeña y mayor para comparar suavidad; distancia euclídea y pesos uniformes. |
-| Árbol | `max_depth`: 6, libre | Comparar complejidad acotada y libre; `min_samples_leaf=2` evita hojas de un solo ejemplo. |
-| SVM | `C`: 1, 10 | Kernel RBF, `gamma='scale'`; comparar regularización moderada y menor. |
-| Bosque propio | `max_depth`: 8, libre | 31 árboles impares, `max_features='sqrt'` y `min_samples_leaf=2`; diversidad y costo acotado. |
-
-Son 80 ajustes de validación y 24 reajustes finales. La grilla es deliberadamente pequeña y constituye una limitación. No se reutiliza prueba para ampliarla.
-
-## Random Forest propio
-
-[forest.py](src/fraudetection/forest.py) implementa `fit`, `predict` y proporciones de votos. Por árbol genera una semilla distinta derivada de la general y una muestra bootstrap de igual tamaño que el entrenamiento disponible, con reemplazo. Ajusta un `DecisionTreeClassifier` independiente que selecciona variables aleatorias en cada división mediante `max_features`. Combina etiquetas por mayoría, sin promediar probabilidades de los árboles. Exige un número impar de árboles y dos clases en el entrenamiento; admite bootstrap que omitan una clase.
-
-El número de árboles, profundidad, variables por división, tamaño mínimo de hoja y semilla son configurables. Es compatible con `clone`, `Pipeline` y `GridSearchCV`. No usa `RandomForestClassifier` ni `BaggingClassifier`. Las fracciones de votos no son probabilidades calibradas. Las semillas y cantidades de filas únicas por bootstrap se exportan en `bosque_diagnostico.json`.
-
-## Resultados principales
-
-Se eligió **árbol con compensación**, profundidad libre y hoja mínima 2, por sensibilidad de validación de **87,14 ± 2,87 %**. En test obtuvo sensibilidad **75,33 ± 4,62 %**, precisión **7,02 ± 0,55 %** y **500,33 ± 42,44 falsas alarmas** por ajuste. La selección se conserva aunque otro modelo tenga mayor sensibilidad en test.
-
-Las seis métricas para las ocho condiciones están en [prueba_resumen.csv](resultados/ejecucion/prueba_resumen.csv); los conteos enteros de cada repetición están en [prueba_repeticiones.csv](resultados/ejecucion/prueba_repeticiones.csv). La compensación aumentó la sensibilidad en los cuatro modelos, con más falsas alarmas. El bosque compensado obtuvo sensibilidad 80,67 ± 2,31 % y precisión 60,42 ± 8,07 %, con 27,33 ± 9,07 falsas alarmas, sin sustituir al ganador de validación.
-
-La desviación de CV usa `ddof=0` entre cinco pliegues. La de test usa `ddof=1` entre tres ajustes sobre un mismo test. Esta última mide variación del ajuste, no incertidumbre de muestreo ni un intervalo de confianza; modelos deterministas pueden tener desviación cero. El test solo contiene 50 fraudes, por lo que cada error representa dos puntos de sensibilidad por repetición. La muestra, la grilla acotada, ANOVA marginal y la partición aleatoria limitan las conclusiones. No se valida generalización temporal ni a otros bancos.
-
-## Archivos y verificaciones
-
-- `exploracion.json`, `descriptivos.csv`, `proporciones_clases.csv`: recuentos, limpieza, proporciones y resumen numérico.
-- `particiones.npz`: IDs originales, train/test y los cinco pliegues. Los índices de pliegue se refieren a posiciones dentro del train.
-- `busquedas/`, `validacion.csv`, `validacion_pliegues.csv`: candidatos, configuraciones y las seis métricas de CV.
-- `remuestreo_pliegues.csv`, `caracteristicas.json`: recuentos y variables seleccionadas.
-- `seleccion.json`, `protocolo.json`: ganador, semillas, versiones, huella SHA256 del CSV y duración.
-- `prueba_repeticiones.csv`, `prueba_resumen.csv`, `predicciones.csv.gz`: valores individuales, agregados y predicciones auditables.
-- `graficos/`, `analisis.html`, `analisis.md`: gráficos, matrices y análisis derivados de esos datos.
-- `modelo_elegido.joblib`: pipeline local del ganador con semilla 42, generado por `run`, excluido de Git y del ZIP.
-- [Presentación PPTX](documentacion/presentacion/fraudetection.pptx), [PDF](documentacion/presentacion/fraudetection.pdf) y [guion](documentacion/presentacion/guion_defensa.md): 12 diapositivas principales y cuatro de respaldo, con nombres de ambos integrantes.
-
-```bash
-uv run --locked ruff check src tests scripts
-uv run --locked ruff format --check src tests scripts
-uv run --locked pytest -q
-uv run --locked fraudetection audit
-```
-
-Las pruebas comprueban bootstrap, independencia, votación, reproducibilidad, entradas inválidas, particiones, métricas manuales y las ocho tuberías. La auditoría recalcula todas las métricas de test con scikit-learn a partir de las predicciones exportadas, comprueba las ocho condiciones, las semillas sin duplicados, los parámetros contra las búsquedas, resúmenes, ganador de validación y ausencia de solapamientos.
-
-Para predecir otro CSV con los 30 predictores sin reajustar:
-
-```bash
-uv run --locked fraudetection predict --data ruta/transacciones.csv --output resultados/predicciones_nuevas.csv
-```
-
-La [revisión final](documentacion/revision_final.md) documenta el cumplimiento requisito por requisito. Una segunda ejecución con el mismo protocolo reprodujo exactamente las métricas, parámetros, particiones y predicciones; la evidencia está en `verificacion_reproduccion.json`. Pasaron 24 pruebas.
-
-## Entrega
-
-```bash
 uv run --locked python scripts/package_delivery.py
 ```
 
-Crea `entrega/fraudetection_entrega.zip` con código, dependencias, pruebas, resultados, documentación, PPTX, PDF y un manifiesto SHA256. Excluye el CSV, el entorno y los modelos binarios locales. Para reproducirlo, descomprimir, abrir una terminal en esa carpeta y seguir los comandos de ejecución. La descarga y el entrenamiento regeneran el modelo.
-
-La entrega es por Blackboard el 26 de octubre de 2026 a las 23:59. La reserva de defensa corresponde al 27–28 de octubre. Ambos integrantes deben estudiar el código y practicar una exposición de 10–12 minutos; la ejecución automática no reemplaza la defensa. No se ha subido ningún archivo a Blackboard.
-
-Fuentes técnicas: [estimadores de scikit-learn](https://scikit-learn.org/stable/developers/develop.html), [GridSearchCV](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.GridSearchCV.html), [StratifiedKFold](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.StratifiedKFold.html) y [prevención de fuga al remuestrear](https://imbalanced-learn.org/stable/common_pitfalls.html).
+Para generar documentos del nuevo directorio, añadir `--input resultados/reproduccion` a `audit` y `report`. El comando de empaquetado reúne ambas ejecuciones, sus resultados y las presentaciones, sin incluir el CSV ni los modelos locales. Ver [instrucciones de reproducción](documentacion/reproduccion.md) y [revisión del protocolo independiente](documentacion/revision_final.md).

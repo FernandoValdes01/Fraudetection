@@ -1,5 +1,7 @@
 # Revisión final contra el enunciado
 
+Este documento corresponde exclusivamente al protocolo independiente de 100.000 filas de `src/fraudetection/reproduction/`, con resultados en `resultados/ejecucion/`. El protocolo principal y la presentación Beamer se documentan en el README de la raíz.
+
 Revisión del 11 de octubre de 2026. Fuente de requisitos: [IA_2026_P2.pdf](../IA_2026_P2.pdf). Integrantes: Fernando Alonso Valdés Gómez y Juan Francisco Muñoz Veloso.
 
 El desarrollo técnico y los documentos de entrega están completos. La exposición oral, la reserva de cita y la subida a Blackboard son acciones pendientes de la dupla.

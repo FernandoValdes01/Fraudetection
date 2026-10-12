@@ -6,10 +6,10 @@ import pytest
 from sklearn.datasets import make_classification
 from sklearn.model_selection import GridSearchCV, StratifiedKFold
 
-from fraudetection.config import FEATURES
-from fraudetection.data import prepare_data, validate_frame
-from fraudetection.experiments import make_pipeline
-from fraudetection.metrics import best_candidate, binary_metrics, scoring
+from fraudetection.reproduction.config import FEATURES
+from fraudetection.reproduction.data import prepare_data, validate_frame
+from fraudetection.reproduction.experiments import make_pipeline
+from fraudetection.reproduction.metrics import best_candidate, binary_metrics, scoring
 
 
 def test_metrics_hand_calculated_and_tie_break():
