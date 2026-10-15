@@ -4,6 +4,7 @@
 \usepackage[T1]{fontenc}
 \usepackage[spanish,es-nodecimaldot]{babel}
 \usepackage{lmodern}
+\usepackage{textcomp}
 \usepackage{graphicx}
 \usepackage{booktabs}
 \usepackage{tabularx}
@@ -19,6 +20,7 @@
 \definecolor{FraudPaleBlue}{HTML}{EAF2F8}
 
 \usetheme{default}
+\usefonttheme[onlymath]{serif}
 \setbeamertemplate{navigation symbols}{}
 \setbeamertemplate{headline}{}
 \setbeamercolor{normal text}{fg=FraudDark,bg=white}
@@ -36,7 +38,7 @@
   {\color{FraudBlue}\rule{0.82\textwidth}{0.55pt}}%
 }
 \setbeamertemplate{footline}{%
-  \begin{beamercolorbox}[wd=\paperwidth,ht=2.5ex,dp=1.1ex,leftskip=0.65cm,rightskip=0.65cm]{footline}%
+  \begin{beamercolorbox}[wd=\paperwidth,ht=2.5ex,dp=2ex,leftskip=0.65cm,rightskip=0.65cm]{footline}%
     \scriptsize INFO1185 -- Detección de fraude
     \hfill \insertframenumber/\inserttotalframenumber
   \end{beamercolorbox}%
@@ -110,7 +112,7 @@
   \vspace{0.15cm}
   {\large de las transacciones son fraude}\par
   \vspace{0.65cm}
-  {\large\color{FraudGray} Detectarlos sin generar alertas innecesarias.}\par
+  {\large\color{FraudGray} Minimizar falsos negativos: evitar que un fraude pase como legítimo.}\par
   \vfill
 \end{frame}
 
@@ -148,6 +150,8 @@
   \end{center}
   \vspace{0.22cm}
   {\small\color{FraudGray}El test no interviene en la selección; el ganador se reajusta con 198.608 filas.}\par
+  \vspace{0.12cm}
+  {\small\color{FraudGray}Escalado, selección y remuestreo se ajustan solo con el entrenamiento de cada pliegue; nunca con validación ni prueba.}\par
   \vfill
 \end{frame}
 
@@ -177,18 +181,20 @@
   \begin{columns}[c,onlytextwidth]
     \column{0.29\textwidth}
       {\color{FraudBlue}\Large\bfseries 01}\par\vspace{0.12cm}
-      {\large Bootstrap}\par{\small\color{FraudGray}Muestras con reemplazo}
+      {\large Bootstrap}\par{\small\color{FraudGray}Tamaño del train disponible, con reemplazo: pueden repetirse filas}
     \column{0.07\textwidth}\centering{\Large\color{FraudLine}$\longrightarrow$}
     \column{0.29\textwidth}
       {\color{FraudBlue}\Large\bfseries 02}\par\vspace{0.12cm}
-      {\large Árboles}\par{\small\color{FraudGray}$\sqrt{p}$ variables por división}
+      {\large Árboles}\par{\small\color{FraudGray}Independientes; $\lfloor\sqrt{p}\rfloor$ variables por división}
     \column{0.07\textwidth}\centering{\Large\color{FraudLine}$\longrightarrow$}
     \column{0.25\textwidth}
       {\color{FraudBlue}\Large\bfseries 03}\par\vspace{0.12cm}
       {\large Votación}\par{\small\color{FraudGray}Mayoría; empate = fraude}
   \end{columns}
-  \vspace{0.65cm}
+  \vspace{0.3cm}
   \metricbox{21 árboles · profundidad 6}{Implementación del proyecto}
+  \vspace{0.18cm}
+  {\small\color{FraudGray}Bagging combina árboles para reducir variabilidad; las variables aleatorias reducen su correlación. Semillas distintas, derivadas de la semilla general.}\par
   \vfill
 \end{frame}
 
@@ -230,9 +236,11 @@
 \begin{frame}{El costo de detectar más}
   \phasebar{5}
   \centering
-  \includegraphics[width=0.9\textwidth,height=0.64\textheight,keepaspectratio]{precision_especificidad_prueba.png}
+  \includegraphics[width=0.9\textwidth,height=0.50\textheight,keepaspectratio]{precision_especificidad_prueba.png}
 
   \vspace{0.08cm}{\small\color{FraudGray}Más sensibilidad también implica más falsas alarmas.}\par
+  \vspace{0.12cm}
+  {\small Árbol compensado: sensibilidad 83,1\%, precisión 33,6\%. Bosque compensado: 80,4\% y 67,5\%. El bosque genera menos alertas falsas, pero omite más fraudes.}\par
 \end{frame}
 
 % 11. Casos detectados y omitidos
@@ -257,12 +265,12 @@
     \column{0.31\textwidth}\metricbox{19,6\%}{fraudes omitidos}
     \column{0.31\textwidth}\metricbox{67,5\%}{precisión}
   \end{columns}
-  \vspace{0.55cm}
+  \vspace{0.3cm}
   \centering{\large\bfseries El bosque compensado detecta 4 de cada 5 fraudes.}\par
   \vspace{0.2cm}
   {\small\color{FraudGray}La exactitud sola engaña: predecir todo como legítimo da 99,833\% y sensibilidad 0\%.}\par
   \vspace{0.14cm}
-  {\small\color{FraudGray}El test contiene 142 fraudes; la estimación tiene incertidumbre.}\par
+  {\small\color{FraudGray}Límites: solo 142 fraudes de prueba, ANOVA marginal y grilla acotada; sin validación temporal. Mejoras: más positivos y evaluar otro período con un test nuevo.}\par
   \vfill
 \end{frame}
 
@@ -316,6 +324,56 @@
     \rowcolor{FraudPaleBlue}\textbf{Bosque} & \textbf{Subm.} & \textbf{80,4 $\pm$ 0,3} & \textbf{99,935 $\pm$ 0,014} & \textbf{67,5 $\pm$ 4,6} & \textbf{73,3 $\pm$ 2,8} & \textbf{99,90 $\pm$ 0,01} & \textbf{19,6 $\pm$ 0,3} \\
     \bottomrule
   \end{tabular}}
+\end{frame}
+
+% 15. Respaldo: decisiones de modelado y búsqueda
+\begin{frame}{Respaldo · Metodología y búsqueda}
+  \raggedright
+  {\small\color{FraudGray}Grid Search: mismos cinco pliegues y ocho condiciones; rangos prefijados, sin consultar prueba.}\par
+  \vspace{0.2cm}
+  {\scriptsize
+  \begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{1.6cm} >{\raggedright\arraybackslash}p{4.8cm} X}
+    \toprule
+    \rowcolor{FraudPaleBlue}\textbf{Modelo} & \textbf{Candidatos evaluados} & \textbf{Motivo} \\
+    \midrule
+    k-NN & Vecinos: 3, 5, 7; pesos por distancia & Comparar vecindades locales y más suaves. \\
+    \rowcolor{FraudLightGray}
+    Árbol & Profundidad: 5, 10, libre; hoja mínima: 1, 5 & Contrastar complejidad y hojas menos sensibles a pocos casos. \\
+    SVM lineal & $C$: 0,1; 1; 10 & Comparar intensidad de regularización. \\
+    \rowcolor{FraudLightGray}
+    Bosque & Árboles: 11, 21; profundidad: 6, 12; \texttt{max\_features=sqrt} & Contrastar diversidad y complejidad con costo acotado. \\
+    \bottomrule
+  \end{tabularx}}
+  \vspace{0.2cm}
+  {\small\textbf{Escalado estándar:} evita que la magnitud domine distancias y regularización en k-NN/SVM; los árboles no lo requieren.}\par
+  \vspace{0.12cm}
+  {\small\textbf{ANOVA F:} selección estadística rápida de diferencias marginales entre clases; 20 variables prefijadas, sin un PCA nuevo. Puede perder interacciones.}\par
+  \vspace{0.12cm}
+  {\small\textbf{Submuestreo 1:10:} conserva los fraudes del entrenamiento y acota el costo; descarta información legítima. Validación y prueba conservan su prevalencia.}\par
+\end{frame}
+
+% 16. Respaldo: análisis crítico y clasificadores triviales
+\begin{frame}{Respaldo · Árbol, bosque y falsas alarmas}
+  \raggedright
+  {\small Medias de cinco ajustes sobre el mismo test; se muestran las dos condiciones.}\par
+  \vspace{0.18cm}
+  {\small
+  \begin{tabularx}{\textwidth}{X c c c}
+    \toprule
+    \rowcolor{FraudPaleBlue}\textbf{Modelo y condición} & \textbf{Sensibilidad} & \textbf{Precisión} & \textbf{Falsas alarmas} \\
+    \midrule
+    Árbol sin compensación & 63,5\% & 91,1\% & 8,8 \\
+    Bosque sin compensación & 76,2\% & 94,6\% & 6,2 \\
+    \rowcolor{FraudLightGray}Árbol compensado & 83,1\% & 33,6\% & 261,6 \\
+    \rowcolor{FraudLightGray}Bosque compensado & 80,4\% & 67,5\% & 55,6 \\
+    \bottomrule
+  \end{tabularx}}
+  \vspace{0.2cm}
+  {\small El ensamble mejora al árbol sin compensación. Con compensación intercambia sensibilidad por menos falsas alarmas; no garantiza superar al árbol en cada métrica. Se conserva el ganador de CV.}\par
+  \vspace{0.18cm}
+  {\small\textbf{Todo legítimo:} sensibilidad 0\%, FNR 100\%; la alta exactitud oculta el fraude.}\par
+  \vspace{0.12cm}
+  {\small\textbf{Todo fraude:} sensibilidad 100\%, FNR 0\%, especificidad 0\%; las 84.976 legítimas del test serían falsas alarmas. La prioridad de reducir falsos negativos se mantiene.}\par
 \end{frame}
 
 \end{document}
