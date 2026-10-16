@@ -58,7 +58,7 @@ El [Random Forest propio](src/fraudetection/forest.py) usa árboles `DecisionTre
 - [x] Random Forest propio compatible con búsqueda de hiperparámetros; pruebas con datos sintéticos.
 - [x] Ocho búsquedas con selección ANOVA y submuestreo dentro de cinco pliegues compartidos.
 - [x] Evaluación de prueba con los ocho modelos reajustados con todo el entrenamiento.
-- [x] Tablas, gráficos y presentación Beamer de 12 diapositivas principales y dos de respaldo.
+- [x] Tablas, gráficos y presentación Beamer de 12 diapositivas principales y cuatro de respaldo.
 
 Los datos y la decisión de limpieza están en la [exploración inicial](documentacion/informe/exploracion.md). Los resultados completos están en [`resultados/`](resultados/) y el conjunto de prueba permaneció reservado hasta la evaluación final. El PDF Beamer es la presentación principal; el PowerPoint queda como formato alternativo.
 
@@ -81,6 +81,8 @@ La validación eligió **Random Forest propio con submuestreo 1:10** (`max_depth
 
 `fraudetection-run` ejecuta las búsquedas y la evaluación, guarda tablas y gráficos en `resultados/`. La búsqueda toma 50.000 filas estratificadas del entrenamiento para limitar el costo de k-NN; luego cada modelo se reajusta con las 198.608 filas completas de entrenamiento. `fraudetection-report` genera gráficos y el PowerPoint alternativo. El PDF principal se compila desde [`defensa_fraude.tex`](documentacion/presentacion/defensa_fraude.tex) con Docker y `blang/latex:ubuntu`; ver [instrucciones de presentación](documentacion/presentacion/README.md). La configuración está en [`config.py`](src/fraudetection/config.py).
 
+La partición, la submuestra de búsqueda y los cinco pliegues usan semilla 42. Los ajustes finales usan 42, 101, 202, 303 y 404 sobre el mismo test. `fraudetection-report` conserva los metadatos de ejecución y obtiene el tamaño efectivo de búsqueda desde `cv_resumen.csv`, también al utilizar `--search-sample-size` con un valor personalizado.
+
 ## Documentación
 
 | Archivo | Contenido |
@@ -91,9 +93,9 @@ La validación eligió **Random Forest propio con submuestreo 1:10** (`max_depth
 | [Presentación](documentacion/presentacion/README.md) | Guion de diapositivas. |
 | [Estudio](documentacion/estudio/README.md) | Preguntas para la defensa. |
 | [Resultados de prueba](resultados/test_resumen.csv) | Seis métricas para los ocho experimentos, media y desviación estándar. |
-| [Presentación Beamer (PDF)](documentacion/presentacion/defensa_fraude.pdf) | 12 diapositivas principales y dos de respaldo, en paleta blanca, azul y gris. |
+| [Presentación Beamer (PDF)](documentacion/presentacion/defensa_fraude.pdf) | 12 diapositivas principales y cuatro de respaldo: CV, prueba, metodología/búsqueda y análisis crítico. |
 | [Fuente Beamer](documentacion/presentacion/defensa_fraude.tex) | Archivo editable que genera el PDF. |
-| [PowerPoint alternativo](documentacion/presentacion/defensa_fraude.pptx) | Copia editable con el mismo contenido y paleta. |
+| [PowerPoint alternativo](documentacion/presentacion/defensa_fraude.pptx) | Versión editable del mismo protocolo y resultados; organización distinta de la presentación Beamer. |
 
 La carpeta `documentacion/informe/` contiene material interno; el enunciado no pide informe escrito. La entrega final será por Blackboard e incluirá código, README y presentación. Ambos integrantes participarán en la defensa.
 

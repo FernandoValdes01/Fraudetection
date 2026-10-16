@@ -12,7 +12,7 @@ from pptx.enum.text import MSO_ANCHOR, PP_ALIGN
 from pptx.util import Inches, Pt
 from sklearn.metrics import confusion_matrix
 
-from fraudetection.config import FINAL_SEEDS, SEARCH_SAMPLE_SIZE
+from fraudetection.config import FINAL_SEEDS
 from fraudetection.data import (
     inspect_dataset,
     load_dataset,
@@ -235,6 +235,8 @@ def create_deck(cv, test, results_dir: Path, deck_path: Path):
     selected = cv.loc[cv["selected_by_cv"]].iloc[0]
     chosen_result = test.loc[test["experiment"] == selected["experiment"]].iloc[0]
     selected_label = MODEL_LABELS[selected["model"]]
+    search_rows = int(cv["search_rows"].iloc[0])
+    cv_folds = int(cv["cv_folds"].iloc[0])
     raw_test = pd.read_csv(results_dir / "predicciones_configuracion_cv.csv")
     tn, fp, fn, tp = confusion_matrix(
         raw_test["class_true"], raw_test["class_predicted"], labels=[0, 1]
@@ -327,7 +329,7 @@ def create_deck(cv, test, results_dir: Path, deck_path: Path):
         1.75,
         3.2,
         1.75,
-        "50.000",
+        f"{search_rows:,}".replace(",", "."),
         "submuestra estratificada para búsqueda",
         color=TEAL,
     )
@@ -449,14 +451,14 @@ def create_deck(cv, test, results_dir: Path, deck_path: Path):
 
     # 6. Search
     slide = new_slide(prs, "Selección por sensibilidad y precisión", "05 · Ajuste", 6)
-    add_card(slide, 0.8, 1.8, 3.2, 1.7, "5", "pliegues estratificados", color=TEAL)
+    add_card(slide, 0.8, 1.8, 3.2, 1.7, str(cv_folds), "pliegues estratificados", color=TEAL)
     add_card(
         slide,
         4.15,
         1.8,
         3.2,
         1.7,
-        "50.000",
+        f"{search_rows:,}".replace(",", "."),
         "filas de entrenamiento para CV",
         color=BLUE,
     )
@@ -800,6 +802,13 @@ def build_report(dataset: Path, results_dir: Path, deck_path: Path):
     clean_report = inspect_dataset(clean)
     _, X_test, _, _ = split_dataset(clean)
     cv = pd.read_csv(results_dir / "cv_resumen.csv")
+    for column in ("search_rows", "cv_folds"):
+        if column not in cv or cv[column].isna().any() or cv[column].nunique() != 1:
+            raise ValueError(f"cv_resumen.csv debe contener un único valor válido para {column}")
+    search_rows = int(cv["search_rows"].iloc[0])
+    cv_folds = int(cv["cv_folds"].iloc[0])
+    if search_rows <= 0 or cv_folds <= 0:
+        raise ValueError("search_rows y cv_folds deben ser positivos")
     test = pd.read_csv(results_dir / "test_resumen.csv")
     test["compensated"] = test["compensation"] != "ninguna"
     prediction_frame = pd.read_csv(results_dir / "predicciones_configuracion_cv.csv")
@@ -815,24 +824,26 @@ def build_report(dataset: Path, results_dir: Path, deck_path: Path):
         results_dir,
     )
     selected_row, selected_test = create_deck(cv, test, results_dir, deck_path)
-    metadata = {
-        "dataset": str(dataset),
-        "dataset_sha256": sha256(dataset),
-        "rows_raw": raw_report.records,
-        "duplicates_removed": raw_report.duplicate_rows,
-        "rows_after_cleaning": clean_report.records,
-        "train_rows": len(clean) - len(X_test),
-        "test_rows": len(X_test),
-        "search_sample_rows": SEARCH_SAMPLE_SIZE,
-        "cv_folds": 5,
-        "final_seeds": list(FINAL_SEEDS),
-        "selected_by_cv": str(selected_row["experiment"]),
-        "selected_test_sensitivity_mean": float(selected_test["sensitivity_mean"]),
-        "selected_test_fnr_mean": float(selected_test["fnr_mean"]),
-    }
-    (results_dir / "metadata.json").write_text(
-        json.dumps(metadata, indent=2, ensure_ascii=False) + "\n"
+    metadata_path = results_dir / "metadata.json"
+    metadata = json.loads(metadata_path.read_text()) if metadata_path.exists() else {}
+    metadata.update(
+        {
+            "dataset": str(dataset),
+            "dataset_sha256": sha256(dataset),
+            "rows_raw": raw_report.records,
+            "duplicates_removed": raw_report.duplicate_rows,
+            "rows_after_cleaning": clean_report.records,
+            "train_rows": len(clean) - len(X_test),
+            "test_rows": len(X_test),
+            "search_sample_rows": search_rows,
+            "cv_folds": cv_folds,
+            "final_seeds": list(FINAL_SEEDS),
+            "selected_by_cv": str(selected_row["experiment"]),
+            "selected_test_sensitivity_mean": float(selected_test["sensitivity_mean"]),
+            "selected_test_fnr_mean": float(selected_test["fnr_mean"]),
+        }
     )
+    metadata_path.write_text(json.dumps(metadata, indent=2, ensure_ascii=False) + "\n")
     return metadata
 
 
