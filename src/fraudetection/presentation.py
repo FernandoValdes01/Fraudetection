@@ -2,6 +2,7 @@
 
 import argparse
 import json
+from dataclasses import dataclass
 from pathlib import Path
 
 import pandas as pd
@@ -12,14 +13,21 @@ from pptx.enum.text import MSO_ANCHOR, PP_ALIGN
 from pptx.util import Inches, Pt
 from sklearn.metrics import confusion_matrix
 
-from fraudetection.config import FINAL_SEEDS
+from fraudetection.config import (
+    FEATURE_SELECTION_K,
+    FINAL_SEEDS,
+    RANDOM_SEED,
+    TEST_SIZE,
+    UNDERSAMPLE_RATIO,
+)
 from fraudetection.data import (
+    FEATURE_COLUMNS,
     inspect_dataset,
     load_dataset,
     remove_exact_duplicates,
     split_dataset,
 )
-from fraudetection.experiments import MODEL_LABELS, save_plots, sha256
+from fraudetection.experiments import MODEL_LABELS, PARAMETER_GRIDS, save_plots, sha256
 
 BG = RGBColor(255, 255, 255)
 PANEL = RGBColor(241, 245, 249)
@@ -29,6 +37,23 @@ BLUE = RGBColor(46, 111, 158)
 ORANGE = RGBColor(168, 180, 192)
 TEAL = RGBColor(46, 111, 158)
 FONT = "Arial"
+
+
+@dataclass(frozen=True)
+class DeckFigures:
+    """Cifras del dataset y de la partición usadas en las diapositivas."""
+
+    raw_records: int
+    raw_frauds: int
+    raw_fraud_share: float
+    duplicates: int
+    missing_values: int
+    clean_records: int
+    clean_frauds: int
+    train_rows: int
+    test_rows: int
+    test_frauds: int
+    test_negatives: int
 
 
 def add_text(
@@ -179,16 +204,52 @@ def add_image(slide, path: Path, x, y, width, height=None):
         )
 
 
+def es_number(value, digits=0):
+    """Número con separador de miles español y coma decimal; `None` es sin límite."""
+    if value is None:
+        return "libre"
+    integer, _, fraction = f"{float(value):,.{digits}f}".partition(".")
+    integer = integer.replace(",", ".")
+    return f"{integer},{fraction}" if fraction else integer
+
+
 def fmt(value, digits=1):
-    return f"{100 * float(value):.{digits}f}%"
+    """Porcentaje en formato español, igual que la presentación Beamer."""
+    return f"{es_number(100 * float(value), digits)} %"
 
 
 def metric_with_std(row, name):
     digits = 3 if name == "specificity" else 2 if name == "accuracy" else 1
     return (
-        f"{100 * float(row[f'{name}_mean']):.{digits}f}% ± "
-        f"{100 * float(row[f'{name}_std']):.{digits}f} pp"
+        f"{es_number(100 * float(row[f'{name}_mean']), digits)} % ± "
+        f"{es_number(100 * float(row[f'{name}_std']), digits)} pp"
     )
+
+
+def describe_search_space() -> str:
+    """Resume la grilla real de búsqueda para las diapositivas de respaldo."""
+
+    def sort_key(value):
+        if value is None:
+            return (1, 0.0, "")
+        if isinstance(value, (int, float)):
+            return (0, float(value), "")
+        return (0, 0.0, str(value))
+
+    def format_value(value):
+        if isinstance(value, float):
+            return es_number(value, 1 if value % 1 else 0)
+        return es_number(value)
+
+    parts = []
+    for model_name, grid in PARAMETER_GRIDS.items():
+        candidates = "; ".join(
+            f"{name.removeprefix('model__')}="
+            + ", ".join(format_value(value) for value in sorted(values, key=sort_key))
+            for name, values in grid.items()
+        )
+        parts.append(f"{MODEL_LABELS[model_name]} {candidates}")
+    return "; ".join(parts) + "."
 
 
 def add_table(slide, headers, rows, x, y, width, height, *, font_size=12, widths=None):
@@ -224,7 +285,7 @@ def add_table(slide, headers, rows, x, y, width, height, *, font_size=12, widths
     return table_shape
 
 
-def create_deck(cv, test, results_dir: Path, deck_path: Path):
+def create_deck(cv, test, results_dir: Path, deck_path: Path, figures: DeckFigures):
     prs = Presentation()
     prs.slide_width = Inches(13.333)
     prs.slide_height = Inches(7.5)
@@ -280,7 +341,7 @@ def create_deck(cv, test, results_dir: Path, deck_path: Path):
     )
     add_text(
         slide,
-        "Integrantes: Fernando Valdés Gomez · Juan Muñoz Veloso",
+        "Integrantes: Fernando Alonso Valdés Gómez · Juan Francisco Muñoz Veloso",
         0.85,
         6.35,
         7.0,
@@ -305,13 +366,45 @@ def create_deck(cv, test, results_dir: Path, deck_path: Path):
     # 2. Dataset
     slide = new_slide(prs, "El fraude es poco frecuente", "01 · Datos", 2)
     add_image(slide, plots / "distribucion_clases.png", 0.55, 1.65, 7.0, 4.4)
-    add_card(slide, 8.0, 1.8, 2.0, 1.75, "284.807", "transacciones", color=BLUE)
-    add_card(slide, 10.25, 1.8, 2.0, 1.75, "492", "fraudes · 0,173 %", color=ORANGE)
-    add_card(slide, 8.0, 3.9, 2.0, 1.75, "1.081", "duplicados exactos", color=ORANGE)
-    add_card(slide, 10.25, 3.9, 2.0, 1.75, "0", "valores faltantes", color=TEAL)
+    add_card(
+        slide, 8.0, 1.8, 2.0, 1.75, es_number(figures.raw_records), "transacciones", color=BLUE
+    )
+    add_card(
+        slide,
+        10.25,
+        1.8,
+        2.0,
+        1.75,
+        es_number(figures.raw_frauds),
+        f"fraudes · {es_number(100 * figures.raw_fraud_share, 3)} %",
+        color=ORANGE,
+    )
+    add_card(
+        slide,
+        8.0,
+        3.9,
+        2.0,
+        1.75,
+        es_number(figures.duplicates),
+        "duplicados exactos",
+        color=ORANGE,
+    )
+    add_card(
+        slide,
+        10.25,
+        3.9,
+        2.0,
+        1.75,
+        es_number(figures.missing_values),
+        "valores faltantes",
+        color=TEAL,
+    )
     add_text(
         slide,
-        "Se quitaron duplicados antes de separar los datos. Quedaron 283.726 filas y 473 fraudes.",
+        (
+            "Se quitaron duplicados antes de separar los datos. Quedaron "
+            f"{es_number(figures.clean_records)} filas y {es_number(figures.clean_frauds)} fraudes."
+        ),
         8.05,
         6.0,
         4.1,
@@ -322,26 +415,37 @@ def create_deck(cv, test, results_dir: Path, deck_path: Path):
 
     # 3. Data split and leakage prevention
     slide = new_slide(prs, "Partición fija y prueba reservada", "02 · Diseño", 3)
-    add_card(slide, 0.7, 1.75, 3.2, 1.75, "198.608", "entrenamiento completo", color=BLUE)
+    add_card(
+        slide,
+        0.7,
+        1.75,
+        3.2,
+        1.75,
+        es_number(figures.train_rows),
+        "entrenamiento completo",
+        color=BLUE,
+    )
     add_card(
         slide,
         4.15,
         1.75,
         3.2,
         1.75,
-        f"{search_rows:,}".replace(",", "."),
+        es_number(search_rows),
         "submuestra estratificada para búsqueda",
         color=TEAL,
     )
-    add_card(slide, 7.6, 1.75, 3.2, 1.75, "85.118", "prueba reservada", color=ORANGE)
+    add_card(
+        slide, 7.6, 1.75, 3.2, 1.75, es_number(figures.test_rows), "prueba reservada", color=ORANGE
+    )
     add_bullets(
         slide,
         [
             (
-                "Partición estratificada 70/30, semilla 42; los ocho experimentos comparten la "
-                "misma partición."
+                f"Partición estratificada {int((1 - TEST_SIZE) * 100)}/{int(TEST_SIZE * 100)}, "
+                f"semilla {RANDOM_SEED}; los ocho experimentos comparten la misma partición."
             ),
-            "Cinco pliegues estratificados y compartidos para comparar los modelos.",
+            f"{cv_folds} pliegues estratificados y compartidos para comparar los modelos.",
             "Tras la búsqueda, cada ganador se reajusta con todo el entrenamiento.",
             "El test conserva la prevalencia natural y no participa en ajustes.",
         ],
@@ -380,8 +484,8 @@ def create_deck(cv, test, results_dir: Path, deck_path: Path):
         slide,
         [
             "Escalado para k-NN y SVM.",
-            "ANOVA F-test: se seleccionan las 20 mejores variables.",
-            "RandomUnderSampler 1:10 solo en entrenamiento.",
+            f"ANOVA F-test: se seleccionan las {FEATURE_SELECTION_K} mejores variables.",
+            f"RandomUnderSampler 1:{int(1 / UNDERSAMPLE_RATIO)} solo en entrenamiento.",
             "Validación y prueba mantienen su distribución original.",
         ],
         7.35,
@@ -458,7 +562,7 @@ def create_deck(cv, test, results_dir: Path, deck_path: Path):
         1.8,
         3.2,
         1.7,
-        f"{search_rows:,}".replace(",", "."),
+        es_number(search_rows),
         "filas de entrenamiento para CV",
         color=BLUE,
     )
@@ -468,7 +572,7 @@ def create_deck(cv, test, results_dir: Path, deck_path: Path):
         1.8,
         3.2,
         1.7,
-        "20 / 30",
+        f"{FEATURE_SELECTION_K} / {len(FEATURE_COLUMNS)}",
         "variables conservadas por ANOVA",
         color=ORANGE,
     )
@@ -483,8 +587,8 @@ def create_deck(cv, test, results_dir: Path, deck_path: Path):
                 f"y precisión {fmt(selected['cv_precision_mean'])} en CV."
             ),
             (
-                "Los hiperparámetros finales se ajustan de nuevo con las 198.608 filas de "
-                "entrenamiento."
+                "Los hiperparámetros finales se ajustan de nuevo con las "
+                f"{es_number(figures.train_rows)} filas de entrenamiento."
             ),
         ],
         0.9,
@@ -547,15 +651,16 @@ def create_deck(cv, test, results_dir: Path, deck_path: Path):
     # 10. Confusion matrix
     slide = new_slide(prs, "Matriz de confusión de la configuración elegida", "09 · Prueba", 10)
     add_image(slide, plots / "matriz_confusion_seleccion_cv.png", 1.0, 1.55, 5.5, 4.6)
-    add_card(slide, 7.0, 1.8, 2.1, 1.6, f"{tp}", "fraudes detectados", color=TEAL)
-    add_card(slide, 9.45, 1.8, 2.1, 1.6, f"{fn}", "fraudes omitidos", color=ORANGE)
-    add_card(slide, 7.0, 3.75, 2.1, 1.6, f"{fp:,}", "falsas alarmas", color=ORANGE)
-    add_card(slide, 9.45, 3.75, 2.1, 1.6, f"{tn:,}", "legítimas reconocidas", color=TEAL)
+    add_card(slide, 7.0, 1.8, 2.1, 1.6, es_number(tp), "fraudes detectados", color=TEAL)
+    add_card(slide, 9.45, 1.8, 2.1, 1.6, es_number(fn), "fraudes omitidos", color=ORANGE)
+    add_card(slide, 7.0, 3.75, 2.1, 1.6, es_number(fp), "falsas alarmas", color=ORANGE)
+    add_card(slide, 9.45, 3.75, 2.1, 1.6, es_number(tn), "legítimas reconocidas", color=TEAL)
+
     add_text(
         slide,
         (
-            f"{selected_label} · {selected['compensation']} · semilla 42. La selección se hizo "
-            f"con CV; la matriz usa el primer ajuste en test."
+            f"{selected_label} · {selected['compensation']} · semilla {FINAL_SEEDS[0]}. "
+            f"La selección se hizo con CV; la matriz usa el primer ajuste en test."
         ),
         7.0,
         5.8,
@@ -570,13 +675,17 @@ def create_deck(cv, test, results_dir: Path, deck_path: Path):
     baseline_accuracy = 100 * (1 - y_true_fraud_count(raw_test) / len(raw_test))
     forest_plain = test.loc[test["experiment"] == "forest_sin_compensacion"].iloc[0]
     forest_balanced = test.loc[test["experiment"] == "forest_submuestreo"].iloc[0]
+    tree_balanced = test.loc[test["experiment"] == "tree_submuestreo"].iloc[0]
+    sensitivity_gap = 100 * (
+        forest_balanced["sensitivity_mean"] - tree_balanced["sensitivity_mean"]
+    )
     add_card(
         slide,
         0.8,
         1.75,
         3.4,
         1.85,
-        f"{baseline_accuracy:.3f}%",
+        f"{es_number(baseline_accuracy, 3)} %",
         "exactitud si todo se predice legítimo",
         color=ORANGE,
         detail="Sensibilidad: 0 %. FNR: 100 %.",
@@ -609,11 +718,14 @@ def create_deck(cv, test, results_dir: Path, deck_path: Path):
             "La exactitud sola oculta los fraudes que el modelo deja pasar.",
             (
                 "Clasificar todo como fraude daría sensibilidad 100 %, pero marcaría como falsas "
-                "alarmas las 84.976 transacciones legítimas del test."
+                f"alarmas las {es_number(figures.test_negatives)} transacciones legítimas del test."
             ),
             (
-                "El bosque con submuestreo detecta algo menos que el árbol compensado, pero "
-                "eleva la precisión de 0,336 a 0,675."
+                "El bosque con submuestreo detecta "
+                f"{es_number(abs(sensitivity_gap), 1)} puntos porcentuales "
+                f"{'menos' if sensitivity_gap < 0 else 'más'} que el árbol compensado, pero eleva "
+                f"la precisión de {es_number(tree_balanced['precision_mean'], 3)} a "
+                f"{es_number(forest_balanced['precision_mean'], 3)}."
             ),
         ],
         0.9,
@@ -645,8 +757,8 @@ def create_deck(cv, test, results_dir: Path, deck_path: Path):
             f"CV eligió {selected_label} con submuestreo por obtener la mayor sensibilidad media.",
             "El submuestreo aumentó la detección de fraudes y también produjo más falsas alarmas.",
             (
-                "El test contiene solo 142 fraudes; las métricas de sensibilidad cambian con "
-                "pocos casos."
+                f"El test contiene solo {es_number(figures.test_frauds)} fraudes; las métricas de "
+                "sensibilidad cambian con pocos casos."
             ),
             (
                 "El dataset no trae identificador de transacción; algunas filas idénticas "
@@ -683,12 +795,15 @@ def create_deck(cv, test, results_dir: Path, deck_path: Path):
         "Configuraciones y resultados de validación",
         "Respaldo · Validación",
         13,
-        subtitle="Cinco pliegues compartidos · sensibilidad y precisión de fraude",
+        subtitle=(f"{cv_folds} pliegues compartidos · sensibilidad y precisión de fraude"),
     )
     cv_rows = []
     for _, row in cv.iterrows():
         parameters = json.loads(row["best_parameters"])
-        parameter_text = ", ".join(f"{key}={value}" for key, value in parameters.items())
+        parameter_text = ", ".join(
+            f"{key}={es_number(value, 1 if isinstance(value, float) and value % 1 else 0)}"
+            for key, value in parameters.items()
+        )
         label = row["model_label"]
         if row["selected_by_cv"]:
             label = f"✓ {label}"
@@ -714,11 +829,7 @@ def create_deck(cv, test, results_dir: Path, deck_path: Path):
     )
     add_text(
         slide,
-        (
-            "Rangos evaluados: k-NN n_neighbors={3, 5, 7}; árbol max_depth={5, 10, None} y "
-            "min_samples_leaf={1, 5}; SVM C={0.1, 1, 10}; bosque n_estimators={11, 21} y "
-            "max_depth={6, 12}. El bosque usa max_features=√p."
-        ),
+        (f"Rangos evaluados: {describe_search_space()} El bosque usa max_features=√p."),
         0.6,
         6.38,
         12.0,
@@ -814,6 +925,19 @@ def build_report(dataset: Path, results_dir: Path, deck_path: Path):
     prediction_frame = pd.read_csv(results_dir / "predicciones_configuracion_cv.csv")
     selected = str(cv.loc[cv["selected_by_cv"], "experiment"].iloc[0])
     predictions = {selected: prediction_frame["class_predicted"].to_numpy()}
+    figures = DeckFigures(
+        raw_records=raw_report.records,
+        raw_frauds=raw_report.class_counts[1],
+        raw_fraud_share=raw_report.class_proportions[1],
+        duplicates=raw_report.duplicate_rows,
+        missing_values=sum(raw_report.missing_by_column.values()),
+        clean_records=clean_report.records,
+        clean_frauds=clean_report.class_counts[1],
+        train_rows=len(clean) - len(X_test),
+        test_rows=len(X_test),
+        test_frauds=int((prediction_frame["class_true"] == 1).sum()),
+        test_negatives=int((prediction_frame["class_true"] == 0).sum()),
+    )
     save_plots(
         raw_report,
         clean_report,
@@ -823,7 +947,7 @@ def build_report(dataset: Path, results_dir: Path, deck_path: Path):
         predictions,
         results_dir,
     )
-    selected_row, selected_test = create_deck(cv, test, results_dir, deck_path)
+    selected_row, selected_test = create_deck(cv, test, results_dir, deck_path, figures)
     metadata_path = results_dir / "metadata.json"
     metadata = json.loads(metadata_path.read_text()) if metadata_path.exists() else {}
     metadata.update(

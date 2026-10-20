@@ -81,7 +81,7 @@
 
 \title[Detección de fraude]{Detección de fraude}
 \subtitle{Aprendizaje supervisado para detectar operaciones sospechosas}
-\author{Fernando Valdés Gomez \and Juan Muñoz Veloso}
+\author{Fernando Alonso Valdés Gómez \and Juan Francisco Muñoz Veloso}
 \institute{INFO1185 \textbullet\ Inteligencia Artificial}
 \date{9 de octubre de 2026}
 
@@ -98,7 +98,7 @@
   \vspace{0.55cm}
   {\color{FraudBlue}\rule{0.42\textwidth}{1.2pt}}\par
   \vspace{0.45cm}
-  {\normalsize Fernando Valdés Gomez \quad\textcolor{FraudLine}{|}\quad Juan Muñoz Veloso}\par
+  {\normalsize Fernando Alonso Valdés Gómez \quad\textcolor{FraudLine}{|}\quad Juan Francisco Muñoz Veloso}\par
   \vspace{0.22cm}
   {\small\color{FraudGray} 9 de octubre de 2026}\par
   \vfill
@@ -211,6 +211,8 @@
     \column{0.44\textwidth}\metricbox{87,9\% $\pm$ 5,5\%}{sensibilidad en validación}
     \column{0.44\textwidth}\metricbox{45,0\%}{precisión en validación}
   \end{columns}
+  \vspace{0.34cm}
+  {\small\color{FraudGray}Espacio de búsqueda: k-NN $k\in\{3,5,7\}$; árbol profundidad $\{5,10,\text{libre}\}$ y hoja mínima $\{1,5\}$; SVM lineal $C\in\{0{,}1;\,1;\,10\}$; bosque árboles $\{11,21\}$ y profundidad $\{6,12\}$.\par}
   \vfill
 \end{frame}
 
@@ -336,7 +338,7 @@
     \toprule
     \rowcolor{FraudPaleBlue}\textbf{Modelo} & \textbf{Candidatos evaluados} & \textbf{Motivo} \\
     \midrule
-    k-NN & Vecinos: 3, 5, 7; pesos por distancia & Comparar vecindades locales y más suaves. \\
+    k-NN & Vecinos: 3, 5, 7 (pesos por distancia fijos) & Comparar vecindades locales y más suaves. \\
     \rowcolor{FraudLightGray}
     Árbol & Profundidad: 5, 10, libre; hoja mínima: 1, 5 & Contrastar complejidad y hojas menos sensibles a pocos casos. \\
     SVM lineal & $C$: 0,1; 1; 10 & Comparar intensidad de regularización. \\
