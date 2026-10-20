@@ -43,7 +43,7 @@ El desarrollo técnico y los documentos de entrega están completos. La exposici
 ## Comprobaciones ejecutadas
 
 - `ruff check` y `ruff format --check` sin errores.
-- 24 pruebas pasaron, incluidas tres que demuestran rechazo de artefactos inconsistentes: semillas duplicadas, condición ausente reemplazada por duplicado y parámetros distintos de la búsqueda.
+- 40 pruebas pasaron en el repositorio; tres de ellas demuestran rechazo de artefactos inconsistentes: semillas duplicadas, condición ausente reemplazada por duplicado y parámetros distintos de la búsqueda.
 - Auditoría de las métricas de las 24 repeticiones a partir de las predicciones guardadas, con cálculos independientes de scikit-learn.
 - Nueva ejecución completa con el mismo protocolo: coincidencia exacta de particiones, candidatos y selección, métricas de los ocho experimentos, características, diagnóstico del bosque y todas las predicciones. Solo difieren los tiempos de ejecución y las marcas temporales. Evidencia en `resultados/ejecucion/verificacion_reproduccion.json`.
 - Descarga desde cero usando la función del proyecto: esquema, 284.807 filas, 492 fraudes y SHA256 idéntico al archivo utilizado.

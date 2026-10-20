@@ -6,7 +6,7 @@ La [nota sobre el Random Forest propio](random-forest.md) explica el bootstrap, 
 
 ## Preguntas para practicar
 
-1. ¿Por qué un clasificador que siempre predice transacciones legítimas logra aproximadamente 99,828 % de exactitud y 0 % de sensibilidad al fraude en el conjunto completo?
+1. ¿Por qué un clasificador que siempre predice transacciones legítimas logra aproximadamente 99,827 % de exactitud y 0 % de sensibilidad al fraude en el conjunto completo?
 2. ¿Qué significan TP, FN, FP y TN para una transacción? ¿Cómo se calcula `FNR = FN / (TP + FN)`?
 3. ¿Qué decisiones se toman antes de abrir el test? ¿Dónde se ajustan el escalado, la selección y el remuestreo en cada pliegue?
 4. ¿Por qué se estratifica la partición 70/30 y la validación de cinco pliegues? ¿Qué cambia si se utiliza una muestra de solo 10 000 filas?
@@ -21,7 +21,7 @@ Para cada pregunta, preparar una respuesta con una referencia al archivo o funci
 
 ## Respuestas con los resultados del proyecto
 
-1. En el dataset original, predecir todo como legítimo logra 99,827 % de exactitud y 0 % de sensibilidad. En la prueba limpia, la exactitud sería 99,833 %. En ambos casos no se detecta ningún fraude; ver [exploración](../informe/exploracion.md).
+1. En el dataset original, predecir todo como legítimo logra 99,827 % de exactitud y 0 % de sensibilidad. En el conjunto limpio y en la partición de prueba, la exactitud sería 99,833 %. En ambos casos no se detecta ningún fraude; ver [exploración](../informe/exploracion.md).
 2. `TP` son fraudes detectados, `FN` fraudes omitidos, `FP` transacciones legítimas marcadas como fraude y `TN` legítimas reconocidas. `FNR = FN / (TP + FN)` mide la fracción de fraudes que se escapan.
 3. Se limpia antes de dividir para evitar copias idénticas entre train y test. La selección ANOVA, el escalado y RandomUnderSampler viven dentro de la tubería de cada pliegue en [`experiments.py`](../../src/fraudetection/experiments.py); el test queda intacto.
 4. La estratificación conserva ejemplos de fraude en cada partición. El entrenamiento tiene 331 fraudes; se usa una submuestra estratificada de 50.000 filas (83 fraudes) para que la búsqueda de k-NN sea viable y comparable con los mismos cinco pliegues.

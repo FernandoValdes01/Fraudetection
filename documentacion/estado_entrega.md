@@ -36,4 +36,4 @@ El desarrollo y los archivos están preparados. La defensa, la reserva y la subi
 
 ## Verificación final
 
-La [revisión requisito por requisito](revision_final.md) confirma el desarrollo técnico. Pasaron 24 pruebas y una nueva ejecución reprodujo exactamente las particiones, parámetros, métricas y predicciones. Se actualizaron la presentación y la auditoría, y se regeneró el ZIP con esos cambios.
+La [revisión requisito por requisito](revision_final.md) confirma el desarrollo técnico. La suite del repositorio pasa 40 pruebas, de las cuales 24 corresponden a los reajustes del protocolo independiente; una nueva ejecución reprodujo exactamente las particiones, parámetros, métricas y predicciones. Se actualizaron la presentación y la auditoría, y se regeneró el ZIP con esos cambios.
