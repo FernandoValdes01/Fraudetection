@@ -30,10 +30,10 @@ docker run --rm --user "$(id -u):$(id -g)" \
   blang/latex:ubuntu latexmk -c defensa_fraude.tex
 ```
 
-La portada ya incluye los nombres de ambos integrantes. Antes de la entrega, practicar la exposición de ambos.
+La portada ya incluye los nombres de ambos integrantes. El [guion de la presentación principal](guion_defensa_principal.md) reparte las doce diapositivas entre los dos integrantes, con minutos por diapositiva y las preguntas probables; conviene ensayarlo con cronómetro. Antes de la entrega, practicar la exposición de ambos.
 
 ## Presentación del protocolo independiente
 
-La ejecución independiente de 100.000 filas y tres semillas conserva [fraudetection.pptx](fraudetection.pptx), [fraudetection.pdf](fraudetection.pdf) y [guion_defensa.md](guion_defensa.md), con 12 diapositivas principales y cuatro de respaldo. Usa exclusivamente `resultados/ejecucion/`. Estos archivos corresponden a un protocolo distinto del de la presentación principal Beamer `defensa_fraude.pdf`; no mezclar sus métricas.
+La ejecución independiente de 100.000 filas y tres semillas conserva [fraudetection.pptx](fraudetection.pptx), [fraudetection.pdf](fraudetection.pdf) y [guion_defensa.md](guion_defensa.md), con 12 diapositivas principales y cuatro de respaldo. Usa exclusivamente `resultados/ejecucion/`. Estos archivos corresponden a un protocolo distinto del de la presentación principal Beamer `defensa_fraude.pdf`; no mezclar sus métricas. Su [guion](guion_defensa.md) explica el protocolo independiente, no el de `defensa_fraude.pdf`.
 
 Para regenerarlos, ejecutar `uv run --locked fraudetection report`. El PDF se exporta con LibreOffice según la [guía de reproducción](../reproduccion.md).

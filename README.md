@@ -91,6 +91,7 @@ La partición, la submuestra de búsqueda y los cinco pliegues usan semilla 42. 
 | [Pauta](documentacion/informe/pauta.md) | Requisitos, criterios de aceptación y puntajes. |
 | [Exploración](documentacion/informe/exploracion.md) | Cifras del dataset y limpieza. |
 | [Presentación](documentacion/presentacion/README.md) | Guion de diapositivas. |
+| [Guion de defensa](documentacion/presentacion/guion_defensa_principal.md) | Minutado de la presentación principal, reparto por integrante y preguntas probables. |
 | [Estudio](documentacion/estudio/README.md) | Preguntas para la defensa. |
 | [Resultados de prueba](resultados/test_resumen.csv) | Seis métricas para los ocho experimentos, media y desviación estándar. |
 | [Presentación Beamer (PDF)](documentacion/presentacion/defensa_fraude.pdf) | 12 diapositivas principales y cuatro de respaldo: CV, prueba, metodología/búsqueda y análisis crítico. |
