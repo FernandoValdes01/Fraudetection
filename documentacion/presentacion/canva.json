@@ -14,5 +14,20 @@
   "offline_files_are_native_canva_exports": false,
   "native_export_instructions": "Abrir el diseño en Canva y usar Compartir > Descargar > PDF estándar o Microsoft PowerPoint. Los archivos locales son una versión reproducible, con composición diferente.",
   "final_edits_pending_user_approval": false,
-  "final_edits_saved": true
+  "final_edits_saved": true,
+  "aesthetic_refinement": {
+    "pages": [
+      3,
+      5,
+      7,
+      9,
+      12,
+      16
+    ],
+    "saved": true,
+    "vector_sources": [
+      "recursos/busqueda.svg",
+      "recursos/prueba.svg"
+    ]
+  }
 }
