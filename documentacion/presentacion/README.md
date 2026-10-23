@@ -8,7 +8,7 @@ La presentación utiliza exclusivamente los resultados del protocolo principal: 
 - [PowerPoint local editable](presentacion.pptx).
 - [Edición Canva](https://canva.link/g838er8qsmu3bic), con su referencia en [canva.json](canva.json).
 
-Las últimas correcciones de Canva están pendientes de aprobación para guardarse. El PDF y el PPTX locales ya incorporan las correcciones.
+Las correcciones finales de Canva fueron aprobadas y guardadas. El PDF y el PPTX locales también incorporan las correcciones.
 
 Las dos versiones siguen el mismo contenido académico y una paleta editorial blanca, negra y azul. El PDF y el PPTX locales se generan desde los CSV mediante Python y LibreOffice; **no son exportaciones nativas de Canva ni copias exactas de su composición**. La extensión disponible permite crear y editar Canva, pero no exportar PDF/PPTX en esta sesión.
 
