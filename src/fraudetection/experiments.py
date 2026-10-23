@@ -41,6 +41,7 @@ from fraudetection.data import (
     split_dataset,
 )
 from fraudetection.forest import BootstrapRandomForest
+from fraudetection.formatting import es_number
 
 MODEL_LABELS = {
     "knn": "k-NN",
@@ -191,9 +192,10 @@ def run_searches(X_search, y_search, output_dir: Path) -> pd.DataFrame:
             current.loc[best_index, "selected_by_cv"] = True
             current.to_csv(output_dir / "cv_resumen.csv", index=False)
             print(
-                f"CV {experiment}: sensibilidad {rows[-1]['cv_sensitivity_mean']:.3f} "
-                f"± {rows[-1]['cv_sensitivity_std']:.3f}; "
-                f"precisión {rows[-1]['cv_precision_mean']:.3f}; "
+                f"CV {experiment}: sensibilidad "
+                f"{es_number(100 * rows[-1]['cv_sensitivity_mean'], 3)} % ± "
+                f"{es_number(100 * rows[-1]['cv_sensitivity_std'], 3)} pp; "
+                f"precisión {es_number(100 * rows[-1]['cv_precision_mean'], 3)} %; "
                 f"parámetros {model_parameters}",
                 flush=True,
             )
@@ -258,9 +260,7 @@ def run_final_evaluations(
         experiment = result["experiment"]
         print(f"Prueba {experiment}: reajustando con todo el entrenamiento", flush=True)
 
-        deterministic_knn = model_name == "knn" and not compensate
-        run_seeds = FINAL_SEEDS[:1] if deterministic_knn else FINAL_SEEDS
-        for repeat, seed in enumerate(run_seeds, start=1):
+        for repeat, seed in enumerate(FINAL_SEEDS, start=1):
             pipeline = make_pipeline(model_name, compensate, seed, parameters)
             pipeline.fit(X_train, y_train)
             predictions = predict_in_batches(pipeline, X_test)
@@ -290,18 +290,11 @@ def run_final_evaluations(
                 feature_sets[experiment] = feature_names
             print(
                 f"Prueba {experiment}, repetición {repeat}: "
-                f"sensibilidad {rows[-1]['sensitivity']:.3f}, "
-                f"FNR {rows[-1]['fnr']:.3f}, precisión {rows[-1]['precision']:.3f}",
+                f"sensibilidad {es_number(100 * rows[-1]['sensitivity'], 3)} %, "
+                f"FNR {es_number(100 * rows[-1]['fnr'], 3)} %, "
+                f"precisión {es_number(100 * rows[-1]['precision'], 3)} %",
                 flush=True,
             )
-
-        if deterministic_knn:
-            base = rows[-1].copy()
-            for repeat, seed in enumerate(FINAL_SEEDS[1:], start=2):
-                rows.append({**base, "repeat": repeat, "seed": seed})
-            base_features = feature_rows[-1].copy()
-            for repeat, seed in enumerate(FINAL_SEEDS[1:], start=2):
-                feature_rows.append({**base_features, "repeat": repeat, "seed": seed})
 
         pd.DataFrame(rows).to_csv(output_dir / "test_repeticiones.csv", index=False)
         pd.DataFrame(feature_rows).to_csv(
@@ -551,8 +544,8 @@ def main() -> None:
     X_search, y_search = take_search_sample(X_train, y_train, args.search_sample_size)
 
     print(
-        f"Búsqueda: {len(X_search):,} filas estratificadas del entrenamiento; "
-        f"partición de prueba reservada: {len(X_test):,} filas.",
+        f"Búsqueda: {es_number(len(X_search))} filas estratificadas del entrenamiento; "
+        f"partición de prueba reservada: {es_number(len(X_test))} filas.",
         flush=True,
     )
     cv_results = run_searches(X_search, y_search, args.output_dir)
@@ -600,7 +593,7 @@ def main() -> None:
                 "cv_sensitivity_std",
                 "cv_precision_mean",
             ],
-        ].to_string(index=False)
+        ].to_string(index=False, float_format=lambda value: es_number(value, 3))
     )
     print("Resumen de prueba:")
     print(
@@ -615,7 +608,7 @@ def main() -> None:
                 "accuracy_mean",
                 "fnr_mean",
             ]
-        ].to_string(index=False)
+        ].to_string(index=False, float_format=lambda value: es_number(value, 3))
     )
 
 

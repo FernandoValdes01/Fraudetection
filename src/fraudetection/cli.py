@@ -9,6 +9,7 @@ from fraudetection.data import (
     remove_exact_duplicates,
     split_dataset,
 )
+from fraudetection.formatting import es_number
 
 DEFAULT_DATASET = Path("data/raw/creditcard.csv")
 
@@ -31,10 +32,11 @@ def main() -> None:
     except (OSError, ValueError) as error:
         parser.exit(2, f"Error al inspeccionar {args.dataset}: {error}\n")
 
-    print(f"Registros: {report.records:,} | Características: {report.features}")
+    print(f"Registros: {es_number(report.records)} | Características: {report.features}")
     print(
-        f"Duplicados exactos: {report.duplicate_rows:,} "
-        f"(clase 0: {report.duplicates_by_class[0]:,}; clase 1: {report.duplicates_by_class[1]:,})"
+        f"Duplicados exactos: {es_number(report.duplicate_rows)} "
+        f"(clase 0: {es_number(report.duplicates_by_class[0])}; "
+        f"clase 1: {es_number(report.duplicates_by_class[1])})"
     )
     if report.missing_by_column:
         print(
@@ -45,16 +47,21 @@ def main() -> None:
         print("Faltantes: 0")
     for label in (0, 1):
         print(
-            f"Clase {label}: {report.class_counts[label]:,} ({report.class_proportions[label]:.3%})"
+            f"Clase {label}: {es_number(report.class_counts[label])}"
+            + f" ({es_number(100 * report.class_proportions[label], 3)} %)"
         )
-    print(f"Tras quitar duplicados: {clean_report.records:,} registros")
+    print(f"Tras quitar duplicados: {es_number(clean_report.records)} registros")
     for label in (0, 1):
         print(
-            f"Clase {label} limpia: {clean_report.class_counts[label]:,} "
-            f"({clean_report.class_proportions[label]:.3%})"
+            f"Clase {label} limpia: {es_number(clean_report.class_counts[label])} "
+            f"({es_number(100 * clean_report.class_proportions[label], 3)} %)"
         )
-    print(f"Entrenamiento: {len(X_train):,} filas, {int(y_train.sum()):,} fraudes")
-    print(f"Prueba reservada: {len(X_test):,} filas, {int(y_test.sum()):,} fraudes")
+    print(
+        f"Entrenamiento: {es_number(len(X_train))} filas, {es_number(int(y_train.sum()))} fraudes"
+    )
+    print(
+        f"Prueba reservada: {es_number(len(X_test))} filas, {es_number(int(y_test.sum()))} fraudes"
+    )
     if report.records < 10_000:
         print("Aviso: el enunciado exige utilizar al menos 10 000 registros.")
 

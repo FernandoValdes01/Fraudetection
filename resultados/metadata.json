@@ -7,7 +7,9 @@
   "train_rows": 198608,
   "test_rows": 85118,
   "search_sample_rows": 50000,
+  "search_sample_fraud": 83,
   "cv_folds": 5,
+  "cv_seed": 42,
   "final_seeds": [
     42,
     101,
@@ -15,6 +17,9 @@
     303,
     404
   ],
+  "feature_selection": "ANOVA F-test, top 20",
+  "compensation": "RandomUnderSampler ratio 1:10",
+  "test_repetitions": 5,
   "selected_by_cv": "forest_submuestreo",
   "selected_test_sensitivity_mean": 0.8042253521126762,
   "selected_test_fnr_mean": 0.1957746478873239

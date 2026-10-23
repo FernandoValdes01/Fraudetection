@@ -28,6 +28,7 @@ from fraudetection.data import (
     split_dataset,
 )
 from fraudetection.experiments import MODEL_LABELS, PARAMETER_GRIDS, save_plots, sha256
+from fraudetection.formatting import es_number
 
 BG = RGBColor(255, 255, 255)
 PANEL = RGBColor(241, 245, 249)
@@ -202,15 +203,6 @@ def add_image(slide, path: Path, x, y, width, height=None):
         slide.shapes.add_picture(
             str(path), Inches(x), Inches(y), width=Inches(width), height=Inches(height)
         )
-
-
-def es_number(value, digits=0):
-    """Número con separador de miles español y coma decimal; `None` es sin límite."""
-    if value is None:
-        return "libre"
-    integer, _, fraction = f"{float(value):,.{digits}f}".partition(".")
-    integer = integer.replace(",", ".")
-    return f"{integer},{fraction}" if fraction else integer
 
 
 def fmt(value, digits=1):
@@ -987,8 +979,8 @@ def main() -> None:
     print("Presentación guardada en", args.deck)
     print("Configuración seleccionada en CV:", metadata["selected_by_cv"])
     print(
-        f"Sensibilidad en prueba: {metadata['selected_test_sensitivity_mean']:.3f}; "
-        f"FNR: {metadata['selected_test_fnr_mean']:.3f}"
+        f"Sensibilidad en prueba: {fmt(metadata['selected_test_sensitivity_mean'], 3)}; "
+        f"FNR: {fmt(metadata['selected_test_fnr_mean'], 3)}"
     )
 
 
