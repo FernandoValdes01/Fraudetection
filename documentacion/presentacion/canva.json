@@ -1,0 +1,17 @@
+{
+  "design_id": "DAHYyRf5M6A",
+  "url": "https://canva.link/g838er8qsmu3bic",
+  "title": "Detección de fraude",
+  "page_count": 16,
+  "main_slides": 12,
+  "backup_slides": 4,
+  "style": "Blanco y negro editorial con acento azul",
+  "protocol": "principal",
+  "results_directory": "resultados",
+  "offline_presentation": "presentacion.pptx",
+  "offline_pdf": "presentacion.pdf",
+  "offline_source": "../../scripts/build_minimal_presentation.py",
+  "offline_files_are_native_canva_exports": false,
+  "native_export_instructions": "Abrir el diseño en Canva y usar Compartir > Descargar > PDF estándar o Microsoft PowerPoint. Los archivos locales son una versión reproducible, con composición diferente.",
+  "final_edits_pending_user_approval": true
+}

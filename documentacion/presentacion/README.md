@@ -1,24 +1,55 @@
-# Guion de la presentación
+# Presentación y defensa
 
-El enunciado sugiere entre 10 y 12 diapositivas principales. La defensa dura 10 a 12 minutos por dupla y participan ambas personas. La presentación principal es [`defensa_fraude.pdf`](defensa_fraude.pdf), creada desde [`defensa_fraude.tex`](defensa_fraude.tex) con Beamer. Tiene 12 diapositivas principales y cuatro de respaldo: validación, métricas completas de prueba, metodología y búsqueda, y análisis crítico de árbol/bosque y clasificadores triviales. Usa una paleta de blanco, azul y gris, textos breves y una guía visual discreta que recorre seis fases del proyecto. [`defensa_fraude.pptx`](defensa_fraude.pptx) se conserva como formato alternativo del mismo protocolo y resultados, con una organización diferente.
+La presentación utiliza exclusivamente los resultados del protocolo principal: 283.726 filas limpias, 198.608 de entrenamiento y 85.118 de prueba. Tiene 12 diapositivas principales y cuatro respaldos. El [guion](guion_defensa_principal.md) propone una exposición de 11 minutos entre ambos integrantes.
 
-| Diapositivas | Contenido |
+## Versión nueva
+
+- [PDF local](presentacion.pdf), listo para abrir sin conexión.
+- [PowerPoint local editable](presentacion.pptx).
+- [Edición Canva](https://canva.link/g838er8qsmu3bic), con su referencia en [canva.json](canva.json).
+
+Las últimas correcciones de Canva están pendientes de aprobación para guardarse. El PDF y el PPTX locales ya incorporan las correcciones.
+
+Las dos versiones siguen el mismo contenido académico y una paleta editorial blanca, negra y azul. El PDF y el PPTX locales se generan desde los CSV mediante Python y LibreOffice; **no son exportaciones nativas de Canva ni copias exactas de su composición**. La extensión disponible permite crear y editar Canva, pero no exportar PDF/PPTX en esta sesión.
+
+Para obtener una copia exacta del diseño de Canva, abrir su enlace con la cuenta conectada y usar Compartir → Descargar → PDF estándar o Microsoft PowerPoint. Si se entrega la versión en línea, incluir también el PDF exportado, como exige el enunciado. El PDF local ya permite entregar una presentación completa sin depender de la versión en línea.
+
+## Regenerar la versión local
+
+Desde la raíz, con Python 3.12, `uv` y LibreOffice instalados:
+
+```bash
+uv sync --locked
+uv run --locked python scripts/build_minimal_presentation.py
+libreoffice -env:UserInstallation=file:///tmp/fraudetection-presentacion-office \
+  --headless --convert-to pdf --outdir documentacion/presentacion \
+  documentacion/presentacion/presentacion.pptx
+```
+
+El [generador](../../scripts/build_minimal_presentation.py) usa `resultados/cv_resumen.csv`, `test_resumen.csv`, `predicciones_configuracion_cv.csv` y `metadata.json`. Las tablas deben regenerarse si cambian los resultados. Las ediciones hechas en Canva no se sincronizan automáticamente con estos archivos.
+
+## Contenido
+
+| Páginas | Tema |
 | --- | --- |
-| 1 | Portada e integrantes. |
-| 2 a 4 | Reto, datos, limpieza y partición de entrenamiento, validación y prueba. |
-| 5 a 6 | Diseño de experimentos y bosque aleatorio propio. |
-| 7 a 8 | Criterio de selección y validación cruzada. |
-| 9 a 11 | Prueba reservada, costo de alertas y matriz de confusión. |
-| 12 | Resultados, limitaciones, mejoras y conclusión. |
-| 13 a 14 | Respaldo: parámetros y métricas de CV, y métricas completas de prueba. |
-| 15 | Respaldo: rangos de búsqueda y justificación de escalado, ANOVA y submuestreo. |
-| 16 | Respaldo: comparación árbol/bosque y consecuencias de clasificar todo como legítimo o fraude. |
+| 1–3 | Problema, integrantes, datos y limpieza. |
+| 4–6 | Partición, prevención de fuga, ocho condiciones y bosque propio. |
+| 7–9 | Búsqueda, selección por CV y prueba reservada. |
+| 10–12 | Falsas alarmas, matriz del ganador, conclusión y límites. |
+| 13–16 | Parámetros/CV, seis métricas sin y con compensación, referencias triviales y decisiones. |
 
-Se pueden añadir diapositivas de respaldo para tablas extensas, matrices de confusión y otras métricas. Todas las métricas exigidas deben aparecer en las diapositivas principales o de respaldo. Mantener separados los resultados de validación y los de prueba. La tabla de prueba presenta media y desviación estándar de cinco reajustes con distintas semillas sobre el mismo test; las repeticiones no son muestras independientes.
+La matriz corresponde al primer ajuste, semilla 42. Los resúmenes de prueba son medias y desviaciones de cinco ajustes sobre el mismo test, con semillas 42, 101, 202, 303 y 404. La desviación describe variación del ajuste, no cinco conjuntos de prueba independientes.
 
-Entregar la presentación Beamer en PDF junto con su fuente `.tex`. Reservar tiempo para preguntas y para mostrar o ejecutar el código durante la defensa.
+## Versiones anteriores y protocolo auxiliar
 
-Para regenerar los gráficos y el PowerPoint alternativo después de ejecutar los experimentos, usar `uv run --locked fraudetection-report`. Para recompilar el PDF desde la raíz del repositorio, ejecutar:
+Se conservan las fuentes anteriores para reproducibilidad:
+
+| Archivos | Uso |
+| --- | --- |
+| [defensa_fraude.pdf](defensa_fraude.pdf), [fuente Beamer](defensa_fraude.tex), [PowerPoint automático](defensa_fraude.pptx) | Alternativas anteriores del protocolo principal. `fraudetection-report` regenera el PPTX automático, sin sobrescribir `presentacion.pptx`. |
+| [fraudetection.pdf](fraudetection.pdf), [PPTX](fraudetection.pptx), [guion auxiliar](guion_defensa.md) | Protocolo independiente de 100.000 filas y tres semillas, con resultados exclusivos en `resultados/ejecucion/`. |
+
+Para reconstruir el Beamer anterior, ver la fuente y usar Docker con `blang/latex:ubuntu`:
 
 ```bash
 docker run --rm --user "$(id -u):$(id -g)" \
@@ -30,10 +61,4 @@ docker run --rm --user "$(id -u):$(id -g)" \
   blang/latex:ubuntu latexmk -c defensa_fraude.tex
 ```
 
-La portada ya incluye los nombres de ambos integrantes. El [guion de la presentación principal](guion_defensa_principal.md) reparte las doce diapositivas entre los dos integrantes, con minutos por diapositiva y las preguntas probables; conviene ensayarlo con cronómetro. Antes de la entrega, practicar la exposición de ambos.
-
-## Presentación del protocolo independiente
-
-La ejecución independiente de 100.000 filas y tres semillas conserva [fraudetection.pptx](fraudetection.pptx), [fraudetection.pdf](fraudetection.pdf) y [guion_defensa.md](guion_defensa.md), con 12 diapositivas principales y cuatro de respaldo. Usa exclusivamente `resultados/ejecucion/`. Estos archivos corresponden a un protocolo distinto del de la presentación principal Beamer `defensa_fraude.pdf`; no mezclar sus métricas. Su [guion](guion_defensa.md) explica el protocolo independiente, no el de `defensa_fraude.pdf`.
-
-Para regenerarlos, ejecutar `uv run --locked fraudetection report`. El PDF se exporta con LibreOffice según la [guía de reproducción](../reproduccion.md).
+El protocolo auxiliar se regenera con `uv run --locked fraudetection report`; ver [reproducción](../reproduccion.md). Sus métricas no deben mezclarse con las del principal.
