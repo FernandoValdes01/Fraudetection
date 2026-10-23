@@ -1,10 +1,10 @@
 # Estado de la entrega
 
-Este documento corresponde exclusivamente al protocolo independiente de 100.000 filas de `src/fraudetection/reproduction/`, con resultados en `resultados/ejecucion/`. El protocolo principal y la presentación Beamer se documentan en el README de la raíz.
+Este documento resume el estado de ambos protocolos. El principal está implementado en `src/fraudetection/` y sus resultados están en `resultados/`. El protocolo auxiliar de 100.000 filas está en `src/fraudetection/reproduction/`, con resultados separados en `resultados/ejecucion/`.
 
 Integrantes: Fernando Alonso Valdés Gómez y Juan Francisco Muñoz Veloso.
 
-## Desarrollo realizado
+## Desarrollo verificado del protocolo auxiliar
 
 - [x] Dataset real identificado, descargado y validado; huella en `resultados/ejecucion/protocolo.json`.
 - [x] Exploración, duplicados y recuentos antes y después de limpieza.
@@ -22,7 +22,7 @@ Integrantes: Fernando Alonso Valdés Gómez y Juan Francisco Muñoz Veloso.
 - [x] README ejecutable, pruebas y auditoría de los artefactos reales.
 - [x] PPTX, PDF y guion con 12 diapositivas principales y cuatro de respaldo.
 
-La fuente de requisitos sigue siendo `IA_2026_P2.pdf`; `informe/pauta.md` conserva la pauta original. Los resultados usados en la entrega están en `resultados/ejecucion/`.
+La fuente de requisitos sigue siendo `IA_2026_P2.pdf`; `metodologia/pauta.md` conserva la pauta original. Los resultados del protocolo principal están en `resultados/`; los del protocolo auxiliar están en `resultados/ejecucion/`.
 
 ## Acciones de los integrantes
 
@@ -36,4 +36,4 @@ El desarrollo y los archivos están preparados. La defensa, la reserva y la subi
 
 ## Verificación final
 
-La [revisión requisito por requisito](revision_final.md) confirma el desarrollo técnico. La suite del repositorio pasa 40 pruebas, de las cuales 24 corresponden a los reajustes del protocolo independiente; una nueva ejecución reprodujo exactamente las particiones, parámetros, métricas y predicciones. Se actualizaron la presentación y la auditoría, y se regeneró el ZIP con esos cambios.
+La [revisión requisito por requisito](revision_final.md) confirma el desarrollo técnico del protocolo independiente. La suite del repositorio pasa 41 pruebas. El número 24 corresponde a los reajustes finales de sus ocho experimentos con tres semillas cada uno, no a pruebas automatizadas. Una nueva ejecución reprodujo exactamente las particiones, parámetros, métricas y predicciones. La entrega conserva ese protocolo auxiliar separado del principal, que usa cinco semillas.

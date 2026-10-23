@@ -1,8 +1,10 @@
 # Revisión final contra el enunciado
 
-Este documento corresponde exclusivamente al protocolo independiente de 100.000 filas de `src/fraudetection/reproduction/`, con resultados en `resultados/ejecucion/`. El protocolo principal y la presentación Beamer se documentan en el README de la raíz.
+Este documento corresponde exclusivamente al protocolo independiente de 100.000 filas de `src/fraudetection/reproduction/`, con resultados en `resultados/ejecucion/`. El protocolo principal y sus presentaciones se documentan en el README de la raíz.
 
-Revisión del 11 de octubre de 2026. Fuente de requisitos: [IA_2026_P2.pdf](../IA_2026_P2.pdf). Integrantes: Fernando Alonso Valdés Gómez y Juan Francisco Muñoz Veloso.
+Revisión del 22 de octubre de 2026. Fuente de requisitos: [IA_2026_P2.pdf](../IA_2026_P2.pdf). Integrantes: Fernando Alonso Valdés Gómez y Juan Francisco Muñoz Veloso.
+
+El cumplimiento descrito aquí corresponde al protocolo auxiliar. Sus tres reajustes están prefijados; la consigna exige media y desviación estándar, sin fijar un número de semillas.
 
 El desarrollo técnico y los documentos de entrega están completos. La exposición oral, la reserva de cita y la subida a Blackboard son acciones pendientes de la dupla.
 
@@ -43,7 +45,7 @@ El desarrollo técnico y los documentos de entrega están completos. La exposici
 ## Comprobaciones ejecutadas
 
 - `ruff check` y `ruff format --check` sin errores.
-- 40 pruebas pasaron en el repositorio; tres de ellas demuestran rechazo de artefactos inconsistentes: semillas duplicadas, condición ausente reemplazada por duplicado y parámetros distintos de la búsqueda.
+- 41 pruebas pasaron en el repositorio; tres de ellas demuestran rechazo de artefactos inconsistentes: semillas duplicadas, condición ausente reemplazada por duplicado y parámetros distintos de la búsqueda.
 - Auditoría de las métricas de las 24 repeticiones a partir de las predicciones guardadas, con cálculos independientes de scikit-learn.
 - Nueva ejecución completa con el mismo protocolo: coincidencia exacta de particiones, candidatos y selección, métricas de los ocho experimentos, características, diagnóstico del bosque y todas las predicciones. Solo difieren los tiempos de ejecución y las marcas temporales. Evidencia en `resultados/ejecucion/verificacion_reproduccion.json`.
 - Descarga desde cero usando la función del proyecto: esquema, 284.807 filas, 492 fraudes y SHA256 idéntico al archivo utilizado.

@@ -1,8 +1,8 @@
 # Pauta de trabajo y aceptación
 
-Fuente: [`IA_2026_P2.pdf`](../../IA_2026_P2.pdf), "Problema 2: Detección de fraude usando técnicas de aprendizaje supervisado", INFO1185, 9 de octubre de 2026. Este documento convierte la consigna en comprobaciones de trabajo. El PDF manda si hay diferencias. La carpeta se llama `informe` para organizar la documentación; **no se solicita informe escrito**.
+Fuente: [`IA_2026_P2.pdf`](../../IA_2026_P2.pdf), "Problema 2: Detección de fraude usando técnicas de aprendizaje supervisado", INFO1185, 9 de octubre de 2026. Este documento convierte la consigna en comprobaciones de trabajo. El PDF manda si hay diferencias. La carpeta `metodologia/` reúne documentación de trabajo; **no se solicita informe escrito**.
 
-**Estado del repositorio al 9 de octubre de 2026:** el pipeline, las ocho comparaciones, las métricas, los gráficos y la presentación Beamer están preparados. Quedan tareas de la dupla que requieren participación personal: ensayar la exposición de 10–12 minutos y entregar el material en Blackboard antes del plazo.
+**Estado del repositorio al 22 de octubre de 2026:** el pipeline, las ocho comparaciones, las métricas, los gráficos y la presentación Beamer están preparados. Los cinco reajustes finales se ejecutan con las cinco semillas predefinidas. Quedan tareas de la dupla que requieren participación personal: ensayar la exposición de 10–12 minutos y entregar el material en Blackboard antes del plazo.
 
 ## Encargo y condiciones generales
 
@@ -58,10 +58,10 @@ Para **cada** clasificador se comparan dos condiciones. La matriz completa tiene
 
 | Clasificador | Sin compensación | Con compensación |
 | --- | --- | --- |
-| k-NN | [ ] | [ ] |
-| Árbol de decisión | [ ] | [ ] |
-| SVM | [ ] | [ ] |
-| Random Forest propio | [ ] | [ ] |
+| k-NN | [x] | [x] |
+| Árbol de decisión | [x] | [x] |
+| SVM | [x] | [x] |
+| Random Forest propio | [x] | [x] |
 
 - [x] Implementar submuestreo aleatorio para los cuatro modelos compensados.
 - [x] Usar la misma estrategia para los cuatro modelos y documentarla.

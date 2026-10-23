@@ -1,6 +1,6 @@
 # Ejecución independiente de 100.000 filas
 
-Este documento corresponde al protocolo independiente de 100.000 filas y tres semillas. La ejecución principal conserva el protocolo del remoto con todo el entrenamiento y cinco semillas; sus resultados están en la raíz de `resultados/` y su presentación es `defensa_fraude.pdf`. Los resultados de este documento están exclusivamente en `resultados/ejecucion/`.
+Este documento corresponde al protocolo auxiliar de 100.000 filas y tres semillas, con resultados exclusivamente en `resultados/ejecucion/`. El principal usa el conjunto limpio completo, cinco semillas y resultados en la raíz de `resultados/`. La consigna no fija una cantidad de semillas; no deben mezclarse las métricas de ambos protocolos.
 
 Proyecto de INFO1185 de **Fernando Alonso Valdés Gómez** y **Juan Francisco Muñoz Veloso**. Compara k-NN, árbol de decisión, SVM y un Random Forest propio para detectar fraude en tarjetas de crédito. Se elige por sensibilidad del fraude y se desempata por precisión, conforme a [la consigna](../IA_2026_P2.pdf).
 
@@ -8,7 +8,7 @@ El procedimiento está implementado y ejecutado con datos reales. Se incluyen lo
 
 ## Ejecución
 
-Requiere Python 3.12 y `uv`. El desarrollo se verificó con Python 3.12.12 y uv 0.9.18. `uv.lock` fija todas las dependencias, incluidas pandas 3.0.6, NumPy 2.5.3, scikit-learn 1.9.1, imbalanced-learn 0.14.2, Matplotlib 3.11.2 y python-pptx 1.0.2.
+Requiere Python 3.12 y `uv`. La ejecución original se preparó con Python 3.12.12 y uv 0.9.18; esta revisión usa Python 3.12.6 y uv 0.12.6. `protocolo.json` conserva Python 3.12.12 como dato histórico. `uv.lock` fija las dependencias, incluidas pandas 3.0.6, NumPy 2.5.3, scikit-learn 1.9.1, imbalanced-learn 0.14.2, Matplotlib 3.11.2 y python-pptx 1.0.2.
 
 Desde la raíz del repositorio:
 
@@ -100,7 +100,7 @@ Para predecir otro CSV con los 30 predictores sin reajustar:
 uv run --locked fraudetection predict --data ruta/transacciones.csv --output resultados/predicciones_nuevas.csv
 ```
 
-La [revisión final](../documentacion/revision_final.md) documenta el cumplimiento requisito por requisito. Una segunda ejecución con el mismo protocolo reprodujo exactamente las métricas, parámetros, particiones y predicciones; la evidencia está en `verificacion_reproduccion.json`. Pasaron 24 pruebas.
+La [revisión final](../documentacion/revision_final.md) documenta el cumplimiento de la consigna para este protocolo independiente. Una segunda ejecución con el mismo protocolo reprodujo exactamente las métricas, parámetros, particiones y predicciones; la evidencia está en `verificacion_reproduccion.json`. La suite completa del repositorio pasó 41 pruebas.
 
 ## Entrega
 

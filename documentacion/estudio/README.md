@@ -21,7 +21,7 @@ Para cada pregunta, preparar una respuesta con una referencia al archivo o funci
 
 ## Respuestas con los resultados del proyecto
 
-1. En el dataset original, predecir todo como legítimo logra 99,827 % de exactitud y 0 % de sensibilidad. En el conjunto limpio y en la partición de prueba, la exactitud sería 99,833 %. En ambos casos no se detecta ningún fraude; ver [exploración](../informe/exploracion.md).
+1. En el dataset original, predecir todo como legítimo logra 99,827 % de exactitud y 0 % de sensibilidad. En el conjunto limpio y en la partición de prueba, la exactitud sería 99,833 %. En ambos casos no se detecta ningún fraude; ver [exploración](../metodologia/exploracion.md).
 2. `TP` son fraudes detectados, `FN` fraudes omitidos, `FP` transacciones legítimas marcadas como fraude y `TN` legítimas reconocidas. `FNR = FN / (TP + FN)` mide la fracción de fraudes que se escapan.
 3. Se limpia antes de dividir para evitar copias idénticas entre train y test. La selección ANOVA, el escalado y RandomUnderSampler viven dentro de la tubería de cada pliegue en [`experiments.py`](../../src/fraudetection/experiments.py); el test queda intacto.
 4. La estratificación conserva ejemplos de fraude en cada partición. El entrenamiento tiene 331 fraudes; se usa una submuestra estratificada de 50.000 filas (83 fraudes) para que la búsqueda de k-NN sea viable y comparable con los mismos cinco pliegues.
