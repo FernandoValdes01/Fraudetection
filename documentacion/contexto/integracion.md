@@ -11,4 +11,4 @@ Los módulos del protocolo independiente se movieron a un subpaquete para conser
 
 La suite combinada contiene 41 pruebas. La auditoría independiente sigue comprobando sus ocho condiciones y 24 reajustes. El empaquetado incorpora el código, documentación, resultados y presentaciones de ambos protocolos, sin dataset ni modelos binarios locales.
 
-Para preparar la defensa principal, seguir el README de la raíz y `documentacion/presentacion/README.md`. Para reproducir o auditar el segundo protocolo, seguir `documentacion/reproduccion.md`. No combinar métricas de las dos ejecuciones en una tabla como si compartieran partición o espacio de búsqueda.
+Para preparar la defensa principal, seguir el README de la raíz y `documentacion/presentacion/README.md`. Para reproducir o auditar el segundo protocolo, seguir `documentacion/contexto/reproduccion.md`. No combinar métricas de las dos ejecuciones en una tabla como si compartieran partición o espacio de búsqueda.

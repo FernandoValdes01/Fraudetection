@@ -40,13 +40,13 @@ La validación seleccionó el bosque compensado, con 21 árboles y profundidad 6
 | `data/raw/` | CSV local, excluido de Git y de la entrega. |
 | `resultados/` | Resultados y gráficos del protocolo principal. |
 | `resultados/ejecucion/` | Resultados separados del protocolo auxiliar. |
-| `documentacion/metodologia/` | Pauta y exploración del dataset. |
-| `documentacion/presentacion/` | Presentaciones y guiones. |
+| `documentacion/contexto/` | Pauta, exploración, reproducción y antecedentes de entrega. |
+| `documentacion/presentacion/` | Versiones separadas en `canva/` y `beamer/`. |
 | `documentacion/estudio/` | Material para preparar la defensa. |
 | `scripts/package_delivery.py` | Generación del ZIP y manifiesto SHA256. |
 | `entrega/` | Manifiesto versionado y ZIP local regenerable. |
 
-El [enunciado original](IA_2026_P2.pdf) exige código, README, presentación y defensa de ambos integrantes de 10–12 minutos. **No exige informe escrito.** Consultar la [pauta](documentacion/metodologia/pauta.md) y la [documentación](documentacion/README.md).
+El [enunciado original](IA_2026_P2.pdf) exige código, README, presentación y defensa de ambos integrantes de 10–12 minutos. **No exige informe escrito.** Consultar la [pauta](documentacion/contexto/pauta.md) y la [documentación](documentacion/README.md).
 
 ## Presentación
 
@@ -64,6 +64,6 @@ uv run --locked python scripts/package_delivery.py
 
 La auditoría del comando `fraudetection audit` verifica los artefactos auxiliares. La suite completa contiene 41 pruebas. El ZIP incluye código, dependencias, resultados, documentación y presentaciones, sin dataset, entorno virtual ni modelos binarios locales.
 
-El protocolo auxiliar conserva una muestra estratificada de 100.000 filas y tres semillas. La consigna no fija el número de repeticiones. Sus instrucciones están en [reproducción](documentacion/reproduccion.md) y la separación de protocolos en [integración](documentacion/integracion.md).
+El protocolo auxiliar conserva una muestra estratificada de 100.000 filas y tres semillas. La consigna no fija el número de repeticiones. Sus instrucciones están en [reproducción](documentacion/contexto/reproduccion.md) y la separación de protocolos en [integración](documentacion/contexto/integracion.md).
 
 Entrega en Blackboard: **26 de octubre de 2026, 23:59**. Reserva de defensa: **27–28 de octubre**. La subida, la reserva y el ensayo de ambos integrantes siguen siendo acciones personales.

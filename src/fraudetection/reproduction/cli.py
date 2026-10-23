@@ -31,7 +31,9 @@ def main():
     report = commands.add_parser("report", help="Generar gráficos, análisis HTML y presentación")
     report.add_argument("--input", type=Path, default=Path("resultados/ejecucion"))
     report.add_argument(
-        "--presentation", type=Path, default=Path("documentacion/presentacion/fraudetection.pptx")
+        "--presentation",
+        type=Path,
+        default=Path("documentacion/contexto/presentaciones_anteriores/fraudetection.pptx"),
     )
     audit = commands.add_parser("audit", help="Verificar resultados guardados sin reentrenar")
     audit.add_argument("--input", type=Path, default=Path("resultados/ejecucion"))

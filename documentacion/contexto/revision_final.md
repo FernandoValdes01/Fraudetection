@@ -2,7 +2,7 @@
 
 Este documento corresponde exclusivamente al protocolo independiente de 100.000 filas de `src/fraudetection/reproduction/`, con resultados en `resultados/ejecucion/`. El protocolo principal y sus presentaciones se documentan en el README de la raíz.
 
-Revisión del 22 de octubre de 2026. Fuente de requisitos: [IA_2026_P2.pdf](../IA_2026_P2.pdf). Integrantes: Fernando Alonso Valdés Gómez y Juan Francisco Muñoz Veloso.
+Revisión del 22 de octubre de 2026. Fuente de requisitos: [IA_2026_P2.pdf](../../IA_2026_P2.pdf). Integrantes: Fernando Alonso Valdés Gómez y Juan Francisco Muñoz Veloso.
 
 El cumplimiento descrito aquí corresponde al protocolo auxiliar. Sus tres reajustes están prefijados; la consigna exige media y desviación estándar, sin fijar un número de semillas.
 

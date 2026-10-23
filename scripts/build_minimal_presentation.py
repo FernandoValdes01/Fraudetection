@@ -15,7 +15,7 @@ from fraudetection.experiments import MODEL_LABELS, MODEL_ORDER, PARAMETER_GRIDS
 from fraudetection.formatting import es_number
 
 ROOT = Path(__file__).resolve().parents[1]
-OUT = ROOT / "documentacion/presentacion/presentacion.pptx"
+OUT = ROOT / "documentacion/presentacion/canva/presentacion.pptx"
 PAPER = "FFFFFF"
 INK = "171717"
 TEAL = "2563EB"

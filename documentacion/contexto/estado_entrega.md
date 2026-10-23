@@ -22,7 +22,7 @@ Integrantes: Fernando Alonso Valdés Gómez y Juan Francisco Muñoz Veloso.
 - [x] README ejecutable, pruebas y auditoría de los artefactos reales.
 - [x] PPTX, PDF y guion con 12 diapositivas principales y cuatro de respaldo.
 
-La fuente de requisitos sigue siendo `IA_2026_P2.pdf`; `metodologia/pauta.md` conserva la pauta original. Los resultados del protocolo principal están en `resultados/`; los del protocolo auxiliar están en `resultados/ejecucion/`.
+La fuente de requisitos sigue siendo `IA_2026_P2.pdf`; `contexto/pauta.md` conserva la pauta original. Los resultados del protocolo principal están en `resultados/`; los del protocolo auxiliar están en `resultados/ejecucion/`.
 
 ## Acciones de los integrantes
 

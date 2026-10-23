@@ -1,6 +1,6 @@
 # Guion de la defensa principal
 
-La presentación usa exclusivamente el protocolo principal: 283.726 filas limpias, 198.608 de entrenamiento y 85.118 de prueba, con 142 fraudes. Los archivos `fraudetection.pdf` y `guion_defensa.md` corresponden al protocolo auxiliar de 100.000 filas; sus cifras no se mezclan.
+La presentación usa exclusivamente el protocolo principal: 283.726 filas limpias, 198.608 de entrenamiento y 85.118 de prueba, con 142 fraudes. Los archivos [fraudetection.pdf](../contexto/presentaciones_anteriores/fraudetection.pdf) y [guion_defensa.md](guion_defensa.md) corresponden al protocolo auxiliar de 100.000 filas; sus cifras no se mezclan.
 
 La nueva presentación tiene 12 diapositivas principales y cuatro respaldos. El siguiente reparto propone 11 minutos y debe comprobarse mediante ensayo con cronómetro. Ambos integrantes deben conocer todo el código.
 
@@ -31,4 +31,4 @@ Las páginas 13–16 son respaldos para preguntas: parámetros y CV; seis métri
 | ¿Qué significa la desviación estándar? | CV describe diferencias entre pliegues; prueba describe diferencias entre ajustes sobre los mismos casos. |
 | ¿Qué pasa al predecir todo como fraude? | Sensibilidad 100 %, especificidad 0 % y 84.976 falsas alarmas en el test principal. |
 
-Para ejecutar o mostrar código, tener preparados `forest.py`, `experiments.py`, `resultados/cv_resumen.csv` y `resultados/test_resumen.csv`. La [exploración](../metodologia/exploracion.md) explica los recuentos y las decisiones de limpieza.
+Para ejecutar o mostrar código, tener preparados `forest.py`, `experiments.py`, `resultados/cv_resumen.csv` y `resultados/test_resumen.csv`. La [exploración](../contexto/exploracion.md) explica los recuentos y las decisiones de limpieza.

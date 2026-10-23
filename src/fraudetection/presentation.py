@@ -972,7 +972,7 @@ def main() -> None:
     parser.add_argument(
         "--deck",
         type=Path,
-        default=Path("documentacion/presentacion/defensa_fraude.pptx"),
+        default=Path("documentacion/contexto/presentaciones_anteriores/defensa_fraude.pptx"),
     )
     args = parser.parse_args()
     metadata = build_report(args.dataset, args.results_dir, args.deck)

@@ -2,7 +2,7 @@
 
 Este documento corresponde al protocolo auxiliar de 100.000 filas y tres semillas, con resultados exclusivamente en `resultados/ejecucion/`. El principal usa el conjunto limpio completo, cinco semillas y resultados en la raíz de `resultados/`. La consigna no fija una cantidad de semillas; no deben mezclarse las métricas de ambos protocolos.
 
-Proyecto de INFO1185 de **Fernando Alonso Valdés Gómez** y **Juan Francisco Muñoz Veloso**. Compara k-NN, árbol de decisión, SVM y un Random Forest propio para detectar fraude en tarjetas de crédito. Se elige por sensibilidad del fraude y se desempata por precisión, conforme a [la consigna](../IA_2026_P2.pdf).
+Proyecto de INFO1185 de **Fernando Alonso Valdés Gómez** y **Juan Francisco Muñoz Veloso**. Compara k-NN, árbol de decisión, SVM y un Random Forest propio para detectar fraude en tarjetas de crédito. Se elige por sensibilidad del fraude y se desempata por precisión, conforme a [la consigna](../../IA_2026_P2.pdf).
 
 El procedimiento está implementado y ejecutado con datos reales. Se incluyen los ocho experimentos, búsquedas, métricas, gráficos, análisis y presentación. No se necesita informe escrito.
 
@@ -18,14 +18,14 @@ uv sync --locked
 uv run --locked fraudetection download
 uv run --locked fraudetection run --output resultados/reproduccion --sample-size 100000 --jobs 2
 uv run --locked fraudetection audit --input resultados/reproduccion
-uv run --locked fraudetection report --input resultados/reproduccion --presentation documentacion/presentacion/reproduccion.pptx
+uv run --locked fraudetection report --input resultados/reproduccion --presentation documentacion/contexto/presentaciones_anteriores/reproduccion.pptx
 ```
 
 La descarga obtiene la copia pública del dataset Kaggle usada por [TensorFlow](https://www.tensorflow.org/tutorials/structured_data/imbalanced_data), comprueba columnas y recuentos y no sobrescribe archivos. También se puede descargar `creditcard.csv` desde [Kaggle](https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud) y guardarlo en `data/raw/creditcard.csv`. No hace falta una cuenta de Kaggle para el comando de descarga. El CSV no se adjunta a la entrega ni se versiona.
 
 Cada ejecución necesita un directorio de salida nuevo para conservar los experimentos anteriores. `--sample-size 0` utiliza todo el conjunto limpio, con mayor costo. La ejecución entregada de 100.000 filas tardó unos 2,4 minutos en esta máquina; el tiempo depende del equipo. `--jobs 1` reduce el paralelismo.
 
-Los resultados ya obtenidos están en [resultados/ejecucion](../resultados/ejecucion/). Para inspeccionarlos sin reentrenar:
+Los resultados ya obtenidos están en [resultados/ejecucion](../../resultados/ejecucion). Para inspeccionarlos sin reentrenar:
 
 ```bash
 uv run --locked fraudetection audit
@@ -35,7 +35,7 @@ uv run --locked fraudetection report
 El segundo comando regenera los gráficos, `analisis.html`, `analisis.md`, la presentación y el guion de defensa. Para exportar las diapositivas a PDF se requiere LibreOffice, disponible en el equipo donde se preparó la entrega:
 
 ```bash
-libreoffice -env:UserInstallation=file:///tmp/fraudetection-office --headless --convert-to pdf --outdir documentacion/presentacion documentacion/presentacion/fraudetection.pptx
+libreoffice -env:UserInstallation=file:///tmp/fraudetection-office --headless --convert-to pdf --outdir documentacion/contexto/presentaciones_anteriores documentacion/contexto/presentaciones_anteriores/fraudetection.pptx
 ```
 
 También se puede abrir el PPTX en PowerPoint o LibreOffice y exportarlo manualmente.
@@ -61,7 +61,7 @@ Son 80 ajustes de validación y 24 reajustes finales. La grilla es deliberadamen
 
 ## Random Forest propio
 
-[forest.py](../src/fraudetection/reproduction/forest.py) implementa `fit`, `predict` y proporciones de votos. Por árbol genera una semilla distinta derivada de la general y una muestra bootstrap de igual tamaño que el entrenamiento disponible, con reemplazo. Ajusta un `DecisionTreeClassifier` independiente que selecciona variables aleatorias en cada división mediante `max_features`. Combina etiquetas por mayoría, sin promediar probabilidades de los árboles. Exige un número impar de árboles y dos clases en el entrenamiento; admite bootstrap que omitan una clase.
+[forest.py](../../src/fraudetection/reproduction/forest.py) implementa `fit`, `predict` y proporciones de votos. Por árbol genera una semilla distinta derivada de la general y una muestra bootstrap de igual tamaño que el entrenamiento disponible, con reemplazo. Ajusta un `DecisionTreeClassifier` independiente que selecciona variables aleatorias en cada división mediante `max_features`. Combina etiquetas por mayoría, sin promediar probabilidades de los árboles. Exige un número impar de árboles y dos clases en el entrenamiento; admite bootstrap que omitan una clase.
 
 El número de árboles, profundidad, variables por división, tamaño mínimo de hoja y semilla son configurables. Es compatible con `clone`, `Pipeline` y `GridSearchCV`. No usa `RandomForestClassifier` ni `BaggingClassifier`. Las fracciones de votos no son probabilidades calibradas. Las semillas y cantidades de filas únicas por bootstrap se exportan en `bosque_diagnostico.json`.
 
@@ -69,7 +69,7 @@ El número de árboles, profundidad, variables por división, tamaño mínimo de
 
 Se eligió **árbol con compensación**, profundidad libre y hoja mínima 2, por sensibilidad de validación de **87,14 ± 2,87 %**. En test obtuvo sensibilidad **75,33 ± 4,62 %**, precisión **7,02 ± 0,55 %** y **500,33 ± 42,44 falsas alarmas** por ajuste. La selección se conserva aunque otro modelo tenga mayor sensibilidad en test.
 
-Las seis métricas para las ocho condiciones están en [prueba_resumen.csv](../resultados/ejecucion/prueba_resumen.csv); los conteos enteros de cada repetición están en [prueba_repeticiones.csv](../resultados/ejecucion/prueba_repeticiones.csv). La compensación aumentó la sensibilidad en los cuatro modelos, con más falsas alarmas. El bosque compensado obtuvo sensibilidad 80,67 ± 2,31 % y precisión 60,42 ± 8,07 %, con 27,33 ± 9,07 falsas alarmas, sin sustituir al ganador de validación.
+Las seis métricas para las ocho condiciones están en [prueba_resumen.csv](../../resultados/ejecucion/prueba_resumen.csv); los conteos enteros de cada repetición están en [prueba_repeticiones.csv](../../resultados/ejecucion/prueba_repeticiones.csv). La compensación aumentó la sensibilidad en los cuatro modelos, con más falsas alarmas. El bosque compensado obtuvo sensibilidad 80,67 ± 2,31 % y precisión 60,42 ± 8,07 %, con 27,33 ± 9,07 falsas alarmas, sin sustituir al ganador de validación.
 
 La desviación de CV usa `ddof=0` entre cinco pliegues. La de test usa `ddof=1` entre tres ajustes sobre un mismo test. Esta última mide variación del ajuste, no incertidumbre de muestreo ni un intervalo de confianza; modelos deterministas pueden tener desviación cero. El test solo contiene 50 fraudes, por lo que cada error representa dos puntos de sensibilidad por repetición. La muestra, la grilla acotada, ANOVA marginal y la partición aleatoria limitan las conclusiones. No se valida generalización temporal ni a otros bancos.
 
@@ -83,7 +83,7 @@ La desviación de CV usa `ddof=0` entre cinco pliegues. La de test usa `ddof=1` 
 - `prueba_repeticiones.csv`, `prueba_resumen.csv`, `predicciones.csv.gz`: valores individuales, agregados y predicciones auditables.
 - `graficos/`, `analisis.html`, `analisis.md`: gráficos, matrices y análisis derivados de esos datos.
 - `modelo_elegido.joblib`: pipeline local del ganador con semilla 42, generado por `run`, excluido de Git y del ZIP.
-- [Presentación PPTX](../documentacion/presentacion/fraudetection.pptx), [PDF](../documentacion/presentacion/fraudetection.pdf) y [guion](../documentacion/presentacion/guion_defensa.md): 12 diapositivas principales y cuatro de respaldo, con nombres de ambos integrantes.
+- [Presentación PPTX](presentaciones_anteriores/fraudetection.pptx), [PDF](presentaciones_anteriores/fraudetection.pdf) y [guion](../estudio/guion_defensa.md): 12 diapositivas principales y cuatro de respaldo, con nombres de ambos integrantes.
 
 ```bash
 uv run --locked ruff check src tests scripts
@@ -100,7 +100,7 @@ Para predecir otro CSV con los 30 predictores sin reajustar:
 uv run --locked fraudetection predict --data ruta/transacciones.csv --output resultados/predicciones_nuevas.csv
 ```
 
-La [revisión final](../documentacion/revision_final.md) documenta el cumplimiento de la consigna para este protocolo independiente. Una segunda ejecución con el mismo protocolo reprodujo exactamente las métricas, parámetros, particiones y predicciones; la evidencia está en `verificacion_reproduccion.json`. La suite completa del repositorio pasó 41 pruebas.
+La [revisión final](revision_final.md) documenta el cumplimiento de la consigna para este protocolo independiente. Una segunda ejecución con el mismo protocolo reprodujo exactamente las métricas, parámetros, particiones y predicciones; la evidencia está en `verificacion_reproduccion.json`. La suite completa del repositorio pasó 41 pruebas.
 
 ## Entrega
 
