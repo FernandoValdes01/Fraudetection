@@ -34,6 +34,16 @@ El primer comando inspecciona el CSV. El segundo realiza las ocho búsquedas y e
 
 La partición estratificada 70/30 usa semilla 42: 198.608 filas de entrenamiento y 85.118 de prueba, con 142 fraudes en prueba. La búsqueda usa una submuestra estratificada fija de 50.000 filas de entrenamiento, con 83 fraudes, y cinco pliegues comunes. Escalado, ANOVA F de 20 variables y submuestreo se ajustan exclusivamente sobre el entrenamiento de cada pliegue. Las configuraciones seleccionadas se reajustan con todo el entrenamiento usando las semillas 42, 101, 202, 303 y 404, sobre el mismo test reservado.
 
+El submuestreo aleatorio usa `RandomUnderSampler(sampling_strategy=0.1)`: conserva todos los fraudes y selecciona diez transacciones legítimas por cada fraude. La submuestra de búsqueda contiene 49.917 legítimas y 83 fraudes. Los recuentos de entrenamiento antes y después de compensar son los mismos para los cuatro clasificadores:
+
+| Datos de entrenamiento | Legítimas antes | Fraudes antes | Legítimas después | Fraudes después |
+| --- | ---: | ---: | ---: | ---: |
+| Pliegues 1 y 2, cada uno | 39.933 | 67 | 670 | 67 |
+| Pliegues 3, 4 y 5, cada uno | 39.934 | 66 | 660 | 66 |
+| Reajuste final con todo el entrenamiento | 198.277 | 331 | 3.310 | 331 |
+
+Las condiciones sin compensación conservan los recuentos de las columnas «antes». Validación y prueba no se remuestrean; el test mantiene sus 84.976 legítimas y 142 fraudes. Las semillas cambian qué legítimas se seleccionan, pero no estos recuentos.
+
 Los resultados principales están en `resultados/cv_resumen.csv`, `test_resumen.csv`, `test_repeticiones.csv`, `caracteristicas_seleccionadas.csv`, `seleccion_cv.json`, `predicciones_configuracion_cv.csv` y `metadata.json`. Las figuras están en `resultados/graficos/`. Se pueden consultar sin descargar el dataset.
 
 El ganador de CV es el bosque compensado de 21 árboles y profundidad 6, con sensibilidad de validación 87,9 % ± 5,5 pp. En prueba obtiene sensibilidad 80,4 % ± 0,3 pp, FNR 19,6 % ± 0,3 pp y precisión 67,5 % ± 4,6 pp. La desviación en prueba describe cinco ajustes sobre un mismo test, no cinco tests independientes.
