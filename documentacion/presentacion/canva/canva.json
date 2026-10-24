@@ -33,5 +33,17 @@
   "native_pdf": "Detección de fraude.pdf",
   "delivery_pdf": "Detección de fraude.pdf",
   "native_pdf_is_canva_export": true,
-  "native_pdf_sha256": "ff383902b847f3dbdeff09982cfb811026a875ee2272391015e33612b9aabb32"
+  "native_pdf_sha256": "298943af49bfcb7dab8c4c8ad76a7cbb1dc50324540713d71cfaedd56e523e7d",
+  "clarity_revision": {
+    "date": "2026-10-24",
+    "pages": [
+      4,
+      5,
+      6,
+      8
+    ],
+    "saved": true,
+    "native_pdf_updated": true,
+    "verification": "16 páginas; contenido de las otras 12 páginas sin cambios respecto del PDF anterior."
+  }
 }

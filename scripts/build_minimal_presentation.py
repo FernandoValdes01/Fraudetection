@@ -152,7 +152,7 @@ def bar_chart(
     color_key=None,
 ):
     left = x + 1.55
-    chart_w = w - 2.25
+    chart_w = w - 3.15
     row_h = h / len(rows)
     for i, row in enumerate(rows):
         cy = y + i * row_h
@@ -185,7 +185,7 @@ def bar_chart(
             slide,
             left + chart_w + 0.08,
             cy + 0.01,
-            1.25,
+            1.65,
             row_h - 0.02,
             val,
             size=10,
@@ -487,13 +487,26 @@ def run():
         size=16,
     )
 
+    textbox(
+        s,
+        1.1,
+        5.9,
+        10.8,
+        0.65,
+        f"Búsqueda con {es_number(metadata['search_sample_rows'])} filas; "
+        f"reajuste final sobre las {es_number(metadata['train_rows'])} filas de entrenamiento, "
+        "con el submuestreo correspondiente a cada condición.",
+        size=14,
+        col=MUTED,
+    )
+
     # 5. Experimentos
     s = add_slide(
         prs,
         5,
         "Método",
         "Ocho condiciones, una comparación controlada",
-        "Cada clasificador se prueba sin compensación y con submuestreo 1:10.",
+        "Dos condiciones: sin compensación y submuestreo de 1 fraude por cada 10 legítimas.",
     )
     transformations = {
         "knn": "StandardScaler · ANOVA F top 20",
@@ -534,9 +547,9 @@ def run():
         5.45,
         5.6,
         1.35,
-        "ANOVA F es marginal y rápido; fijamos top 20. El submuestreo conserva fraudes "
-        "y reduce el costo de train, pero descarta legítimas. Escalar importa para "
-        "distancias y regularización.",
+        "Seleccionamos las 20 variables con mayor puntuación ANOVA F, un criterio marginal. "
+        "El submuestreo conserva fraudes, pero descarta legítimas. "
+        "Escalar importa para distancias y regularización.",
         size=12,
         col=MUTED,
         valign=MSO_ANCHOR.TOP,
@@ -554,7 +567,12 @@ def run():
         ),
     )
     steps = [
-        ("01", "Bootstrap", "Cada árbol recibe una muestra del tamaño del train, con reemplazo."),
+        (
+            "01",
+            "Bootstrap",
+            "Muestra con reemplazo, del tamaño del train de cada condición; "
+            "ya submuestreado cuando corresponde.",
+        ),
         (
             "02",
             "Árbol diverso",
@@ -563,7 +581,12 @@ def run():
                 "max_features='sqrt' en cada división."
             ),
         ),
-        ("03", "fit() / predict()", "predict suma votos; el empate favorece fraude."),
+        (
+            "03",
+            "Legítima o fraude",
+            "predict suma los votos de los árboles; "
+            "el empate favorece fraude. fit y predict están separados.",
+        ),
     ]
     for i, (num, heading, body) in enumerate(steps):
         xx = 0.9 + i * 4.05
@@ -681,7 +704,7 @@ def run():
         6.45,
         10.8,
         0.32,
-        "Selección por sensibilidad media; precisión media resuelve empates.",
+        "Mayor media observada; no demuestra superioridad estadística. La precisión desempata.",
         size=10,
         col=MUTED,
     )

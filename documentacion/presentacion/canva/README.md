@@ -1,5 +1,7 @@
 # Versión Canva y copias locales
 
+**Revisión del 24 de octubre:** las correcciones de claridad de las páginas 4, 5, 6 y 8 están guardadas en Canva y en el PDF nativo. Se verificaron las 16 páginas y el contenido de las otras 12 permanece igual. Las copias automáticas incorporan las mismas aclaraciones con una composición diferente.
+
 - [Editar en Canva](https://canva.link/g838er8qsmu3bic). La referencia del diseño está en [canva.json](canva.json).
 - [PDF final exportado de Canva](Detección%20de%20fraude.pdf), listo para abrir sin conexión y usado en la entrega.
 - [PDF automático de respaldo](presentacion.pdf), con composición diferente.
