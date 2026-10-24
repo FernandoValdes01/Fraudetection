@@ -36,4 +36,6 @@ El desarrollo y los archivos están preparados. La defensa, la reserva y la subi
 
 ## Verificación final
 
-La [revisión requisito por requisito](revision_final.md) confirma el desarrollo técnico del protocolo independiente. La suite del repositorio pasa 41 pruebas. El número 24 corresponde a los reajustes finales de sus ocho experimentos con tres semillas cada uno, no a pruebas automatizadas. Una nueva ejecución reprodujo exactamente las particiones, parámetros, métricas y predicciones. La entrega conserva ese protocolo auxiliar separado del principal, que usa cinco semillas.
+La [revisión requisito por requisito](revision_final.md) confirma el desarrollo técnico del protocolo independiente. La suite del repositorio pasa 43 pruebas, incluidas dos comprobaciones del empaquetado. El número 24 corresponde a los reajustes finales de sus ocho experimentos con tres semillas cada uno, no a pruebas automatizadas. Una nueva ejecución reprodujo exactamente las particiones, parámetros, métricas y predicciones. La entrega conserva ese protocolo auxiliar separado del principal, que usa cinco semillas.
+
+La presentación final es el PDF nativo `documentacion/presentacion/canva/Detección de fraude.pdf`. El ZIP contiene ese PDF y las instrucciones de ejecución junto con código, pruebas y resultados. El material de estudio, los guiones, los antecedentes y las presentaciones anteriores quedan fuera por una lista explícita de entradas.

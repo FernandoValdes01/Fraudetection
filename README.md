@@ -50,7 +50,7 @@ El [enunciado original](IA_2026_P2.pdf) exige código, README, presentación y d
 
 ## Presentación
 
-La nueva presentación editable está en [Canva](https://canva.link/g838er8qsmu3bic). Ver [presentaciones, copias locales y guiones](documentacion/presentacion/README.md). Los resultados del protocolo principal y del auxiliar tienen muestras, modelos y ganadores distintos; cada presentación identifica su protocolo.
+La nueva presentación editable está en [Canva](https://canva.link/g838er8qsmu3bic). El [PDF final exportado de Canva](documentacion/presentacion/canva/Detección%20de%20fraude.pdf) es la presentación de entrega. Ver [presentaciones, copias locales y guiones](documentacion/presentacion/README.md). Los resultados del protocolo principal y del auxiliar tienen muestras, modelos y ganadores distintos; cada presentación identifica su protocolo.
 
 ## Verificar y empaquetar
 
@@ -62,7 +62,7 @@ uv run --locked fraudetection audit
 uv run --locked python scripts/package_delivery.py
 ```
 
-La auditoría del comando `fraudetection audit` verifica los artefactos auxiliares. La suite completa contiene 41 pruebas. El ZIP incluye código, dependencias, resultados, documentación y presentaciones, sin dataset, entorno virtual ni modelos binarios locales.
+La auditoría del comando `fraudetection audit` verifica los artefactos auxiliares. El ZIP incluye código, dependencias, pruebas, resultados, el PDF final exportado de Canva y un README de [ejecución](documentacion/ejecucion.md). Excluye material de estudio, guiones, antecedentes, presentaciones anteriores, dataset, entorno virtual y modelos binarios locales. `entrega/manifest.json` registra exclusivamente los archivos del ZIP.
 
 El protocolo auxiliar conserva una muestra estratificada de 100.000 filas y tres semillas. La consigna no fija el número de repeticiones. Sus instrucciones están en [reproducción](documentacion/contexto/reproduccion.md) y la separación de protocolos en [integración](documentacion/contexto/integracion.md).
 

@@ -100,7 +100,7 @@ Para predecir otro CSV con los 30 predictores sin reajustar:
 uv run --locked fraudetection predict --data ruta/transacciones.csv --output resultados/predicciones_nuevas.csv
 ```
 
-La [revisión final](revision_final.md) documenta el cumplimiento de la consigna para este protocolo independiente. Una segunda ejecución con el mismo protocolo reprodujo exactamente las métricas, parámetros, particiones y predicciones; la evidencia está en `verificacion_reproduccion.json`. La suite completa del repositorio pasó 41 pruebas.
+La [revisión final](revision_final.md) documenta el cumplimiento de la consigna para este protocolo independiente. Una segunda ejecución con el mismo protocolo reprodujo exactamente las métricas, parámetros, particiones y predicciones; la evidencia está en `verificacion_reproduccion.json`. La suite completa del repositorio verifica ambos protocolos.
 
 ## Entrega
 
@@ -108,7 +108,7 @@ La [revisión final](revision_final.md) documenta el cumplimiento de la consigna
 uv run --locked python scripts/package_delivery.py
 ```
 
-Crea `entrega/fraudetection_entrega.zip` con código, dependencias, pruebas, resultados, documentación, PPTX, PDF y un manifiesto SHA256. Excluye el CSV, el entorno y los modelos binarios locales. Para reproducirlo, descomprimir, abrir una terminal en esa carpeta y seguir los comandos de ejecución. La descarga y el entrenamiento regeneran el modelo.
+Crea `entrega/fraudetection_entrega.zip` con código, dependencias, pruebas, resultados, instrucciones de ejecución, el PDF final de Canva y un manifiesto SHA256. Excluye material de estudio, guiones, antecedentes y presentaciones anteriores. Excluye el CSV, el entorno y los modelos binarios locales. Para reproducirlo, descomprimir, abrir una terminal en esa carpeta y seguir los comandos de ejecución. La descarga y el entrenamiento regeneran el modelo.
 
 La entrega es por Blackboard el 26 de octubre de 2026 a las 23:59. La reserva de defensa corresponde al 27–28 de octubre. Ambos integrantes deben estudiar el código y practicar una exposición de 10–12 minutos; la ejecución automática no reemplaza la defensa. No se ha subido ningún archivo a Blackboard.
 

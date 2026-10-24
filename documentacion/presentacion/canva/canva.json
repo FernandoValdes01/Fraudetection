@@ -12,7 +12,7 @@
   "offline_pdf": "presentacion.pdf",
   "offline_source": "../../../scripts/build_minimal_presentation.py",
   "offline_files_are_native_canva_exports": false,
-  "native_export_instructions": "Abrir el diseño en Canva y usar Compartir > Descargar > PDF estándar o Microsoft PowerPoint. Los archivos locales son una versión reproducible, con composición diferente.",
+  "native_export_instructions": "Exportar desde Canva a Detección de fraude.pdf y regenerar el ZIP. presentacion.pdf y presentacion.pptx son respaldos automáticos de composición diferente.",
   "final_edits_pending_user_approval": false,
   "final_edits_saved": true,
   "aesthetic_refinement": {
@@ -29,5 +29,9 @@
       "recursos/busqueda.svg",
       "recursos/prueba.svg"
     ]
-  }
+  },
+  "native_pdf": "Detección de fraude.pdf",
+  "delivery_pdf": "Detección de fraude.pdf",
+  "native_pdf_is_canva_export": true,
+  "native_pdf_sha256": "ff383902b847f3dbdeff09982cfb811026a875ee2272391015e33612b9aabb32"
 }
