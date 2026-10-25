@@ -1,5 +1,7 @@
 # Presentación principal
 
+**Canva tiene ahora 22 diapositivas guardadas: 18 principales y 4 respaldos.** Incluye seis láminas didácticas nuevas y resultados simplificados con RF destacado. El PDF nativo local, las copias automáticas y Beamer corresponden a versiones anteriores; aún debe exportarse la actualización de Canva.
+
 Las dos versiones usan el protocolo principal: 283.726 filas limpias, 198.608 de entrenamiento y 85.118 de prueba. Los resultados auxiliares se conservan en [contexto](../contexto/README.md#presentaciones-anteriores).
 
 | Versión | Edición y archivos | Diferencia |

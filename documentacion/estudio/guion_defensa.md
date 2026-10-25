@@ -18,7 +18,7 @@ Integrante 1: explicar que validación y test no se balancean. Cada pliegue ajus
 
 Integrante 1: ANOVA detecta diferencias marginales de medias, pero no todas las interacciones. k=20 se fijó antes de evaluar. Escalamos k-NN y SVM porque usan distancias; árboles no lo necesitan. Ratio 0.1 retiene diez legítimas por fraude y todos los fraudes del entrenamiento del pliegue. Los recuentos están guardados.
 
-## 5. Un bosque construido por la dupla
+## 5. Un Random Forest construido por la dupla
 
 Integrante 2: recorrer forest.py. Cada árbol recibe n índices con reemplazo, por eso hay repeticiones. Usamos semillas distintas y max_features=sqrt en cada división. El bootstrap parte del train disponible, ya compensado si corresponde. No usamos RandomForestClassifier ni BaggingClassifier. Los votos son etiquetas.
 
@@ -28,7 +28,7 @@ Integrante 2: comparar vecindades, profundidad y regularización. Se fijan 31 á
 
 ## 7. Búsqueda acotada, selección por sensibilidad
 
-Integrante 2: k-NN compara k=3/7; árbol profundidad 6/libre; SVM RBF C=1/10; bosque profundidad 8/libre. Árbol y bosque fijan dos ejemplos por hoja. Estos espacios exploran suavidad, complejidad y regularización a costo acotado. La tabla usa sensibilidad media y desviación entre pliegues. Empate por precisión.
+Integrante 2: k-NN compara k=3/7; árbol profundidad 6/libre; SVM RBF C=1/10; Random Forest profundidad 8/libre. Árbol de decisión y Random Forest fijan dos ejemplos por hoja. Estos espacios exploran suavidad, complejidad y regularización a costo acotado. La tabla usa sensibilidad media y desviación entre pliegues. Empate por precisión.
 
 ## 8. Prueba: detectar fraude y controlar las alertas
 
@@ -40,15 +40,15 @@ Integrante 2: valores calculados con fraude como positivo. Sensibilidad=TP/(TP+F
 
 ## 10. El costo de detectar más
 
-Integrante 2: comparar fraudes detectados con falsas alarmas. k-NN: compensar cambia los fraudes detectados en +9.33 y las falsas alarmas en +125.33, medias de los tres ajustes. Árbol: compensar cambia los fraudes detectados en +4.67 y las falsas alarmas en +493.33, medias de los tres ajustes. SVM: compensar cambia los fraudes detectados en +8.00 y las falsas alarmas en +124.33, medias de los tres ajustes. Bosque propio: compensar cambia los fraudes detectados en +8.00 y las falsas alarmas en +25.00, medias de los tres ajustes.
+Integrante 2: comparar fraudes detectados con falsas alarmas. k-NN: compensar cambia los fraudes detectados en +9.33 y las falsas alarmas en +125.33, medias de los tres ajustes. Árbol: compensar cambia los fraudes detectados en +4.67 y las falsas alarmas en +493.33, medias de los tres ajustes. SVM: compensar cambia los fraudes detectados en +8.00 y las falsas alarmas en +124.33, medias de los tres ajustes. Random Forest propio: compensar cambia los fraudes detectados en +8.00 y las falsas alarmas en +25.00, medias de los tres ajustes.
 
-## 11. Árbol frente a bosque; exactitud frente a sensibilidad
+## 11. Árbol frente a Random Forest; exactitud frente a sensibilidad
 
-Integrante 2: Sin compensación: bosque frente a árbol cambia la sensibilidad en -1.33 puntos porcentuales y las falsas alarmas en -4.67. Con compensación: bosque frente a árbol cambia la sensibilidad en +5.33 puntos porcentuales y las falsas alarmas en -473.00. El bagging busca reducir la variación y max_features reduce la correlación. La exactitud oculta el desbalance; nunca decide la selección.
+Integrante 2: Sin compensación: Random Forest frente a árbol cambia la sensibilidad en -1.33 puntos porcentuales y las falsas alarmas en -4.67. Con compensación: Random Forest frente a árbol cambia la sensibilidad en +5.33 puntos porcentuales y las falsas alarmas en -473.00. El bagging busca reducir la variación y max_features reduce la correlación. La exactitud oculta el desbalance; nunca decide la selección.
 
 ## 12. Configuración elegida y límites de la evidencia
 
-Ambos integrantes: Elegido por validación: Árbol · con compensación. Sensibilidad CV 87.14 ± 2.87 %; sensibilidad test 75.33 ± 4.62 %; precisión test 7.02 ± 0.55 %. El test contiene 50 fraudes. Pocos positivos hacen sensibles las métricas a cada error individual. La desviación en test mide variación del ajuste sobre un test fijo; no estima incertidumbre sobre otras muestras ni es un intervalo de confianza. La muestra reduce el costo computacional, pero descarta fraudes y limita la comparación. El submuestreo también elimina legítimas potencialmente informativas. La partición aleatoria exigida no valida cambios temporales ni otros bancos. ANOVA es un criterio marginal y puede descartar interacciones útiles. El bosque reduce correlación al combinar bootstrap y variables aleatorias; sus beneficios deben juzgarse por los resultados, sin suponer una mejora automática. Mejoras futuras: más datos y fraudes, validación temporal y grillas más amplias; esas mejoras requieren un nuevo protocolo y un test aún no utilizado.
+Ambos integrantes: Elegido por validación: Árbol · con compensación. Sensibilidad CV 87.14 ± 2.87 %; sensibilidad test 75.33 ± 4.62 %; precisión test 7.02 ± 0.55 %. El test contiene 50 fraudes. Pocos positivos hacen sensibles las métricas a cada error individual. La desviación en test mide variación del ajuste sobre un test fijo; no estima incertidumbre sobre otras muestras ni es un intervalo de confianza. La muestra reduce el costo computacional, pero descarta fraudes y limita la comparación. El submuestreo también elimina legítimas potencialmente informativas. La partición aleatoria exigida no valida cambios temporales ni otros bancos. ANOVA es un criterio marginal y puede descartar interacciones útiles. El Random Forest reduce correlación al combinar bootstrap y variables aleatorias; sus beneficios deben juzgarse por los resultados, sin suponer una mejora automática. Mejoras futuras: más datos y fraudes, validación temporal y grillas más amplias; esas mejoras requieren un nuevo protocolo y un test aún no utilizado.
 
 ## 13. Respaldo: matrices de confusión
 

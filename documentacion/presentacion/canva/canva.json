@@ -2,8 +2,8 @@
   "design_id": "DAHYyRf5M6A",
   "url": "https://canva.link/g838er8qsmu3bic",
   "title": "Detección de fraude",
-  "page_count": 16,
-  "main_slides": 12,
+  "page_count": 22,
+  "main_slides": 18,
   "backup_slides": 4,
   "style": "Blanco y negro editorial con acento azul",
   "protocol": "principal",
@@ -45,5 +45,120 @@
     "saved": true,
     "native_pdf_updated": true,
     "verification": "16 páginas; contenido de las otras 12 páginas sin cambios respecto del PDF anterior."
-  }
+  },
+  "approved_revision_2026_10_25": {
+    "pages": [
+      3,
+      5,
+      6
+    ],
+    "saved": true,
+    "transaction_id": "4970242298443680891",
+    "verification": "Contenido guardado comprobado mediante get_design_content después del commit.",
+    "native_pdf_updated": false,
+    "export_blocker": "El conector no ofrece exportación y Compartir en el navegador solicita iniciar sesión.",
+    "delivery_archive_updated": false
+  },
+  "pedagogical_revision_draft": {
+    "transaction_id": "5264102183200822686",
+    "preview_url": "https://www.canva.com/d/FXjFEzVnVUj3xFH",
+    "pages": [
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16
+    ],
+    "saved": false,
+    "native_pdf_updated": false,
+    "changes": [
+      "Partición inicial train/test; validación interna 40.000/10.000 rotativa sobre muestra de50.000.",
+      "Filas efectivas sin compensación y con submuestreo1:10.",
+      "Pipeline, ANOVA20/30 y alcance marginal.",
+      "GridSearchCV y ejemplo15ajustes kNN.",
+      "Media, dispersión enpp y cinco reajustes finales sobre mismo test.",
+      "Nombres completos de métodos en textos y tablas importadas."
+    ],
+    "approval_requirement": "Canva commit-editing-transaction exige mostrar vista previa y aprobación explícita antes de guardar.",
+    "superseded_by": "model_explanation_expansion_draft",
+    "status": "superseded_by_applied_expansion"
+  },
+  "model_explanation_expansion_draft": {
+    "status": "applied",
+    "main_design_id": "DAHYyRf5M6A",
+    "main_transaction_id": "5103098505722490062",
+    "main_preview_url": "https://www.canva.com/d/6g8PTnED_7hGQhi",
+    "extra_design_id": "DAHZDCjTk6Q",
+    "extra_transaction_id": "5503918870612801734",
+    "extra_preview_url": "https://www.canva.com/d/8bqdKKIwQwJWI8R",
+    "original_page_count": 16,
+    "proposed_page_count": 22,
+    "slide_titles": [
+      "k-NN: decide mirando casos cercanos",
+      "Árbol de decisión: preguntar hasta clasificar",
+      "SVM lineal: aprender una frontera",
+      "RF (Random Forest): combinar varios árboles",
+      "ANOVA: elegir qué variables recibe el modelo",
+      "RF ganador: leer el resultado sin confundirlo"
+    ],
+    "merge_request": {
+      "type": "modify_existing_design",
+      "design_id": "DAHYyRf5M6A",
+      "operations": [
+        {
+          "type": "insert_pages",
+          "after_page_number": 5,
+          "source": {
+            "type": "design",
+            "design_id": "DAHZDCjTk6Q",
+            "page_numbers": [
+              1,
+              2,
+              4,
+              3,
+              6
+            ]
+          }
+        },
+        {
+          "type": "insert_pages",
+          "after_page_number": 14,
+          "source": {
+            "type": "design",
+            "design_id": "DAHZDCjTk6Q",
+            "page_numbers": [
+              5
+            ]
+          }
+        }
+      ]
+    },
+    "saved": true,
+    "native_pdf_updated": false,
+    "historical_metrics": {
+      "selected_by_cv": "forest_submuestreo",
+      "cv_sensitivity_percent": 87.9,
+      "test_sensitivity_percent": 80.4
+    },
+    "verification": "Ambos commits confirmados; diseño guardado con22páginas; contenido de páginas6,7,8,9,10y15consultado después de ordenar. Métricas87,9%CV y80,4%test verificadas. Se corrigió inversión de orden producida por insert_pages.",
+    "approved_by_user": true,
+    "verified_page_count": 22,
+    "verified_new_slide_positions": {
+      "knn": 6,
+      "decision_tree": 7,
+      "svm": 8,
+      "rf": 9,
+      "anova": 10,
+      "metrics": 15
+    }
+  },
+  "offline_copies_match_current_design": false
 }

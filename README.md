@@ -26,15 +26,21 @@ Se eliminan 1.081 duplicados exactos del CSV original de 284.807 filas y 492 fra
 
 Los ocho experimentos comparten cinco pliegues estratificados sobre 50.000 filas de entrenamiento para acotar el costo de búsqueda. Las tuberías ajustan escalado, selección ANOVA F de 20 variables y, cuando corresponde, submuestreo 1:10 solo con el entrenamiento de cada pliegue. Validación y prueba conservan su prevalencia. Cada configuración elegida se reajusta con las 198.608 filas completas de entrenamiento y las semillas 42, 101, 202, 303 y 404 sobre el mismo test.
 
-El [bosque propio](src/fraudetection/forest.py) implementa bootstrap, árboles independientes, características aleatorias por división y voto mayoritario, con empate a favor de fraude. Usa `DecisionTreeClassifier`; no construye el ensamble con `RandomForestClassifier` ni `BaggingClassifier`.
+El [Random Forest propio](src/fraudetection/forest.py) implementa bootstrap, árboles independientes, características aleatorias por división y voto mayoritario, con empate a favor de fraude. Usa `DecisionTreeClassifier`; no construye el ensamble con `RandomForestClassifier` ni `BaggingClassifier`.
 
-La validación seleccionó el bosque compensado, con 21 árboles y profundidad 6: sensibilidad **87,9 % ± 5,5 pp**. En prueba obtuvo sensibilidad **80,4 % ± 0,3 pp**, FNR **19,6 % ± 0,3 pp** y precisión **67,5 % ± 4,6 pp**. Las desviaciones en prueba describen variación del ajuste sobre un mismo test. Ver [validación](resultados/cv_resumen.csv), [prueba](resultados/test_resumen.csv) y [metadatos](resultados/metadata.json).
+La validación seleccionó el Random Forest compensado, con 21 árboles y profundidad 6: sensibilidad **87,9 % ± 5,5 pp**. En prueba obtuvo sensibilidad **80,4 % ± 0,3 pp**, FNR **19,6 % ± 0,3 pp** y precisión **67,5 % ± 4,6 pp**. Las desviaciones en prueba describen variación del ajuste sobre un mismo test. Ver [validación](resultados/cv_resumen.csv), [prueba](resultados/test_resumen.csv) y [metadatos](resultados/metadata.json).
+
+## Entrenamiento, validación interna y test
+
+La separación inicial tiene solo dos conjuntos: 198.608 filas de entrenamiento y 85.118 de test reservado. No se crea un tercer conjunto fijo de validación. Dentro del entrenamiento se seleccionan 50.000 filas para la búsqueda; esas filas ya pertenecen a las 198.608. La validación cruzada estratificada divide la muestra en cinco bloques de 10.000. En cada ronda se ajusta una pipeline nueva con cuatro bloques, 40.000 filas antes del submuestreo opcional, y se evalúa con el bloque restante de 10.000. El bloque de validación rota cinco veces: una fila valida en una ronda y entrena en otras cuatro, siempre con modelos reajustados por separado. Ninguna transformación aprende del bloque de validación en su propia ronda. El test de 85.118 filas queda fuera de toda la búsqueda.
+
+Elegidos los parámetros, cada configuración se reajusta desde cero con el entrenamiento disponible. Sin compensación, el clasificador recibe 198.608 filas; con submuestreo 1:10 recibe 331 fraudes y 3.310 legítimas, 3.641 filas. Los cinco reajustes finales con semillas 42, 101, 202, 303 y 404 son distintos de los cinco pliegues: se evalúan sobre el mismo test reservado. Estos conteos describen el protocolo principal y sus artefactos históricos; no una ejecución nueva.
 
 ## Estructura
 
 | Ruta | Contenido |
 | --- | --- |
-| `src/fraudetection/` | Protocolo principal, bosque y comandos. |
+| `src/fraudetection/` | Protocolo principal, Random Forest y comandos. |
 | `src/fraudetection/reproduction/` | Protocolo auxiliar independiente. |
 | `tests/` | Pruebas automatizadas de datos, modelos y artefactos. |
 | `data/raw/` | CSV local, excluido de Git y de la entrega. |

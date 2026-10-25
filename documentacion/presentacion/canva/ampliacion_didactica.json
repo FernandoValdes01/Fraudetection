@@ -1,0 +1,1975 @@
+{
+  "status": "applied",
+  "main_design_id": "DAHYyRf5M6A",
+  "main_transaction_id": "5103098505722490062",
+  "main_preview_url": "https://www.canva.com/d/6g8PTnED_7hGQhi",
+  "extra_design_id": "DAHZDCjTk6Q",
+  "extra_transaction_id": "5503918870612801734",
+  "extra_preview_url": "https://www.canva.com/d/8bqdKKIwQwJWI8R",
+  "original_page_count": 16,
+  "proposed_page_count": 22,
+  "slide_titles": [
+    "k-NN: decide mirando casos cercanos",
+    "Árbol de decisión: preguntar hasta clasificar",
+    "SVM lineal: aprender una frontera",
+    "RF (Random Forest): combinar varios árboles",
+    "ANOVA: elegir qué variables recibe el modelo",
+    "RF ganador: leer el resultado sin confundirlo"
+  ],
+  "merge_request": {
+    "type": "modify_existing_design",
+    "design_id": "DAHYyRf5M6A",
+    "operations": [
+      {
+        "type": "insert_pages",
+        "after_page_number": 5,
+        "source": {
+          "type": "design",
+          "design_id": "DAHZDCjTk6Q",
+          "page_numbers": [
+            1,
+            2,
+            4,
+            3,
+            6
+          ]
+        }
+      },
+      {
+        "type": "insert_pages",
+        "after_page_number": 14,
+        "source": {
+          "type": "design",
+          "design_id": "DAHZDCjTk6Q",
+          "page_numbers": [
+            5
+          ]
+        }
+      }
+    ]
+  },
+  "saved": true,
+  "native_pdf_updated": false,
+  "historical_metrics": {
+    "selected_by_cv": "forest_submuestreo",
+    "cv_sensitivity_percent": 87.9,
+    "test_sensitivity_percent": 80.4
+  },
+  "verification": "Vistas previas revisadas; gráfica ordenada, RF destacado en azul, métricas históricas sin reentrenamiento.",
+  "extra_edit_operations": {
+    "1": [
+      {
+        "type": "replace_text",
+        "element_id": "PBXJ5JCBGSWbYRdv-LBmRcjkyFk11581J",
+        "text": "k-NN: decide mirando casos cercanos"
+      },
+      {
+        "type": "format_text",
+        "element_id": "PBXJ5JCBGSWbYRdv-LBmRcjkyFk11581J",
+        "formatting": {
+          "font_size": 60
+        }
+      },
+      {
+        "type": "position_element",
+        "element_id": "PBXJ5JCBGSWbYRdv-LBmRcjkyFk11581J",
+        "top": 80,
+        "left": 105
+      },
+      {
+        "type": "resize_element",
+        "element_id": "PBXJ5JCBGSWbYRdv-LBmRcjkyFk11581J",
+        "width": 1720,
+        "height": 81.16
+      },
+      {
+        "type": "replace_text",
+        "element_id": "PBXJ5JCBGSWbYRdv-LBNr7yMPpmg8rbq8",
+        "text": "k = 3"
+      },
+      {
+        "type": "format_text",
+        "element_id": "PBXJ5JCBGSWbYRdv-LBNr7yMPpmg8rbq8",
+        "formatting": {
+          "font_size": 88
+        }
+      },
+      {
+        "type": "replace_text",
+        "element_id": "PBXJ5JCBGSWbYRdv-LBpfX00LWNfSvFJm",
+        "text": "Ejemplo didáctico: tres vecinos"
+      },
+      {
+        "type": "format_text",
+        "element_id": "PBXJ5JCBGSWbYRdv-LBpfX00LWNfSvFJm",
+        "formatting": {
+          "font_size": 29
+        }
+      },
+      {
+        "type": "position_element",
+        "element_id": "PBXJ5JCBGSWbYRdv-LBpfX00LWNfSvFJm",
+        "top": 340,
+        "left": 115
+      },
+      {
+        "type": "resize_element",
+        "element_id": "PBXJ5JCBGSWbYRdv-LBpfX00LWNfSvFJm",
+        "width": 900,
+        "height": 70
+      },
+      {
+        "type": "replace_text",
+        "element_id": "PBXJ5JCBGSWbYRdv-LBKjwv8VTczNc5V8",
+        "text": "VOTO LEGÍTIMO\nPeso 10"
+      },
+      {
+        "type": "format_text",
+        "element_id": "PBXJ5JCBGSWbYRdv-LBKjwv8VTczNc5V8",
+        "formatting": {
+          "font_size": 40
+        }
+      },
+      {
+        "type": "replace_text",
+        "element_id": "PBXJ5JCBGSWbYRdv-LByvK8xFCWgnClLT",
+        "text": "VOTOS DE FRAUDE\nPeso 1 + 1 = 2"
+      },
+      {
+        "type": "format_text",
+        "element_id": "PBXJ5JCBGSWbYRdv-LByvK8xFCWgnClLT",
+        "formatting": {
+          "font_size": 40
+        }
+      },
+      {
+        "type": "replace_text",
+        "element_id": "PBXJ5JCBGSWbYRdv-LBcY9w1f1v6SCBj7",
+        "text": "Un vecino legítimo está a distancia 0,1.\nDos fraudes están a distancia 1 cada uno.\nCon peso = 1/distancia, gana legítima.\nImporta la cercanía, no solo contar votos."
+      },
+      {
+        "type": "format_text",
+        "element_id": "PBXJ5JCBGSWbYRdv-LBcY9w1f1v6SCBj7",
+        "formatting": {
+          "font_size": 29
+        }
+      },
+      {
+        "type": "position_element",
+        "element_id": "PBXJ5JCBGSWbYRdv-LBcY9w1f1v6SCBj7",
+        "top": 750,
+        "left": 130
+      },
+      {
+        "type": "resize_element",
+        "element_id": "PBXJ5JCBGSWbYRdv-LBcY9w1f1v6SCBj7",
+        "width": 820,
+        "height": 210
+      },
+      {
+        "type": "replace_text",
+        "element_id": "PBXJ5JCBGSWbYRdv-LB8ywnhnXDslPXqc",
+        "text": "En el principal probamos k = 3, 5 y 7.\nEscalamos para comparar las distancias.\nUn k mayor consulta más vecinos.\nLa elección se hace con validación."
+      },
+      {
+        "type": "format_text",
+        "element_id": "PBXJ5JCBGSWbYRdv-LB8ywnhnXDslPXqc",
+        "formatting": {
+          "font_size": 29
+        }
+      },
+      {
+        "type": "position_element",
+        "element_id": "PBXJ5JCBGSWbYRdv-LB8ywnhnXDslPXqc",
+        "top": 750,
+        "left": 1030
+      },
+      {
+        "type": "resize_element",
+        "element_id": "PBXJ5JCBGSWbYRdv-LB8ywnhnXDslPXqc",
+        "width": 760,
+        "height": 210
+      }
+    ],
+    "2": [
+      {
+        "type": "replace_text",
+        "element_id": "PBPLj90Gc8KzkGLh-LBRxpjpBKbdlkxj7",
+        "text": "Árbol de decisión: preguntar hasta clasificar"
+      },
+      {
+        "type": "format_text",
+        "element_id": "PBPLj90Gc8KzkGLh-LBRxpjpBKbdlkxj7",
+        "formatting": {
+          "font_size": 57
+        }
+      },
+      {
+        "type": "position_element",
+        "element_id": "PBPLj90Gc8KzkGLh-LBRxpjpBKbdlkxj7",
+        "top": 70,
+        "left": 105
+      },
+      {
+        "type": "resize_element",
+        "element_id": "PBPLj90Gc8KzkGLh-LBRxpjpBKbdlkxj7",
+        "width": 1720,
+        "height": 75.56
+      },
+      {
+        "type": "replace_text",
+        "element_id": "PBPLj90Gc8KzkGLh-LBycJPqK74kl7RMR",
+        "text": "Cada pregunta divide los ejemplos. Una hoja da la predicción final.\nEjemplo didáctico: el umbral ilustrado no es una regla real del modelo."
+      },
+      {
+        "type": "format_text",
+        "element_id": "PBPLj90Gc8KzkGLh-LBycJPqK74kl7RMR",
+        "formatting": {
+          "font_size": 29
+        }
+      },
+      {
+        "type": "position_element",
+        "element_id": "PBPLj90Gc8KzkGLh-LBycJPqK74kl7RMR",
+        "top": 169.99999999999997,
+        "left": 110
+      },
+      {
+        "type": "resize_element",
+        "element_id": "PBPLj90Gc8KzkGLh-LBycJPqK74kl7RMR",
+        "width": 1680,
+        "height": 100
+      },
+      {
+        "type": "replace_text",
+        "element_id": "PBPLj90Gc8KzkGLh-LB0nDYrZ60Fsl4LQ",
+        "text": "PREGUNTA SOBRE UNA VARIABLE"
+      },
+      {
+        "type": "format_text",
+        "element_id": "PBPLj90Gc8KzkGLh-LB0nDYrZ60Fsl4LQ",
+        "formatting": {
+          "font_size": 29
+        }
+      },
+      {
+        "type": "replace_text",
+        "element_id": "PBPLj90Gc8KzkGLh-LBnS7lv5yH4zCghF",
+        "text": "LLEGAR A UNA HOJA"
+      },
+      {
+        "type": "format_text",
+        "element_id": "PBPLj90Gc8KzkGLh-LBnS7lv5yH4zCghF",
+        "formatting": {
+          "font_size": 32
+        }
+      },
+      {
+        "type": "replace_text",
+        "element_id": "PBPLj90Gc8KzkGLh-LB9fdb6z595z4Fpv",
+        "text": "¿V14 < −2?\n\nSí: una rama.\nNo: la otra rama."
+      },
+      {
+        "type": "format_text",
+        "element_id": "PBPLj90Gc8KzkGLh-LB9fdb6z595z4Fpv",
+        "formatting": {
+          "font_size": 37
+        }
+      },
+      {
+        "type": "position_element",
+        "element_id": "PBPLj90Gc8KzkGLh-LB9fdb6z595z4Fpv",
+        "top": 460,
+        "left": 110
+      },
+      {
+        "type": "resize_element",
+        "element_id": "PBPLj90Gc8KzkGLh-LB9fdb6z595z4Fpv",
+        "width": 720,
+        "height": 279.2
+      },
+      {
+        "type": "replace_text",
+        "element_id": "PBPLj90Gc8KzkGLh-LBgl31D08fgvjshp",
+        "text": "Puede hacer más preguntas.\n\nLa hoja predice:\n0 legítima o 1 fraude."
+      },
+      {
+        "type": "format_text",
+        "element_id": "PBPLj90Gc8KzkGLh-LBgl31D08fgvjshp",
+        "formatting": {
+          "font_size": 36
+        }
+      },
+      {
+        "type": "replace_text",
+        "element_id": "PBPLj90Gc8KzkGLh-LBl7lKctjKgxbZZV",
+        "text": "Profundidad: cuántas preguntas puede encadenar. Más profundidad permite reglas más detalladas.\nHojas con pocos ejemplos pueden aprender casos demasiado específicos.\nLa búsqueda compara profundidad y mínimo de ejemplos por hoja para elegir con validación."
+      },
+      {
+        "type": "format_text",
+        "element_id": "PBPLj90Gc8KzkGLh-LBl7lKctjKgxbZZV",
+        "formatting": {
+          "font_size": 28
+        }
+      },
+      {
+        "type": "position_element",
+        "element_id": "PBPLj90Gc8KzkGLh-LBl7lKctjKgxbZZV",
+        "top": 820,
+        "left": 110
+      },
+      {
+        "type": "resize_element",
+        "element_id": "PBPLj90Gc8KzkGLh-LBl7lKctjKgxbZZV",
+        "width": 1660,
+        "height": 155
+      }
+    ],
+    "3": [
+      {
+        "type": "replace_text",
+        "element_id": "PByxgLrxhRfyZdsj-LBHnpyxw8YzypD7Q",
+        "text": "RF (Random Forest): combinar varios árboles"
+      },
+      {
+        "type": "format_text",
+        "element_id": "PByxgLrxhRfyZdsj-LBHnpyxw8YzypD7Q",
+        "formatting": {
+          "font_size": 57
+        }
+      },
+      {
+        "type": "position_element",
+        "element_id": "PByxgLrxhRfyZdsj-LBHnpyxw8YzypD7Q",
+        "top": 70,
+        "left": 105
+      },
+      {
+        "type": "resize_element",
+        "element_id": "PByxgLrxhRfyZdsj-LBHnpyxw8YzypD7Q",
+        "width": 1720,
+        "height": 81.16
+      },
+      {
+        "type": "replace_text",
+        "element_id": "PByxgLrxhRfyZdsj-LBXDb7pz8s17GMyd",
+        "text": "Un árbol da una decisión. RF entrena árboles distintos y combina sus votos."
+      },
+      {
+        "type": "format_text",
+        "element_id": "PByxgLrxhRfyZdsj-LBXDb7pz8s17GMyd",
+        "formatting": {
+          "font_size": 30
+        }
+      },
+      {
+        "type": "position_element",
+        "element_id": "PByxgLrxhRfyZdsj-LBXDb7pz8s17GMyd",
+        "top": 165,
+        "left": 110
+      },
+      {
+        "type": "resize_element",
+        "element_id": "PByxgLrxhRfyZdsj-LBXDb7pz8s17GMyd",
+        "width": 1680,
+        "height": 60
+      },
+      {
+        "type": "replace_text",
+        "element_id": "PByxgLrxhRfyZdsj-LBxZ9btTB6SbDfW9",
+        "text": "DATOS"
+      },
+      {
+        "type": "format_text",
+        "element_id": "PByxgLrxhRfyZdsj-LBxZ9btTB6SbDfW9",
+        "formatting": {
+          "font_size": 35
+        }
+      },
+      {
+        "type": "replace_text",
+        "element_id": "PByxgLrxhRfyZdsj-LB5RLJNRpPVM20XV",
+        "text": "Muestra aleatoria\npor árbol\nCon reemplazo:\npuede repetir filas"
+      },
+      {
+        "type": "format_text",
+        "element_id": "PByxgLrxhRfyZdsj-LB5RLJNRpPVM20XV",
+        "formatting": {
+          "font_size": 27
+        }
+      },
+      {
+        "type": "replace_text",
+        "element_id": "PByxgLrxhRfyZdsj-LBjdQpp8CZbGP4qY",
+        "text": "Árboles de decisión\nsemillas distintas\nvariables aleatorias\npor división"
+      },
+      {
+        "type": "format_text",
+        "element_id": "PByxgLrxhRfyZdsj-LBjdQpp8CZbGP4qY",
+        "formatting": {
+          "font_size": 27
+        }
+      },
+      {
+        "type": "replace_text",
+        "element_id": "PByxgLrxhRfyZdsj-LBXVpS5YvwN4YZzM",
+        "text": "Voto\nmayoritario"
+      },
+      {
+        "type": "format_text",
+        "element_id": "PByxgLrxhRfyZdsj-LBXVpS5YvwN4YZzM",
+        "formatting": {
+          "font_size": 32
+        }
+      },
+      {
+        "type": "replace_text",
+        "element_id": "PByxgLrxhRfyZdsj-LBGS1tZstJT0L4pP",
+        "text": "Ejemplo: 1, 0, 1 → fraude"
+      },
+      {
+        "type": "format_text",
+        "element_id": "PByxgLrxhRfyZdsj-LBGS1tZstJT0L4pP",
+        "formatting": {
+          "font_size": 40
+        }
+      },
+      {
+        "type": "position_element",
+        "element_id": "PByxgLrxhRfyZdsj-LBGS1tZstJT0L4pP",
+        "top": 650,
+        "left": 500
+      },
+      {
+        "type": "resize_element",
+        "element_id": "PByxgLrxhRfyZdsj-LBGS1tZstJT0L4pP",
+        "width": 950,
+        "height": 75
+      },
+      {
+        "type": "replace_text",
+        "element_id": "PByxgLrxhRfyZdsj-LBnClC39vsDPyrgy",
+        "text": "Nuestro código organiza muestras, semillas y votación.\nDecisionTreeClassifier construye cada árbol.\nEl ganador de CV usa 21 árboles y profundidad máxima 6."
+      },
+      {
+        "type": "format_text",
+        "element_id": "PByxgLrxhRfyZdsj-LBnClC39vsDPyrgy",
+        "formatting": {
+          "font_size": 30
+        }
+      },
+      {
+        "type": "position_element",
+        "element_id": "PByxgLrxhRfyZdsj-LBnClC39vsDPyrgy",
+        "top": 760,
+        "left": 300
+      },
+      {
+        "type": "resize_element",
+        "element_id": "PByxgLrxhRfyZdsj-LBnClC39vsDPyrgy",
+        "width": 1350,
+        "height": 140
+      },
+      {
+        "type": "replace_text",
+        "element_id": "PByxgLrxhRfyZdsj-LBrS7rk0XzcrbKdv",
+        "text": "El ejemplo de votos es didáctico. La implementación resuelve un empate como fraude."
+      },
+      {
+        "type": "format_text",
+        "element_id": "PByxgLrxhRfyZdsj-LBrS7rk0XzcrbKdv",
+        "formatting": {
+          "font_size": 26
+        }
+      },
+      {
+        "type": "position_element",
+        "element_id": "PByxgLrxhRfyZdsj-LBrS7rk0XzcrbKdv",
+        "top": 950,
+        "left": 110
+      },
+      {
+        "type": "resize_element",
+        "element_id": "PByxgLrxhRfyZdsj-LBrS7rk0XzcrbKdv",
+        "width": 1700,
+        "height": 30
+      }
+    ],
+    "4": [
+      {
+        "type": "replace_text",
+        "element_id": "PBxqNLF4B4YMc0Vs-LBqd8kVbCxmmTmQS",
+        "text": "SVM lineal: aprender una frontera"
+      },
+      {
+        "type": "format_text",
+        "element_id": "PBxqNLF4B4YMc0Vs-LBqd8kVbCxmmTmQS",
+        "formatting": {
+          "font_size": 60
+        }
+      },
+      {
+        "type": "position_element",
+        "element_id": "PBxqNLF4B4YMc0Vs-LBqd8kVbCxmmTmQS",
+        "top": 70,
+        "left": 105
+      },
+      {
+        "type": "resize_element",
+        "element_id": "PBxqNLF4B4YMc0Vs-LBqd8kVbCxmmTmQS",
+        "width": 1720,
+        "height": 81.16
+      },
+      {
+        "type": "replace_text",
+        "element_id": "PBxqNLF4B4YMc0Vs-LB84KRTpk72TBb7H",
+        "text": "Busca una frontera que separe las clases, equilibrando margen y errores de entrenamiento."
+      },
+      {
+        "type": "format_text",
+        "element_id": "PBxqNLF4B4YMc0Vs-LB84KRTpk72TBb7H",
+        "formatting": {
+          "font_size": 29
+        }
+      },
+      {
+        "type": "position_element",
+        "element_id": "PBxqNLF4B4YMc0Vs-LB84KRTpk72TBb7H",
+        "top": 165,
+        "left": 110
+      },
+      {
+        "type": "resize_element",
+        "element_id": "PBxqNLF4B4YMc0Vs-LB84KRTpk72TBb7H",
+        "width": 1700,
+        "height": 70
+      },
+      {
+        "type": "replace_text",
+        "element_id": "PBxqNLF4B4YMc0Vs-LBkMZKht1YWhwNL5",
+        "text": "LA IDEA"
+      },
+      {
+        "type": "format_text",
+        "element_id": "PBxqNLF4B4YMc0Vs-LBkMZKht1YWhwNL5",
+        "formatting": {
+          "font_size": 32
+        }
+      },
+      {
+        "type": "position_element",
+        "element_id": "PBxqNLF4B4YMc0Vs-LBkMZKht1YWhwNL5",
+        "top": 310,
+        "left": 110
+      },
+      {
+        "type": "resize_element",
+        "element_id": "PBxqNLF4B4YMc0Vs-LBkMZKht1YWhwNL5",
+        "width": 850,
+        "height": 25.6
+      },
+      {
+        "type": "replace_text",
+        "element_id": "PBxqNLF4B4YMc0Vs-LB1Xj2HbSSCTdcpJ",
+        "text": "Una línea en dos dimensiones.\nUn plano en más dimensiones."
+      },
+      {
+        "type": "format_text",
+        "element_id": "PBxqNLF4B4YMc0Vs-LB1Xj2HbSSCTdcpJ",
+        "formatting": {
+          "font_size": 45
+        }
+      },
+      {
+        "type": "position_element",
+        "element_id": "PBxqNLF4B4YMc0Vs-LB1Xj2HbSSCTdcpJ",
+        "top": 390,
+        "left": 110
+      },
+      {
+        "type": "resize_element",
+        "element_id": "PBxqNLF4B4YMc0Vs-LB1Xj2HbSSCTdcpJ",
+        "width": 1010,
+        "height": 220
+      },
+      {
+        "type": "replace_text",
+        "element_id": "PBxqNLF4B4YMc0Vs-LBPD8GPt2K2K4bn9",
+        "text": "C"
+      },
+      {
+        "type": "format_text",
+        "element_id": "PBxqNLF4B4YMc0Vs-LBPD8GPt2K2K4bn9",
+        "formatting": {
+          "font_size": 100
+        }
+      },
+      {
+        "type": "position_element",
+        "element_id": "PBxqNLF4B4YMc0Vs-LBPD8GPt2K2K4bn9",
+        "top": 350,
+        "left": 1300
+      },
+      {
+        "type": "resize_element",
+        "element_id": "PBxqNLF4B4YMc0Vs-LBPD8GPt2K2K4bn9",
+        "width": 400,
+        "height": 150
+      },
+      {
+        "type": "replace_text",
+        "element_id": "PBxqNLF4B4YMc0Vs-LB0XWN5djz2Jc495",
+        "text": "Probamos 0,1; 1 y 10.\nUn C mayor penaliza más\nincumplir el margen.\nSe elige con validación."
+      },
+      {
+        "type": "format_text",
+        "element_id": "PBxqNLF4B4YMc0Vs-LB0XWN5djz2Jc495",
+        "formatting": {
+          "font_size": 30
+        }
+      },
+      {
+        "type": "position_element",
+        "element_id": "PBxqNLF4B4YMc0Vs-LB0XWN5djz2Jc495",
+        "top": 540,
+        "left": 1240
+      },
+      {
+        "type": "resize_element",
+        "element_id": "PBxqNLF4B4YMc0Vs-LB0XWN5djz2Jc495",
+        "width": 590,
+        "height": 250
+      },
+      {
+        "type": "delete_element",
+        "element_id": "PBxqNLF4B4YMc0Vs-LB4mKL89vTn1Jlq7"
+      }
+    ],
+    "5": [
+      {
+        "type": "replace_text",
+        "element_id": "PBnt80flCtx4fQVK-LBVKTQ1JLcrPxKpV",
+        "text": "RF ganador: leer el resultado sin confundirlo"
+      },
+      {
+        "type": "format_text",
+        "element_id": "PBnt80flCtx4fQVK-LBVKTQ1JLcrPxKpV",
+        "formatting": {
+          "font_size": 57
+        }
+      },
+      {
+        "type": "position_element",
+        "element_id": "PBnt80flCtx4fQVK-LBVKTQ1JLcrPxKpV",
+        "top": 55,
+        "left": 105
+      },
+      {
+        "type": "resize_element",
+        "element_id": "PBnt80flCtx4fQVK-LBVKTQ1JLcrPxKpV",
+        "width": 1720,
+        "height": 76.68
+      },
+      {
+        "type": "replace_text",
+        "element_id": "PBnt80flCtx4fQVK-LB78SrtyZHjJdr5M",
+        "text": "Elegido por validación. Estas métricas son medias de cinco ajustes sobre el mismo test."
+      },
+      {
+        "type": "format_text",
+        "element_id": "PBnt80flCtx4fQVK-LB78SrtyZHjJdr5M",
+        "formatting": {
+          "font_size": 29
+        }
+      },
+      {
+        "type": "position_element",
+        "element_id": "PBnt80flCtx4fQVK-LB78SrtyZHjJdr5M",
+        "top": 145,
+        "left": 110
+      },
+      {
+        "type": "resize_element",
+        "element_id": "PBnt80flCtx4fQVK-LB78SrtyZHjJdr5M",
+        "width": 1710,
+        "height": 70
+      },
+      {
+        "type": "replace_text",
+        "element_id": "PBnt80flCtx4fQVK-LBH6MplqLz3ycFt4",
+        "text": "PRECISIÓN"
+      },
+      {
+        "type": "format_text",
+        "element_id": "PBnt80flCtx4fQVK-LBH6MplqLz3ycFt4",
+        "formatting": {
+          "font_size": 27
+        }
+      },
+      {
+        "type": "replace_text",
+        "element_id": "PBnt80flCtx4fQVK-LBvLk1rNl2Z6Nw4N",
+        "text": "FRAUDES OMITIDOS"
+      },
+      {
+        "type": "format_text",
+        "element_id": "PBnt80flCtx4fQVK-LBvLk1rNl2Z6Nw4N",
+        "formatting": {
+          "font_size": 27
+        }
+      },
+      {
+        "type": "replace_text",
+        "element_id": "PBnt80flCtx4fQVK-LBv7pKxyCLcC3j8f",
+        "text": "VARIACIÓN"
+      },
+      {
+        "type": "format_text",
+        "element_id": "PBnt80flCtx4fQVK-LBv7pKxyCLcC3j8f",
+        "formatting": {
+          "font_size": 27
+        }
+      },
+      {
+        "type": "replace_text",
+        "element_id": "PBnt80flCtx4fQVK-LBKVkfXn9PVzftDP",
+        "text": "DETECCIÓN"
+      },
+      {
+        "type": "format_text",
+        "element_id": "PBnt80flCtx4fQVK-LBKVkfXn9PVzftDP",
+        "formatting": {
+          "font_size": 27
+        }
+      },
+      {
+        "type": "replace_text",
+        "element_id": "PBnt80flCtx4fQVK-LBQNdQsjZm0nP8ys",
+        "text": "67,5 %\n\nDe las alertas,\nqué proporción\nera fraude."
+      },
+      {
+        "type": "format_text",
+        "element_id": "PBnt80flCtx4fQVK-LBQNdQsjZm0nP8ys",
+        "formatting": {
+          "font_size": 34
+        }
+      },
+      {
+        "type": "replace_text",
+        "element_id": "PBnt80flCtx4fQVK-LB4K2PN0s45QNX20",
+        "text": "19,6 %\n\nDe los fraudes,\nqué proporción\nse dejó pasar."
+      },
+      {
+        "type": "format_text",
+        "element_id": "PBnt80flCtx4fQVK-LB4K2PN0s45QNX20",
+        "formatting": {
+          "font_size": 34
+        }
+      },
+      {
+        "type": "replace_text",
+        "element_id": "PBnt80flCtx4fQVK-LB8wZjkFf5RSch0h",
+        "text": "± 0,3 pp\n\nDispersión de\nsensibilidad entre\ncinco ajustes."
+      },
+      {
+        "type": "format_text",
+        "element_id": "PBnt80flCtx4fQVK-LB8wZjkFf5RSch0h",
+        "formatting": {
+          "font_size": 34
+        }
+      },
+      {
+        "type": "replace_text",
+        "element_id": "PBnt80flCtx4fQVK-LBYhqdysV6m2MNSS",
+        "text": "80,4 %\n\nAproximadamente\n8 de cada 10\nfraudes detectados."
+      },
+      {
+        "type": "format_text",
+        "element_id": "PBnt80flCtx4fQVK-LBYhqdysV6m2MNSS",
+        "formatting": {
+          "font_size": 34
+        }
+      },
+      {
+        "type": "replace_text",
+        "element_id": "PBnt80flCtx4fQVK-LBy7924s1Y6xFbQv",
+        "text": "Sensibilidad y precisión responden preguntas distintas. Alta detección no significa que toda alerta sea fraude."
+      },
+      {
+        "type": "format_text",
+        "element_id": "PBnt80flCtx4fQVK-LBy7924s1Y6xFbQv",
+        "formatting": {
+          "font_size": 27
+        }
+      },
+      {
+        "type": "position_element",
+        "element_id": "PBnt80flCtx4fQVK-LBy7924s1Y6xFbQv",
+        "top": 920,
+        "left": 110
+      },
+      {
+        "type": "resize_element",
+        "element_id": "PBnt80flCtx4fQVK-LBy7924s1Y6xFbQv",
+        "width": 1720,
+        "height": 70
+      }
+    ],
+    "6": [
+      {
+        "type": "replace_text",
+        "element_id": "PBN3BQJYTS0JGylY-LBJX5vt0r1dnw6Hf",
+        "text": "ANOVA: elegir qué variables recibe el modelo"
+      },
+      {
+        "type": "format_text",
+        "element_id": "PBN3BQJYTS0JGylY-LBJX5vt0r1dnw6Hf",
+        "formatting": {
+          "font_size": 57
+        }
+      },
+      {
+        "type": "position_element",
+        "element_id": "PBN3BQJYTS0JGylY-LBJX5vt0r1dnw6Hf",
+        "top": 55,
+        "left": 100
+      },
+      {
+        "type": "resize_element",
+        "element_id": "PBN3BQJYTS0JGylY-LBJX5vt0r1dnw6Hf",
+        "width": 1720,
+        "height": 81.16
+      },
+      {
+        "type": "replace_text",
+        "element_id": "PBN3BQJYTS0JGylY-LB95lFDp8tCGBlyQ",
+        "text": "30 VARIABLES → 20 SELECCIONADAS\n\nANOVA examina una columna cada vez.\nCompara las medias de las dos clases\ncon la dispersión dentro de cada clase.\n\nMayor puntuación F: mayor separación\nrelativa entre las medias."
+      },
+      {
+        "type": "format_text",
+        "element_id": "PBN3BQJYTS0JGylY-LB95lFDp8tCGBlyQ",
+        "formatting": {
+          "font_size": 29
+        }
+      },
+      {
+        "type": "position_element",
+        "element_id": "PBN3BQJYTS0JGylY-LB95lFDp8tCGBlyQ",
+        "top": 245,
+        "left": 110
+      },
+      {
+        "type": "resize_element",
+        "element_id": "PBN3BQJYTS0JGylY-LB95lFDp8tCGBlyQ",
+        "width": 850,
+        "height": 350
+      },
+      {
+        "type": "replace_text",
+        "element_id": "PBN3BQJYTS0JGylY-LBbP6xsHPrYKFNdx",
+        "text": "VARIABLE A · EJEMPLO DIDÁCTICO"
+      },
+      {
+        "type": "format_text",
+        "element_id": "PBN3BQJYTS0JGylY-LBbP6xsHPrYKFNdx",
+        "formatting": {
+          "font_size": 27
+        }
+      },
+      {
+        "type": "replace_text",
+        "element_id": "PBN3BQJYTS0JGylY-LBmPcWHJ3VNTklBx",
+        "text": "Legítimas: 1, 2, 3\nFraudes: 8, 9, 10\nMedias separadas: F alta."
+      },
+      {
+        "type": "format_text",
+        "element_id": "PBN3BQJYTS0JGylY-LBmPcWHJ3VNTklBx",
+        "formatting": {
+          "font_size": 32
+        }
+      },
+      {
+        "type": "replace_text",
+        "element_id": "PBN3BQJYTS0JGylY-LB23JmL75J10rhCS",
+        "text": "VARIABLE B · EJEMPLO DIDÁCTICO"
+      },
+      {
+        "type": "format_text",
+        "element_id": "PBN3BQJYTS0JGylY-LB23JmL75J10rhCS",
+        "formatting": {
+          "font_size": 27
+        }
+      },
+      {
+        "type": "replace_text",
+        "element_id": "PBN3BQJYTS0JGylY-LBLf04YB7SNY6Zhr",
+        "text": "Legítimas: 1, 5, 9\nFraudes: 2, 5, 8\nMisma media: F = 0."
+      },
+      {
+        "type": "format_text",
+        "element_id": "PBN3BQJYTS0JGylY-LBLf04YB7SNY6Zhr",
+        "formatting": {
+          "font_size": 32
+        }
+      },
+      {
+        "type": "replace_text",
+        "element_id": "PBN3BQJYTS0JGylY-LBHv6qRvxVkqTwx1",
+        "text": "F = variación media entre clases /\n      variación media dentro de clases\n\nSe eligen las 20 mayores puntuaciones.\nNo crea variables nuevas ni prueba causas.\nPuede perder relaciones entre columnas."
+      },
+      {
+        "type": "format_text",
+        "element_id": "PBN3BQJYTS0JGylY-LBHv6qRvxVkqTwx1",
+        "formatting": {
+          "font_size": 29
+        }
+      },
+      {
+        "type": "position_element",
+        "element_id": "PBN3BQJYTS0JGylY-LBHv6qRvxVkqTwx1",
+        "top": 680,
+        "left": 110
+      },
+      {
+        "type": "resize_element",
+        "element_id": "PBN3BQJYTS0JGylY-LBHv6qRvxVkqTwx1",
+        "width": 850,
+        "height": 270
+      },
+      {
+        "type": "replace_text",
+        "element_id": "PBN3BQJYTS0JGylY-LBN21qxzjYF45lg1",
+        "text": "ANOVA se ajusta solo con entrenamiento."
+      },
+      {
+        "type": "format_text",
+        "element_id": "PBN3BQJYTS0JGylY-LBN21qxzjYF45lg1",
+        "formatting": {
+          "font_size": 25
+        }
+      },
+      {
+        "type": "position_element",
+        "element_id": "PBN3BQJYTS0JGylY-LBN21qxzjYF45lg1",
+        "top": 950,
+        "left": 1030
+      },
+      {
+        "type": "resize_element",
+        "element_id": "PBN3BQJYTS0JGylY-LBN21qxzjYF45lg1",
+        "width": 780,
+        "height": 65
+      }
+    ]
+  },
+  "main_edit_operations": {
+    "4": [
+      {
+        "type": "replace_text",
+        "element_id": "PBqczl1XkDGRBmrF-LBmRcjkyFk11581J",
+        "text": "Primero separamos; después validamos"
+      },
+      {
+        "type": "format_text",
+        "element_id": "PBqczl1XkDGRBmrF-LBmRcjkyFk11581J",
+        "formatting": {
+          "font_size": 60
+        }
+      },
+      {
+        "type": "position_element",
+        "element_id": "PBqczl1XkDGRBmrF-LBmRcjkyFk11581J",
+        "top": 80,
+        "left": 105
+      },
+      {
+        "type": "resize_element",
+        "element_id": "PBqczl1XkDGRBmrF-LBmRcjkyFk11581J",
+        "width": 1720,
+        "height": 81.16
+      },
+      {
+        "type": "replace_text",
+        "element_id": "PBqczl1XkDGRBmrF-LBKjwv8VTczNc5V8",
+        "text": "ENTRENAMIENTO · 70 %\n198.608 filas"
+      },
+      {
+        "type": "format_text",
+        "element_id": "PBqczl1XkDGRBmrF-LBKjwv8VTczNc5V8",
+        "formatting": {
+          "font_size": 42
+        }
+      },
+      {
+        "type": "replace_text",
+        "element_id": "PBqczl1XkDGRBmrF-LByvK8xFCWgnClLT",
+        "text": "TEST RESERVADO · 30 %\n85.118 filas · 142 fraudes"
+      },
+      {
+        "type": "format_text",
+        "element_id": "PBqczl1XkDGRBmrF-LByvK8xFCWgnClLT",
+        "formatting": {
+          "font_size": 42
+        }
+      },
+      {
+        "type": "replace_text",
+        "element_id": "PBqczl1XkDGRBmrF-LBcY9w1f1v6SCBj7",
+        "text": "Dentro de train: muestra de 50.000 filas.\nCada ronda: 40.000 aprenden; 10.000 validan.\nCinco rondas: el bloque de validación rota.\nDespués: reajuste con todo train."
+      },
+      {
+        "type": "format_text",
+        "element_id": "PBqczl1XkDGRBmrF-LBcY9w1f1v6SCBj7",
+        "formatting": {
+          "font_size": 29
+        }
+      },
+      {
+        "type": "position_element",
+        "element_id": "PBqczl1XkDGRBmrF-LBcY9w1f1v6SCBj7",
+        "top": 750,
+        "left": 130
+      },
+      {
+        "type": "resize_element",
+        "element_id": "PBqczl1XkDGRBmrF-LBcY9w1f1v6SCBj7",
+        "width": 820,
+        "height": 210
+      },
+      {
+        "type": "replace_text",
+        "element_id": "PBqczl1XkDGRBmrF-LB8ywnhnXDslPXqc",
+        "text": "El test queda fuera de los cinco pliegues.\nSe evalúa al final, sin cambiar los parámetros.\nLa validación es interna al entrenamiento;\nno hay un tercer conjunto fijo."
+      },
+      {
+        "type": "format_text",
+        "element_id": "PBqczl1XkDGRBmrF-LB8ywnhnXDslPXqc",
+        "formatting": {
+          "font_size": 29
+        }
+      },
+      {
+        "type": "position_element",
+        "element_id": "PBqczl1XkDGRBmrF-LB8ywnhnXDslPXqc",
+        "top": 750,
+        "left": 1030
+      },
+      {
+        "type": "resize_element",
+        "element_id": "PBqczl1XkDGRBmrF-LB8ywnhnXDslPXqc",
+        "width": 760,
+        "height": 210
+      }
+    ],
+    "5": [
+      {
+        "type": "replace_text",
+        "element_id": "PBlcJw13hHKxqycF-LB9fdb6z595z4Fpv",
+        "text": "k-NN\nÁrbol de decisión\nSVM lineal\nRF"
+      },
+      {
+        "type": "replace_text",
+        "element_id": "PBlcJw13hHKxqycF-LBgl31D08fgvjshp",
+        "text": "k-NN\nÁrbol de decisión\nSVM lineal\nRF"
+      },
+      {
+        "type": "replace_text",
+        "element_id": "PBlcJw13hHKxqycF-LBRxpjpBKbdlkxj7",
+        "text": "Cuatro métodos, con y sin submuestreo"
+      },
+      {
+        "type": "format_text",
+        "element_id": "PBlcJw13hHKxqycF-LBRxpjpBKbdlkxj7",
+        "formatting": {
+          "font_size": 59
+        }
+      },
+      {
+        "type": "position_element",
+        "element_id": "PBlcJw13hHKxqycF-LBRxpjpBKbdlkxj7",
+        "top": 70,
+        "left": 105
+      },
+      {
+        "type": "resize_element",
+        "element_id": "PBlcJw13hHKxqycF-LBRxpjpBKbdlkxj7",
+        "width": 1720,
+        "height": 75.56
+      },
+      {
+        "type": "replace_text",
+        "element_id": "PBlcJw13hHKxqycF-LBycJPqK74kl7RMR",
+        "text": "Pipeline: escalado → submuestreo opcional → ANOVA → clasificador.\nEscalado solo en k-NN/SVM. ANOVA elige 20 de 30 variables según diferencias entre clases."
+      },
+      {
+        "type": "format_text",
+        "element_id": "PBlcJw13hHKxqycF-LBycJPqK74kl7RMR",
+        "formatting": {
+          "font_size": 27
+        }
+      },
+      {
+        "type": "position_element",
+        "element_id": "PBlcJw13hHKxqycF-LBycJPqK74kl7RMR",
+        "top": 169.99999999999997,
+        "left": 110
+      },
+      {
+        "type": "resize_element",
+        "element_id": "PBlcJw13hHKxqycF-LBycJPqK74kl7RMR",
+        "width": 1680,
+        "height": 100
+      },
+      {
+        "type": "replace_text",
+        "element_id": "PBlcJw13hHKxqycF-LB9fdb6z595z4Fpv",
+        "text": "k-NN\nÁrbol de decisión\nSVM lineal\nRF (Random Forest)"
+      },
+      {
+        "type": "format_text",
+        "element_id": "PBlcJw13hHKxqycF-LB9fdb6z595z4Fpv",
+        "formatting": {
+          "font_size": 40
+        }
+      },
+      {
+        "type": "replace_text",
+        "element_id": "PBlcJw13hHKxqycF-LBgl31D08fgvjshp",
+        "text": "k-NN\nÁrbol de decisión\nSVM lineal\nRF (Random Forest)"
+      },
+      {
+        "type": "format_text",
+        "element_id": "PBlcJw13hHKxqycF-LBgl31D08fgvjshp",
+        "formatting": {
+          "font_size": 40
+        }
+      },
+      {
+        "type": "replace_text",
+        "element_id": "PBlcJw13hHKxqycF-LBl7lKctjKgxbZZV",
+        "text": "Ajuste final sin compensar: 198.608 filas llegan al clasificador.\nCon 1:10: 331 fraudes + 3.310 legítimas = 3.641 filas.\nSolo se reduce entrenamiento. Validación y test conservan sus filas."
+      },
+      {
+        "type": "format_text",
+        "element_id": "PBlcJw13hHKxqycF-LBl7lKctjKgxbZZV",
+        "formatting": {
+          "font_size": 29
+        }
+      },
+      {
+        "type": "position_element",
+        "element_id": "PBlcJw13hHKxqycF-LBl7lKctjKgxbZZV",
+        "top": 820,
+        "left": 110
+      },
+      {
+        "type": "resize_element",
+        "element_id": "PBlcJw13hHKxqycF-LBl7lKctjKgxbZZV",
+        "width": 1660,
+        "height": 150
+      }
+    ],
+    "6": [
+      {
+        "type": "replace_text",
+        "element_id": "PBGWpSxl4w9CxkZJ-LBHnpyxw8YzypD7Q",
+        "text": "Un RF construido por nosotros"
+      },
+      {
+        "type": "replace_text",
+        "element_id": "PBGWpSxl4w9CxkZJ-LBHnpyxw8YzypD7Q",
+        "text": "RF (Random Forest) construido por nosotros"
+      },
+      {
+        "type": "format_text",
+        "element_id": "PBGWpSxl4w9CxkZJ-LBHnpyxw8YzypD7Q",
+        "formatting": {
+          "font_size": 58
+        }
+      },
+      {
+        "type": "position_element",
+        "element_id": "PBGWpSxl4w9CxkZJ-LBHnpyxw8YzypD7Q",
+        "top": 70,
+        "left": 105
+      },
+      {
+        "type": "resize_element",
+        "element_id": "PBGWpSxl4w9CxkZJ-LBHnpyxw8YzypD7Q",
+        "width": 1720,
+        "height": 81.16
+      }
+    ],
+    "7": [
+      {
+        "type": "replace_text",
+        "element_id": "PB8K48t4KVLT50km-LB1Xj2HbSSCTdcpJ",
+        "text": "RF\ncompensado"
+      },
+      {
+        "type": "replace_text",
+        "element_id": "PB8K48t4KVLT50km-LBqd8kVbCxmmTmQS",
+        "text": "GridSearchCV: elegir parámetros"
+      },
+      {
+        "type": "format_text",
+        "element_id": "PB8K48t4KVLT50km-LBqd8kVbCxmmTmQS",
+        "formatting": {
+          "font_size": 59
+        }
+      },
+      {
+        "type": "position_element",
+        "element_id": "PB8K48t4KVLT50km-LBqd8kVbCxmmTmQS",
+        "top": 70,
+        "left": 105
+      },
+      {
+        "type": "resize_element",
+        "element_id": "PB8K48t4KVLT50km-LBqd8kVbCxmmTmQS",
+        "width": 1720,
+        "height": 81.16
+      },
+      {
+        "type": "replace_text",
+        "element_id": "PB8K48t4KVLT50km-LB84KRTpk72TBb7H",
+        "text": "Cada combinación se prueba en cinco rondas. Gana la mayor sensibilidad media; precisión desempata."
+      },
+      {
+        "type": "format_text",
+        "element_id": "PB8K48t4KVLT50km-LB84KRTpk72TBb7H",
+        "formatting": {
+          "font_size": 28
+        }
+      },
+      {
+        "type": "position_element",
+        "element_id": "PB8K48t4KVLT50km-LB84KRTpk72TBb7H",
+        "top": 165,
+        "left": 110
+      },
+      {
+        "type": "resize_element",
+        "element_id": "PB8K48t4KVLT50km-LB84KRTpk72TBb7H",
+        "width": 1700,
+        "height": 70
+      },
+      {
+        "type": "replace_text",
+        "element_id": "PB8K48t4KVLT50km-LB1Xj2HbSSCTdcpJ",
+        "text": "RF\ncon submuestreo"
+      },
+      {
+        "type": "format_text",
+        "element_id": "PB8K48t4KVLT50km-LB1Xj2HbSSCTdcpJ",
+        "formatting": {
+          "font_size": 48
+        }
+      },
+      {
+        "type": "position_element",
+        "element_id": "PB8K48t4KVLT50km-LB1Xj2HbSSCTdcpJ",
+        "top": 355,
+        "left": 1240
+      },
+      {
+        "type": "resize_element",
+        "element_id": "PB8K48t4KVLT50km-LB1Xj2HbSSCTdcpJ",
+        "width": 540,
+        "height": 190
+      },
+      {
+        "type": "delete_element",
+        "element_id": "PB8K48t4KVLT50km-LB4mKL89vTn1Jlq7"
+      },
+      {
+        "type": "insert_fill",
+        "page_id": "PB8K48t4KVLT50km",
+        "asset_type": "image",
+        "asset_id": "MAHZDVylnpk",
+        "alt_text": "Parámetros o resultados históricos con nombres árbol de decisión y RF (Random Forest).",
+        "left": 110,
+        "top": 285.00000000000006,
+        "width": 970,
+        "height": 601.4
+      }
+    ],
+    "8": [
+      {
+        "type": "replace_text",
+        "element_id": "PBLW9QqPgbgR4Z5V-LBsf8gmx7XBx419l",
+        "text": "El RF compensado lidera en validación"
+      },
+      {
+        "type": "replace_text",
+        "element_id": "PBLW9QqPgbgR4Z5V-LBvRkFkrry5W5mmX",
+        "text": "Media % ± DE pp\nkNN sin 79,3 ± 8,6\nkNN sub 86,6 ± 6,1\nÁrb. sin 69,6 ± 18,4\nÁrb. sub 85,4 ± 6,4\nSVM sin 58,7 ± 15,6\nSVM sub 86,5 ± 9,3\nRF sin 74,3 ± 14,7\nRF sub 87,9 ± 5,5"
+      },
+      {
+        "type": "replace_text",
+        "element_id": "PBLW9QqPgbgR4Z5V-LBsf8gmx7XBx419l",
+        "text": "Ganador en validación: RF con submuestreo"
+      },
+      {
+        "type": "format_text",
+        "element_id": "PBLW9QqPgbgR4Z5V-LBsf8gmx7XBx419l",
+        "formatting": {
+          "font_size": 58
+        }
+      },
+      {
+        "type": "position_element",
+        "element_id": "PBLW9QqPgbgR4Z5V-LBsf8gmx7XBx419l",
+        "top": 55,
+        "left": 105
+      },
+      {
+        "type": "resize_element",
+        "element_id": "PBLW9QqPgbgR4Z5V-LBsf8gmx7XBx419l",
+        "width": 1720,
+        "height": 76.68
+      },
+      {
+        "type": "replace_text",
+        "element_id": "PBLW9QqPgbgR4Z5V-LBrw9LKW7yvnDFZ5",
+        "text": "Comparamos sensibilidad media en cinco pliegues. El mayor valor elige al ganador antes de usar test."
+      },
+      {
+        "type": "format_text",
+        "element_id": "PBLW9QqPgbgR4Z5V-LBrw9LKW7yvnDFZ5",
+        "formatting": {
+          "font_size": 27
+        }
+      },
+      {
+        "type": "position_element",
+        "element_id": "PBLW9QqPgbgR4Z5V-LBrw9LKW7yvnDFZ5",
+        "top": 145,
+        "left": 110
+      },
+      {
+        "type": "resize_element",
+        "element_id": "PBLW9QqPgbgR4Z5V-LBrw9LKW7yvnDFZ5",
+        "width": 1700,
+        "height": 65
+      },
+      {
+        "type": "replace_text",
+        "element_id": "PBLW9QqPgbgR4Z5V-LBMrCfr4BcfLyzxL",
+        "text": "GANADOR · RF 1:10"
+      },
+      {
+        "type": "format_text",
+        "element_id": "PBLW9QqPgbgR4Z5V-LBMrCfr4BcfLyzxL",
+        "formatting": {
+          "font_size": 25
+        }
+      },
+      {
+        "type": "position_element",
+        "element_id": "PBLW9QqPgbgR4Z5V-LBMrCfr4BcfLyzxL",
+        "top": 315,
+        "left": 1515
+      },
+      {
+        "type": "resize_element",
+        "element_id": "PBLW9QqPgbgR4Z5V-LBMrCfr4BcfLyzxL",
+        "width": 400,
+        "height": 25.6
+      },
+      {
+        "type": "replace_text",
+        "element_id": "PBLW9QqPgbgR4Z5V-LBvRkFkrry5W5mmX",
+        "text": "Mayor media de detección\nen validación.\n\n21 árboles\nProfundidad máxima 6\n\n± 5,5 pp describe variación\nentre pliegues.\nNo garantiza resultados futuros."
+      },
+      {
+        "type": "format_text",
+        "element_id": "PBLW9QqPgbgR4Z5V-LBvRkFkrry5W5mmX",
+        "formatting": {
+          "font_size": 25
+        }
+      },
+      {
+        "type": "position_element",
+        "element_id": "PBLW9QqPgbgR4Z5V-LBvRkFkrry5W5mmX",
+        "top": 590,
+        "left": 1490
+      },
+      {
+        "type": "resize_element",
+        "element_id": "PBLW9QqPgbgR4Z5V-LBvRkFkrry5W5mmX",
+        "width": 350,
+        "height": 400
+      },
+      {
+        "type": "insert_fill",
+        "page_id": "PBLW9QqPgbgR4Z5V",
+        "asset_type": "image",
+        "asset_id": "MAHZDSg0QIU",
+        "alt_text": "Ocho sensibilidades medias CV ordenadas. RF con submuestreo gana con87,9%; demás condiciones en gris.",
+        "left": 70,
+        "top": 230,
+        "width": 1360,
+        "height": 740
+      }
+    ],
+    "9": [
+      {
+        "type": "replace_text",
+        "element_id": "PBhkMxzlLLr8ppW5-LB8HWYwjC3YkStyt",
+        "text": "Evaluación final: cinco ajustes, un mismo test"
+      },
+      {
+        "type": "format_text",
+        "element_id": "PBhkMxzlLLr8ppW5-LB8HWYwjC3YkStyt",
+        "formatting": {
+          "font_size": 58
+        }
+      },
+      {
+        "type": "position_element",
+        "element_id": "PBhkMxzlLLr8ppW5-LB8HWYwjC3YkStyt",
+        "top": 55,
+        "left": 105
+      },
+      {
+        "type": "resize_element",
+        "element_id": "PBhkMxzlLLr8ppW5-LB8HWYwjC3YkStyt",
+        "width": 1720,
+        "height": 75.56
+      },
+      {
+        "type": "replace_text",
+        "element_id": "PBhkMxzlLLr8ppW5-LBZqhkDLcntmYxXT",
+        "text": "Parámetros ya elegidos: reajustamos desde cero con semillas 42, 101, 202, 303 y 404."
+      },
+      {
+        "type": "format_text",
+        "element_id": "PBhkMxzlLLr8ppW5-LBZqhkDLcntmYxXT",
+        "formatting": {
+          "font_size": 29
+        }
+      },
+      {
+        "type": "position_element",
+        "element_id": "PBhkMxzlLLr8ppW5-LBZqhkDLcntmYxXT",
+        "top": 145,
+        "left": 110
+      },
+      {
+        "type": "resize_element",
+        "element_id": "PBhkMxzlLLr8ppW5-LBZqhkDLcntmYxXT",
+        "width": 1700,
+        "height": 65
+      },
+      {
+        "type": "replace_text",
+        "element_id": "PBhkMxzlLLr8ppW5-LBYYBM0jcR1x4xkn",
+        "text": "Cinco pliegues eligen parámetros; cinco semillas repiten el ajuste final. El test siempre es el mismo."
+      },
+      {
+        "type": "format_text",
+        "element_id": "PBhkMxzlLLr8ppW5-LBYYBM0jcR1x4xkn",
+        "formatting": {
+          "font_size": 27
+        }
+      },
+      {
+        "type": "position_element",
+        "element_id": "PBhkMxzlLLr8ppW5-LBYYBM0jcR1x4xkn",
+        "top": 930,
+        "left": 120
+      },
+      {
+        "type": "resize_element",
+        "element_id": "PBhkMxzlLLr8ppW5-LBYYBM0jcR1x4xkn",
+        "width": 1600,
+        "height": 65
+      },
+      {
+        "type": "delete_element",
+        "element_id": "PBhkMxzlLLr8ppW5-LB76vrZGWpZl8swS"
+      },
+      {
+        "type": "insert_fill",
+        "page_id": "PBhkMxzlLLr8ppW5",
+        "asset_type": "image",
+        "asset_id": "MAHZDTaEmSo",
+        "alt_text": "Parámetros o resultados históricos con nombres árbol de decisión y RF (Random Forest).",
+        "left": 120,
+        "top": 270,
+        "width": 1680,
+        "height": 610
+      }
+    ],
+    "10": [
+      {
+        "type": "replace_text",
+        "element_id": "PBlP3jxbG4YS2C0s-LBy7924s1Y6xFbQv",
+        "text": "Compensado: el RF omite más fraudes que el árbol, pero reduce falsas alarmas. Conservamos el ganador de CV."
+      },
+      {
+        "type": "replace_text",
+        "element_id": "PBlP3jxbG4YS2C0s-LBvLk1rNl2Z6Nw4N",
+        "text": "RF sin"
+      },
+      {
+        "type": "replace_text",
+        "element_id": "PBlP3jxbG4YS2C0s-LBKVkfXn9PVzftDP",
+        "text": "RF 1:10"
+      },
+      {
+        "type": "replace_text",
+        "element_id": "PBlP3jxbG4YS2C0s-LB78SrtyZHjJdr5M",
+        "text": "Sensibilidad: fraudes detectados / fraudes reales. Precisión: fraudes / alertas emitidas."
+      },
+      {
+        "type": "format_text",
+        "element_id": "PBlP3jxbG4YS2C0s-LB78SrtyZHjJdr5M",
+        "formatting": {
+          "font_size": 29
+        }
+      },
+      {
+        "type": "position_element",
+        "element_id": "PBlP3jxbG4YS2C0s-LB78SrtyZHjJdr5M",
+        "top": 145,
+        "left": 110
+      },
+      {
+        "type": "resize_element",
+        "element_id": "PBlP3jxbG4YS2C0s-LB78SrtyZHjJdr5M",
+        "width": 1700,
+        "height": 65
+      },
+      {
+        "type": "replace_text",
+        "element_id": "PBlP3jxbG4YS2C0s-LBH6MplqLz3ycFt4",
+        "text": "Árbol de decisión\nsin compensación"
+      },
+      {
+        "type": "format_text",
+        "element_id": "PBlP3jxbG4YS2C0s-LBH6MplqLz3ycFt4",
+        "formatting": {
+          "font_size": 30
+        }
+      },
+      {
+        "type": "position_element",
+        "element_id": "PBlP3jxbG4YS2C0s-LBH6MplqLz3ycFt4",
+        "top": 300,
+        "left": 110
+      },
+      {
+        "type": "resize_element",
+        "element_id": "PBlP3jxbG4YS2C0s-LBH6MplqLz3ycFt4",
+        "width": 360,
+        "height": 90
+      },
+      {
+        "type": "replace_text",
+        "element_id": "PBlP3jxbG4YS2C0s-LBvLk1rNl2Z6Nw4N",
+        "text": "RF\nsin compensación"
+      },
+      {
+        "type": "format_text",
+        "element_id": "PBlP3jxbG4YS2C0s-LBvLk1rNl2Z6Nw4N",
+        "formatting": {
+          "font_size": 30
+        }
+      },
+      {
+        "type": "position_element",
+        "element_id": "PBlP3jxbG4YS2C0s-LBvLk1rNl2Z6Nw4N",
+        "top": 300,
+        "left": 540
+      },
+      {
+        "type": "resize_element",
+        "element_id": "PBlP3jxbG4YS2C0s-LBvLk1rNl2Z6Nw4N",
+        "width": 360,
+        "height": 90
+      },
+      {
+        "type": "replace_text",
+        "element_id": "PBlP3jxbG4YS2C0s-LBv7pKxyCLcC3j8f",
+        "text": "Árbol de decisión\nsubmuestreo 1:10"
+      },
+      {
+        "type": "format_text",
+        "element_id": "PBlP3jxbG4YS2C0s-LBv7pKxyCLcC3j8f",
+        "formatting": {
+          "font_size": 30
+        }
+      },
+      {
+        "type": "position_element",
+        "element_id": "PBlP3jxbG4YS2C0s-LBv7pKxyCLcC3j8f",
+        "top": 300,
+        "left": 970
+      },
+      {
+        "type": "resize_element",
+        "element_id": "PBlP3jxbG4YS2C0s-LBv7pKxyCLcC3j8f",
+        "width": 360,
+        "height": 90
+      },
+      {
+        "type": "replace_text",
+        "element_id": "PBlP3jxbG4YS2C0s-LBKVkfXn9PVzftDP",
+        "text": "RF\nsubmuestreo 1:10"
+      },
+      {
+        "type": "format_text",
+        "element_id": "PBlP3jxbG4YS2C0s-LBKVkfXn9PVzftDP",
+        "formatting": {
+          "font_size": 30
+        }
+      },
+      {
+        "type": "position_element",
+        "element_id": "PBlP3jxbG4YS2C0s-LBKVkfXn9PVzftDP",
+        "top": 300,
+        "left": 1400
+      },
+      {
+        "type": "resize_element",
+        "element_id": "PBlP3jxbG4YS2C0s-LBKVkfXn9PVzftDP",
+        "width": 360,
+        "height": 90
+      }
+    ],
+    "11": [
+      {
+        "type": "replace_text",
+        "element_id": "PBmSzGtN2BdfhRW9-LBHQpD1vjSkl6H22",
+        "text": "RF compensado · semilla 42 · un ajuste individual sobre test"
+      },
+      {
+        "type": "replace_text",
+        "element_id": "PBmSzGtN2BdfhRW9-LBHQpD1vjSkl6H22",
+        "text": "RF con submuestreo · semilla 42 · un ajuste individual sobre test"
+      },
+      {
+        "type": "format_text",
+        "element_id": "PBmSzGtN2BdfhRW9-LBHQpD1vjSkl6H22",
+        "formatting": {
+          "font_size": 29
+        }
+      },
+      {
+        "type": "position_element",
+        "element_id": "PBmSzGtN2BdfhRW9-LBHQpD1vjSkl6H22",
+        "top": 145,
+        "left": 110
+      },
+      {
+        "type": "resize_element",
+        "element_id": "PBmSzGtN2BdfhRW9-LBHQpD1vjSkl6H22",
+        "width": 1700,
+        "height": 65
+      },
+      {
+        "type": "replace_text",
+        "element_id": "PBmSzGtN2BdfhRW9-LBd5CJQz1d6q5KMG",
+        "text": "Este ajuste: 115 / 142 = 81,0 % de sensibilidad. La media de cinco ajustes es 80,4 %."
+      },
+      {
+        "type": "format_text",
+        "element_id": "PBmSzGtN2BdfhRW9-LBd5CJQz1d6q5KMG",
+        "formatting": {
+          "font_size": 25
+        }
+      },
+      {
+        "type": "position_element",
+        "element_id": "PBmSzGtN2BdfhRW9-LBd5CJQz1d6q5KMG",
+        "top": 955,
+        "left": 250
+      },
+      {
+        "type": "resize_element",
+        "element_id": "PBmSzGtN2BdfhRW9-LBd5CJQz1d6q5KMG",
+        "width": 1500,
+        "height": 50
+      }
+    ],
+    "12": [
+      {
+        "type": "replace_text",
+        "element_id": "PBYCPDjCmvH0Sxtv-LBBnXnTk3xK1MtGB",
+        "text": "RF COMPENSADO 1:10\n21 árboles · profundidad 6\n\nFNR 19,6 % ± 0,3 pp\nPrecisión 67,5 % ± 4,6 pp"
+      },
+      {
+        "type": "replace_text",
+        "element_id": "PBYCPDjCmvH0Sxtv-LBGtGgxbsXMxyX1f",
+        "text": "RF ganador: detecta cerca de 4 de cada 5 fraudes"
+      },
+      {
+        "type": "format_text",
+        "element_id": "PBYCPDjCmvH0Sxtv-LBGtGgxbsXMxyX1f",
+        "formatting": {
+          "font_size": 57
+        }
+      },
+      {
+        "type": "position_element",
+        "element_id": "PBYCPDjCmvH0Sxtv-LBGtGgxbsXMxyX1f",
+        "top": 65,
+        "left": 105
+      },
+      {
+        "type": "resize_element",
+        "element_id": "PBYCPDjCmvH0Sxtv-LBGtGgxbsXMxyX1f",
+        "width": 1720,
+        "height": 81.16
+      },
+      {
+        "type": "replace_text",
+        "element_id": "PBYCPDjCmvH0Sxtv-LBBnXnTk3xK1MtGB",
+        "text": "RF (RANDOM FOREST) · SUBMUESTREO 1:10\n21 árboles · profundidad 6\n\nFNR 19,6 % ± 0,3 pp\nPrecisión 67,5 % ± 4,6 pp"
+      },
+      {
+        "type": "format_text",
+        "element_id": "PBYCPDjCmvH0Sxtv-LBBnXnTk3xK1MtGB",
+        "formatting": {
+          "font_size": 30
+        }
+      },
+      {
+        "type": "position_element",
+        "element_id": "PBYCPDjCmvH0Sxtv-LBBnXnTk3xK1MtGB",
+        "top": 575.0000000000001,
+        "left": 120
+      },
+      {
+        "type": "resize_element",
+        "element_id": "PBYCPDjCmvH0Sxtv-LBBnXnTk3xK1MtGB",
+        "width": 900,
+        "height": 280
+      }
+    ],
+    "13": [
+      {
+        "type": "replace_text",
+        "element_id": "PBQtJSW47bNGz5l5-LB7t0MRTlZGF40Xk",
+        "text": "kNN · Sin compensar  |  k=3  |  Sens. 79,3 % ± 8,6 pp  |  Prec. 91,2 %\nkNN · Submuestreo  |  k=3  |  Sens. 86,6 % ± 6,1 pp  |  Prec. 37,5 %\nÁrbol · Sin compensar  |  prof. 5; hoja 5  |  Sens. 69,6 % ± 18,4 pp  |  Prec. 79,8 %\nÁrbol · Submuestreo  |  prof. 5; hoja 5  |  Sens. 85,4 % ± 6,4 pp  |  Prec. 18,6 %\nSVM · Sin compensar  |  C=10  |  Sens. 58,7 % ± 15,6 pp  |  Prec. 88,5 %\nSVM · Submuestreo  |  C=10  |  Sens. 86,5 % ± 9,3 pp  |  Prec. 21,2 %\nRF · Sin compensar  |  21 árboles; prof. 12  |  Sens. 74,3 % ± 14,7 pp  |  Prec. 91,6 %\nRF · Submuestreo  |  21 árboles; prof. 6  |  Sens. 87,9 % ± 5,5 pp  |  Prec. 45,0 %"
+      }
+    ],
+    "14": [
+      {
+        "type": "replace_text",
+        "element_id": "PBqSjGmvsd5rw0YL-LBsW7tPmZ8vK8kbD",
+        "text": "kNN   ·   Sens. 74,6±0,0   ·   Espec. 99,996±0,000   ·   Prec. 97,2±0,0\nF1 84,5±0,0   ·   Exact. 99,95±0,00   ·   FNR 25,4±0,0\n\nÁrbol   ·   Sens. 63,5±0,3   ·   Espec. 99,990±0,002   ·   Prec. 91,1±1,2\nF1 74,9±0,4   ·   Exact. 99,93±0,00   ·   FNR 36,5±0,3\n\nSVM   ·   Sens. 52,1±0,0   ·   Espec. 99,987±0,000   ·   Prec. 87,1±0,0\nF1 65,2±0,0   ·   Exact. 99,91±0,00   ·   FNR 47,9±0,0\n\nRF   ·   Sens. 76,2±1,2   ·   Espec. 99,993±0,002   ·   Prec. 94,6±1,0\nF1 84,4±0,6   ·   Exact. 99,95±0,00   ·   FNR 23,8±1,2"
+      }
+    ],
+    "15": [
+      {
+        "type": "replace_text",
+        "element_id": "PBkZlN93ZG2MDNgT-LBn47CHHPNmTJsPL",
+        "text": "kNN   ·   Sens. 83,4±0,6   ·   Espec. 99,681±0,056   ·   Prec. 30,7±3,7\nF1 44,8±3,9   ·   Exact. 99,65±0,06   ·   FNR 16,6±0,6\n\nÁrbol   ·   Sens. 83,1±2,7   ·   Espec. 99,692±0,138   ·   Prec. 33,6±10,1\nF1 47,0±9,6   ·   Exact. 99,66±0,13   ·   FNR 16,9±2,7\n\nSVM   ·   Sens. 81,0±0,0   ·   Espec. 99,885±0,036   ·   Prec. 54,8±7,4\nF1 65,2±5,4   ·   Exact. 99,85±0,04   ·   FNR 19,0±0,0\n\nRF   ·   Sens. 80,4±0,3   ·   Espec. 99,935±0,014   ·   Prec. 67,5±4,6\nF1 73,3±2,8   ·   Exact. 99,90±0,01   ·   FNR 19,6±0,3"
+      },
+      {
+        "type": "replace_text",
+        "element_id": "PBkZlN93ZG2MDNgT-LB568hpKDvHfSSVZ",
+        "text": "El RF compensado retiene la mejor precisión entre las alternativas submuestreadas."
+      }
+    ],
+    "16": [
+      {
+        "type": "replace_text",
+        "element_id": "PBdTX2JwCMkjp8Gc-LB95lFDp8tCGBlyQ",
+        "text": "CRITERIOS DE BÚSQUEDA\n\nk-NN · Vecindad y suavidad\nÁrbol · Profundidad y hojas\nSVM · Regularización C\nRF · Diversidad y costo"
+      },
+      {
+        "type": "replace_text",
+        "element_id": "PBdTX2JwCMkjp8Gc-LBN21qxzjYF45lg1",
+        "text": "No confundir estos extremos con el RF ganador."
+      }
+    ]
+  },
+  "main_corrections": {
+    "6": [
+      {
+        "type": "replace_text",
+        "element_id": "PBGWpSxl4w9CxkZJ-LBHnpyxw8YzypD7Q",
+        "text": "RF: nuestra implementación"
+      },
+      {
+        "type": "format_text",
+        "element_id": "PBGWpSxl4w9CxkZJ-LBHnpyxw8YzypD7Q",
+        "formatting": {
+          "font_size": 60
+        }
+      }
+    ],
+    "13": [
+      {
+        "type": "replace_text",
+        "element_id": "PBQtJSW47bNGz5l5-LB7t0MRTlZGF40Xk",
+        "text": "kNN · Sin compensar  |  k=3  |  Sens. 79,3 % ± 8,6 pp  |  Prec. 91,2 %\nkNN · Submuestreo  |  k=3  |  Sens. 86,6 % ± 6,1 pp  |  Prec. 37,5 %\nÁrbol de decisión · Sin compensar  |  prof. 5; hoja 5  |  Sens. 69,6 % ± 18,4 pp  |  Prec. 79,8 %\nÁrbol de decisión · Submuestreo  |  prof. 5; hoja 5  |  Sens. 85,4 % ± 6,4 pp  |  Prec. 18,6 %\nSVM · Sin compensar  |  C=10  |  Sens. 58,7 % ± 15,6 pp  |  Prec. 88,5 %\nSVM · Submuestreo  |  C=10  |  Sens. 86,5 % ± 9,3 pp  |  Prec. 21,2 %\nRF · Sin compensar  |  21 árboles; prof. 12  |  Sens. 74,3 % ± 14,7 pp  |  Prec. 91,6 %\nRF · Submuestreo  |  21 árboles; prof. 6  |  Sens. 87,9 % ± 5,5 pp  |  Prec. 45,0 %"
+      }
+    ],
+    "14": [
+      {
+        "type": "replace_text",
+        "element_id": "PBqSjGmvsd5rw0YL-LBsW7tPmZ8vK8kbD",
+        "text": "kNN   ·   Sens. 74,6±0,0   ·   Espec. 99,996±0,000   ·   Prec. 97,2±0,0\nF1 84,5±0,0   ·   Exact. 99,95±0,00   ·   FNR 25,4±0,0\n\nÁrbol de decisión   ·   Sens. 63,5±0,3   ·   Espec. 99,990±0,002   ·   Prec. 91,1±1,2\nF1 74,9±0,4   ·   Exact. 99,93±0,00   ·   FNR 36,5±0,3\n\nSVM   ·   Sens. 52,1±0,0   ·   Espec. 99,987±0,000   ·   Prec. 87,1±0,0\nF1 65,2±0,0   ·   Exact. 99,91±0,00   ·   FNR 47,9±0,0\n\nRF   ·   Sens. 76,2±1,2   ·   Espec. 99,993±0,002   ·   Prec. 94,6±1,0\nF1 84,4±0,6   ·   Exact. 99,95±0,00   ·   FNR 23,8±1,2"
+      }
+    ],
+    "15": [
+      {
+        "type": "replace_text",
+        "element_id": "PBkZlN93ZG2MDNgT-LBn47CHHPNmTJsPL",
+        "text": "kNN   ·   Sens. 83,4±0,6   ·   Espec. 99,681±0,056   ·   Prec. 30,7±3,7\nF1 44,8±3,9   ·   Exact. 99,65±0,06   ·   FNR 16,6±0,6\n\nÁrbol de decisión   ·   Sens. 83,1±2,7   ·   Espec. 99,692±0,138   ·   Prec. 33,6±10,1\nF1 47,0±9,6   ·   Exact. 99,66±0,13   ·   FNR 16,9±2,7\n\nSVM   ·   Sens. 81,0±0,0   ·   Espec. 99,885±0,036   ·   Prec. 54,8±7,4\nF1 65,2±5,4   ·   Exact. 99,85±0,04   ·   FNR 19,0±0,0\n\nRF   ·   Sens. 80,4±0,3   ·   Espec. 99,935±0,014   ·   Prec. 67,5±4,6\nF1 73,3±2,8   ·   Exact. 99,90±0,01   ·   FNR 19,6±0,3"
+      }
+    ],
+    "16": [
+      {
+        "type": "replace_text",
+        "element_id": "PBdTX2JwCMkjp8Gc-LB95lFDp8tCGBlyQ",
+        "text": "CRITERIOS DE BÚSQUEDA\n\nk-NN · Vecindad y suavidad\nÁrbol de decisión · Profundidad y hojas\nSVM · Regularización C\nRF · Diversidad y costo"
+      }
+    ]
+  },
+  "extra_statistics_corrections": [
+    {
+      "type": "replace_text",
+      "element_id": "PBnt80flCtx4fQVK-LBH6MplqLz3ycFt4",
+      "text": "67,5 %"
+    },
+    {
+      "type": "format_text",
+      "element_id": "PBnt80flCtx4fQVK-LBH6MplqLz3ycFt4",
+      "formatting": {
+        "font_size": 57,
+        "font_weight": "bold",
+        "color": "#171717"
+      }
+    },
+    {
+      "type": "position_element",
+      "element_id": "PBnt80flCtx4fQVK-LBH6MplqLz3ycFt4",
+      "left": 110,
+      "top": 300
+    },
+    {
+      "type": "replace_text",
+      "element_id": "PBnt80flCtx4fQVK-LBvLk1rNl2Z6Nw4N",
+      "text": "19,6 %"
+    },
+    {
+      "type": "format_text",
+      "element_id": "PBnt80flCtx4fQVK-LBvLk1rNl2Z6Nw4N",
+      "formatting": {
+        "font_size": 57,
+        "font_weight": "bold",
+        "color": "#171717"
+      }
+    },
+    {
+      "type": "position_element",
+      "element_id": "PBnt80flCtx4fQVK-LBvLk1rNl2Z6Nw4N",
+      "left": 540,
+      "top": 300
+    },
+    {
+      "type": "replace_text",
+      "element_id": "PBnt80flCtx4fQVK-LBv7pKxyCLcC3j8f",
+      "text": "± 0,3 pp"
+    },
+    {
+      "type": "format_text",
+      "element_id": "PBnt80flCtx4fQVK-LBv7pKxyCLcC3j8f",
+      "formatting": {
+        "font_size": 57,
+        "font_weight": "bold",
+        "color": "#171717"
+      }
+    },
+    {
+      "type": "position_element",
+      "element_id": "PBnt80flCtx4fQVK-LBv7pKxyCLcC3j8f",
+      "left": 970,
+      "top": 300
+    },
+    {
+      "type": "replace_text",
+      "element_id": "PBnt80flCtx4fQVK-LBKVkfXn9PVzftDP",
+      "text": "80,4 %"
+    },
+    {
+      "type": "format_text",
+      "element_id": "PBnt80flCtx4fQVK-LBKVkfXn9PVzftDP",
+      "formatting": {
+        "font_size": 57,
+        "font_weight": "bold",
+        "color": "#2563EB"
+      }
+    },
+    {
+      "type": "position_element",
+      "element_id": "PBnt80flCtx4fQVK-LBKVkfXn9PVzftDP",
+      "left": 1400,
+      "top": 300
+    },
+    {
+      "type": "replace_text",
+      "element_id": "PBnt80flCtx4fQVK-LBQNdQsjZm0nP8ys",
+      "text": "PRECISIÓN\n\nDe las alertas,\nqué proporción\nera fraude."
+    },
+    {
+      "type": "format_text",
+      "element_id": "PBnt80flCtx4fQVK-LBQNdQsjZm0nP8ys",
+      "formatting": {
+        "font_size": 30
+      }
+    },
+    {
+      "type": "replace_text",
+      "element_id": "PBnt80flCtx4fQVK-LB4K2PN0s45QNX20",
+      "text": "FNR\n\nDe los fraudes,\nqué proporción\nse dejó pasar."
+    },
+    {
+      "type": "format_text",
+      "element_id": "PBnt80flCtx4fQVK-LB4K2PN0s45QNX20",
+      "formatting": {
+        "font_size": 30
+      }
+    },
+    {
+      "type": "replace_text",
+      "element_id": "PBnt80flCtx4fQVK-LB8wZjkFf5RSch0h",
+      "text": "VARIACIÓN\n\nDispersión de\nsensibilidad entre\ncinco ajustes."
+    },
+    {
+      "type": "format_text",
+      "element_id": "PBnt80flCtx4fQVK-LB8wZjkFf5RSch0h",
+      "formatting": {
+        "font_size": 30
+      }
+    },
+    {
+      "type": "replace_text",
+      "element_id": "PBnt80flCtx4fQVK-LBYhqdysV6m2MNSS",
+      "text": "SENSIBILIDAD\n\nAproximadamente\n8 de cada 10\nfraudes detectados."
+    },
+    {
+      "type": "format_text",
+      "element_id": "PBnt80flCtx4fQVK-LBYhqdysV6m2MNSS",
+      "formatting": {
+        "font_size": 30
+      }
+    }
+  ],
+  "approved_by_user": true,
+  "verified_page_count": 22,
+  "verified_new_slide_positions": {
+    "knn": 6,
+    "decision_tree": 7,
+    "svm": 8,
+    "rf": 9,
+    "anova": 10,
+    "metrics": 15
+  }
+}

@@ -6,7 +6,7 @@ La implementación está en [`forest.py`](../../src/fraudetection/forest.py). Us
 
 Si el entrenamiento disponible tiene `n` filas, cada árbol recibe `n` extracciones aleatorias **con reemplazo**. Una fila puede salir varias veces y otra puede no salir. La probabilidad de que una fila concreta no aparezca es `(1 - 1/n)^n`, que se aproxima a `e^-1`. Por eso suele haber cerca de un 63,2 % de filas distintas en cada muestra.
 
-El entrenamiento de cada condición experimental llega al bosque mediante `fit(X, y)`. En la condición compensada, la tubería aplica primero RandomUnderSampler y el bosque obtiene su bootstrap de esa salida de entrenamiento, nunca de validación ni de prueba.
+El entrenamiento de cada condición experimental llega al Random Forest mediante `fit(X, y)`. En la condición compensada, la tubería aplica primero RandomUnderSampler y el Random Forest obtiene su bootstrap de esa salida de entrenamiento, nunca de validación ni de prueba.
 
 ## Diversidad de árboles
 
