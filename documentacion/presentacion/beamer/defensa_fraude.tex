@@ -164,7 +164,7 @@
   \vspace{0.08cm}
   {\color{FraudBlue}\LARGE\bfseries 8 experimentos}\par
   \vspace{0.2cm}
-  {\large k-NN \quad\textcolor{FraudLine}{|}\quad Árbol \quad\textcolor{FraudLine}{|}\quad SVM lineal \quad\textcolor{FraudLine}{|}\quad Bosque propio}\par
+  {\large k-NN \quad\textcolor{FraudLine}{|}\quad Árbol de decisión \quad\textcolor{FraudLine}{|}\quad SVM lineal \quad\textcolor{FraudLine}{|}\quad Random Forest propio}\par
   \vspace{0.55cm}
   \begin{columns}[c,onlytextwidth]
     \column{0.31\textwidth}\metricbox{Estándar}{escalado para k-NN y SVM}
@@ -175,7 +175,7 @@
 \end{frame}
 
 % 6. Modelo implementado
-\begin{frame}{Bosque aleatorio propio}
+\begin{frame}{Random Forest propio}
   \phasebar{4}
   \vfill
   \begin{columns}[c,onlytextwidth]
@@ -185,7 +185,7 @@
     \column{0.07\textwidth}\centering{\Large\color{FraudLine}$\longrightarrow$}
     \column{0.29\textwidth}
       {\color{FraudBlue}\Large\bfseries 02}\par\vspace{0.12cm}
-      {\large Árboles}\par{\small\color{FraudGray}Independientes; $\lfloor\sqrt{p}\rfloor$ variables por división}
+      {\large Árboles de decisión}\par{\small\color{FraudGray}Independientes; $\lfloor\sqrt{p}\rfloor$ variables por división}
     \column{0.07\textwidth}\centering{\Large\color{FraudLine}$\longrightarrow$}
     \column{0.25\textwidth}
       {\color{FraudBlue}\Large\bfseries 03}\par\vspace{0.12cm}
@@ -205,14 +205,14 @@
   {\large Criterio: maximizar sensibilidad media en cinco pliegues.}\par
   {\normalsize\color{FraudGray}Desempate: mayor precisión de fraude.}\par
   \vspace{0.55cm}
-  {\color{FraudBlue}\Large\bfseries Bosque propio + submuestreo 1:10}\par
+  {\color{FraudBlue}\Large\bfseries Random Forest propio + submuestreo 1:10}\par
   \vspace{0.32cm}
   \begin{columns}[c,onlytextwidth]
     \column{0.44\textwidth}\metricbox{87,9\% $\pm$ 5,5\%}{sensibilidad en validación}
     \column{0.44\textwidth}\metricbox{45,0\%}{precisión en validación}
   \end{columns}
   \vspace{0.34cm}
-  {\small\color{FraudGray}Espacio de búsqueda: k-NN $k\in\{3,5,7\}$; árbol profundidad $\{5,10,\text{libre}\}$ y hoja mínima $\{1,5\}$; SVM lineal $C\in\{0{,}1;\,1;\,10\}$; bosque árboles $\{11,21\}$ y profundidad $\{6,12\}$.\par}
+  {\small\color{FraudGray}Espacio de búsqueda: k-NN $k\in\{3,5,7\}$; árbol de decisión profundidad $\{5,10,\text{libre}\}$ y hoja mínima $\{1,5\}$; SVM lineal $C\in\{0{,}1;\,1;\,10\}$; Random Forest árboles $\{11,21\}$ y profundidad $\{6,12\}$.\par}
   \vfill
 \end{frame}
 
@@ -242,7 +242,7 @@
 
   \vspace{0.08cm}{\small\color{FraudGray}Más sensibilidad también implica más falsas alarmas.}\par
   \vspace{0.12cm}
-  {\small Árbol compensado: sensibilidad 83,1\%, precisión 33,6\%. Bosque compensado: 80,4\% y 67,5\%. El bosque genera menos alertas falsas, pero omite más fraudes.}\par
+  {\small Árbol de decisión compensado: sensibilidad 83,1\%, precisión 33,6\%. Random Forest compensado: 80,4\% y 67,5\%. Random Forest genera menos alertas falsas, pero omite más fraudes.}\par
 \end{frame}
 
 % 11. Casos detectados y omitidos
@@ -255,7 +255,7 @@
       \begin{minipage}[t]{0.47\linewidth}\metricbox{115}{detectados}\vspace{0.18cm}\metricbox{27}{omitidos}\end{minipage}\hfill
       \begin{minipage}[t]{0.47\linewidth}\metricbox{53}{falsas alarmas}\vspace{0.18cm}\metricbox{84.923}{legítimos reconocidos}\end{minipage}
   \end{columns}
-  \centering{\scriptsize\color{FraudGray}Bosque con submuestreo · primer ajuste de prueba · semilla 42}\par
+  \centering{\scriptsize\color{FraudGray}Random Forest con submuestreo · primer ajuste de prueba · semilla 42}\par
 \end{frame}
 
 % 12. Conclusión
@@ -268,7 +268,7 @@
     \column{0.31\textwidth}\metricbox{67,5\%}{precisión}
   \end{columns}
   \vspace{0.3cm}
-  \centering{\large\bfseries El bosque compensado detecta 4 de cada 5 fraudes.}\par
+  \centering{\large\bfseries Random Forest compensado detecta 4 de cada 5 fraudes.}\par
   \vspace{0.2cm}
   {\small\color{FraudGray}La exactitud sola engaña: predecir todo como legítimo da 99,833\% y sensibilidad 0\%.}\par
   \vspace{0.14cm}
@@ -289,14 +289,14 @@
     k-NN & Sin compensar & $k=3$ & 79,3\% $\pm$ 8,6\% & 91,2\% \\
     \rowcolor{FraudLightGray}
     k-NN & Submuestreo & $k=3$ & 86,6\% $\pm$ 6,1\% & 37,5\% \\
-    Árbol & Sin compensar & profundidad 5; hoja 5 & 69,6\% $\pm$ 18,4\% & 79,8\% \\
+    Árbol de decisión & Sin compensar & profundidad 5; hoja 5 & 69,6\% $\pm$ 18,4\% & 79,8\% \\
     \rowcolor{FraudLightGray}
-    Árbol & Submuestreo & profundidad 5; hoja 5 & 85,4\% $\pm$ 6,4\% & 18,6\% \\
+    Árbol de decisión & Submuestreo & profundidad 5; hoja 5 & 85,4\% $\pm$ 6,4\% & 18,6\% \\
     SVM lineal & Sin compensar & $C=10$ & 58,7\% $\pm$ 15,6\% & 88,5\% \\
     \rowcolor{FraudLightGray}
     SVM lineal & Submuestreo & $C=10$ & 86,5\% $\pm$ 9,3\% & 21,2\% \\
-    Bosque propio & Sin compensar & 21 árboles; profundidad 12 & 74,3\% $\pm$ 14,7\% & 91,6\% \\
-    \rowcolor{FraudPaleBlue}\textbf{Bosque propio} & \textbf{Submuestreo} & \textbf{21 árboles; profundidad 6} & \textbf{87,9\% $\pm$ 5,5\%} & \textbf{45,0\%} \\
+    Random Forest & Sin compensar & 21 árboles; profundidad 12 & 74,3\% $\pm$ 14,7\% & 91,6\% \\
+    \rowcolor{FraudPaleBlue}\textbf{Random Forest} & \textbf{Submuestreo} & \textbf{21 árboles; profundidad 6} & \textbf{87,9\% $\pm$ 5,5\%} & \textbf{45,0\%} \\
     \bottomrule
   \end{tabularx}
 \end{frame}
@@ -316,14 +316,14 @@
     k-NN & Sin comp. & 74,6 $\pm$ 0,0 & 99,996 $\pm$ 0,000 & 97,2 $\pm$ 0,0 & 84,5 $\pm$ 0,0 & 99,95 $\pm$ 0,00 & 25,4 $\pm$ 0,0 \\
     \rowcolor{FraudLightGray}
     k-NN & Subm. & 83,4 $\pm$ 0,6 & 99,681 $\pm$ 0,056 & 30,7 $\pm$ 3,7 & 44,8 $\pm$ 3,9 & 99,65 $\pm$ 0,06 & 16,6 $\pm$ 0,6 \\
-    Árbol & Sin comp. & 63,5 $\pm$ 0,3 & 99,990 $\pm$ 0,002 & 91,1 $\pm$ 1,2 & 74,9 $\pm$ 0,4 & 99,93 $\pm$ 0,00 & 36,5 $\pm$ 0,3 \\
+    Árbol de decisión & Sin comp. & 63,5 $\pm$ 0,3 & 99,990 $\pm$ 0,002 & 91,1 $\pm$ 1,2 & 74,9 $\pm$ 0,4 & 99,93 $\pm$ 0,00 & 36,5 $\pm$ 0,3 \\
     \rowcolor{FraudLightGray}
-    Árbol & Subm. & 83,1 $\pm$ 2,7 & 99,692 $\pm$ 0,138 & 33,6 $\pm$ 10,1 & 47,0 $\pm$ 9,6 & 99,66 $\pm$ 0,13 & 16,9 $\pm$ 2,7 \\
+    Árbol de decisión & Subm. & 83,1 $\pm$ 2,7 & 99,692 $\pm$ 0,138 & 33,6 $\pm$ 10,1 & 47,0 $\pm$ 9,6 & 99,66 $\pm$ 0,13 & 16,9 $\pm$ 2,7 \\
     SVM & Sin comp. & 52,1 $\pm$ 0,0 & 99,987 $\pm$ 0,000 & 87,1 $\pm$ 0,0 & 65,2 $\pm$ 0,0 & 99,91 $\pm$ 0,00 & 47,9 $\pm$ 0,0 \\
     \rowcolor{FraudLightGray}
     SVM & Subm. & 81,0 $\pm$ 0,0 & 99,885 $\pm$ 0,036 & 54,8 $\pm$ 7,4 & 65,2 $\pm$ 5,4 & 99,85 $\pm$ 0,04 & 19,0 $\pm$ 0,0 \\
-    Bosque & Sin comp. & 76,2 $\pm$ 1,2 & 99,993 $\pm$ 0,002 & 94,6 $\pm$ 1,0 & 84,4 $\pm$ 0,6 & 99,95 $\pm$ 0,00 & 23,8 $\pm$ 1,2 \\
-    \rowcolor{FraudPaleBlue}\textbf{Bosque} & \textbf{Subm.} & \textbf{80,4 $\pm$ 0,3} & \textbf{99,935 $\pm$ 0,014} & \textbf{67,5 $\pm$ 4,6} & \textbf{73,3 $\pm$ 2,8} & \textbf{99,90 $\pm$ 0,01} & \textbf{19,6 $\pm$ 0,3} \\
+    Random Forest & Sin comp. & 76,2 $\pm$ 1,2 & 99,993 $\pm$ 0,002 & 94,6 $\pm$ 1,0 & 84,4 $\pm$ 0,6 & 99,95 $\pm$ 0,00 & 23,8 $\pm$ 1,2 \\
+    \rowcolor{FraudPaleBlue}\textbf{Random Forest} & \textbf{Subm.} & \textbf{80,4 $\pm$ 0,3} & \textbf{99,935 $\pm$ 0,014} & \textbf{67,5 $\pm$ 4,6} & \textbf{73,3 $\pm$ 2,8} & \textbf{99,90 $\pm$ 0,01} & \textbf{19,6 $\pm$ 0,3} \\
     \bottomrule
   \end{tabular}}
 \end{frame}
@@ -334,16 +334,16 @@
   {\small\color{FraudGray}Grid Search: mismos cinco pliegues y ocho condiciones; rangos prefijados, sin consultar prueba.}\par
   \vspace{0.2cm}
   {\scriptsize
-  \begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{1.6cm} >{\raggedright\arraybackslash}p{4.8cm} X}
+  \begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{2.35cm} >{\raggedright\arraybackslash}p{4.4cm} X}
     \toprule
     \rowcolor{FraudPaleBlue}\textbf{Modelo} & \textbf{Candidatos evaluados} & \textbf{Motivo} \\
     \midrule
     k-NN & Vecinos: 3, 5, 7 (pesos por distancia fijos) & Comparar vecindades locales y más suaves. \\
     \rowcolor{FraudLightGray}
-    Árbol & Profundidad: 5, 10, libre; hoja mínima: 1, 5 & Contrastar complejidad y hojas menos sensibles a pocos casos. \\
+    Árbol de decisión & Profundidad: 5, 10, libre; hoja mínima: 1, 5 & Contrastar complejidad y hojas menos sensibles a pocos casos. \\
     SVM lineal & $C$: 0,1; 1; 10 & Comparar intensidad de regularización. \\
     \rowcolor{FraudLightGray}
-    Bosque & Árboles: 11, 21; profundidad: 6, 12; \texttt{max\_features=sqrt} & Contrastar diversidad y complejidad con costo acotado. \\
+    Random Forest & Árboles: 11, 21; profundidad: 6, 12; \texttt{max\_features=sqrt} & Contrastar diversidad y complejidad con costo acotado. \\
     \bottomrule
   \end{tabularx}}
   \vspace{0.2cm}
@@ -355,7 +355,7 @@
 \end{frame}
 
 % 16. Respaldo: análisis crítico y clasificadores triviales
-\begin{frame}{Respaldo · Árbol, bosque y falsas alarmas}
+\begin{frame}{Respaldo · Árbol de decisión, Random Forest y falsas alarmas}
   \raggedright
   {\small Medias de cinco ajustes sobre el mismo test; se muestran las dos condiciones.}\par
   \vspace{0.18cm}
@@ -364,14 +364,14 @@
     \toprule
     \rowcolor{FraudPaleBlue}\textbf{Modelo y condición} & \textbf{Sensibilidad} & \textbf{Precisión} & \textbf{Falsas alarmas} \\
     \midrule
-    Árbol sin compensación & 63,5\% & 91,1\% & 8,8 \\
-    Bosque sin compensación & 76,2\% & 94,6\% & 6,2 \\
-    \rowcolor{FraudLightGray}Árbol compensado & 83,1\% & 33,6\% & 261,6 \\
-    \rowcolor{FraudLightGray}Bosque compensado & 80,4\% & 67,5\% & 55,6 \\
+    Árbol de decisión sin compensación & 63,5\% & 91,1\% & 8,8 \\
+    Random Forest sin compensación & 76,2\% & 94,6\% & 6,2 \\
+    \rowcolor{FraudLightGray}Árbol de decisión compensado & 83,1\% & 33,6\% & 261,6 \\
+    \rowcolor{FraudLightGray}Random Forest compensado & 80,4\% & 67,5\% & 55,6 \\
     \bottomrule
   \end{tabularx}}
   \vspace{0.2cm}
-  {\small El ensamble mejora al árbol sin compensación. Con compensación intercambia sensibilidad por menos falsas alarmas; no garantiza superar al árbol en cada métrica. Se conserva el ganador de CV.}\par
+  {\small Random Forest mejora al árbol de decisión sin compensación. Con compensación intercambia sensibilidad por menos falsas alarmas; no garantiza superar al árbol de decisión en cada métrica. Se conserva el ganador de CV.}\par
   \vspace{0.18cm}
   {\small\textbf{Todo legítimo:} sensibilidad 0\%, FNR 100\%; la alta exactitud oculta el fraude.}\par
   \vspace{0.12cm}

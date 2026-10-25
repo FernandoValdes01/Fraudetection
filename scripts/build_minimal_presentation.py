@@ -560,7 +560,7 @@ def run():
         prs,
         6,
         "Método",
-        "Bosque propio: árboles diversos por bootstrap",
+        "Random Forest propio: árboles diversos por bootstrap",
         (
             "Número de árboles, profundidad, max_features y semilla configurables; "
             "el ganador usa 21 árboles y profundidad 6."
@@ -575,7 +575,7 @@ def run():
         ),
         (
             "02",
-            "Árbol diverso",
+            "Árbol de decisión diverso",
             (
                 "Semillas distintas derivadas de la semilla general; "
                 "max_features='sqrt' en cada división."
@@ -674,7 +674,7 @@ def run():
         prs,
         8,
         "Resultados · validación",
-        "La sensibilidad más alta aparece con el bosque compensado",
+        "La sensibilidad más alta aparece con Random Forest compensado",
         f"Media ± desviación estándar entre los {metadata['cv_folds']} pliegues.",
     )
     rows = [
@@ -764,7 +764,7 @@ def run():
         prs,
         10,
         "Resultados · compensación",
-        "Árbol y bosque muestran el costo de recuperar fraude",
+        "Árbol de decisión y Random Forest muestran el costo de recuperar fraude",
         "Promedios en test; falsas alarmas por repetición.",
     )
     compare = []
@@ -796,7 +796,7 @@ def run():
         5.65,
         10.7,
         0.7,
-        "Con 1:10, el bosque tiene menor sensibilidad que el árbol, pero menos FP.",
+        "Con 1:10, Random Forest tiene menor sensibilidad que el árbol de decisión, pero menos FP.",
         size=15,
         col=TEAL,
         bold=True,
@@ -882,7 +882,7 @@ def run():
         prs,
         12,
         "Cierre",
-        "Ganador seleccionado por validación: bosque con submuestreo",
+        "Ganador seleccionado por validación: Random Forest con submuestreo",
         "La selección se fijó antes de consultar el test.",
     )
     metric(

@@ -10,8 +10,8 @@
 <text x="0" y="350" font-family="Arial, sans-serif" font-size="38" font-weight="700" fill="#111827" text-anchor="start">SVM lineal</text>
 <text x="0" y="400" font-family="Arial, sans-serif" font-size="32" font-weight="400" fill="#64748B" text-anchor="start">C = 0,1 · 1 · 10</text>
 <path d="M 0 430 H 1000" stroke="#E2E8F0" stroke-width="2"/>
-<text x="0" y="475" font-family="Arial, sans-serif" font-size="38" font-weight="700" fill="#111827" text-anchor="start">Bosque propio</text>
+<text x="0" y="475" font-family="Arial, sans-serif" font-size="38" font-weight="700" fill="#111827" text-anchor="start">Random Forest propio</text>
 <text x="0" y="525" font-family="Arial, sans-serif" font-size="32" font-weight="400" fill="#64748B" text-anchor="start">11 · 21 árboles  |  profundidad 6 · 12</text>
 <path d="M 0 555 H 1000" stroke="#E2E8F0" stroke-width="2"/>
-<text x="0" y="607" font-family="Arial, sans-serif" font-size="25" font-weight="600" fill="#2563EB" text-anchor="start">Bosque: max_features = √p en cada división</text>
+<text x="0" y="607" font-family="Arial, sans-serif" font-size="25" font-weight="600" fill="#2563EB" text-anchor="start">Random Forest: max_features = √p en cada división</text>
 </svg>

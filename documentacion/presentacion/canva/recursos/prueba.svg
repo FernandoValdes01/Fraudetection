@@ -14,7 +14,7 @@
 <text x="1250" y="208" font-family="Arial, sans-serif" font-size="44" font-weight="600" fill="#2563EB" text-anchor="middle">83,4 %</text>
 <text x="1510" y="208" font-family="Arial, sans-serif" font-size="44" font-weight="600" fill="#2563EB" text-anchor="middle">16,6 %</text>
 <path d="M 0 253 H 1680" stroke="#E2E8F0" stroke-width="2"/>
-<text x="30" y="320" font-family="Arial, sans-serif" font-size="38" font-weight="700" fill="#111827" text-anchor="start">Árbol</text>
+<text x="30" y="320" font-family="Arial, sans-serif" font-size="38" font-weight="700" fill="#111827" text-anchor="start">Árbol de decisión</text>
 <text x="600" y="320" font-family="Arial, sans-serif" font-size="44" font-weight="400" fill="#111827" text-anchor="middle">63,5 %</text>
 <text x="860" y="320" font-family="Arial, sans-serif" font-size="44" font-weight="400" fill="#111827" text-anchor="middle">36,5 %</text>
 <text x="1250" y="320" font-family="Arial, sans-serif" font-size="44" font-weight="600" fill="#2563EB" text-anchor="middle">83,1 %</text>
@@ -27,7 +27,7 @@
 <text x="1510" y="432" font-family="Arial, sans-serif" font-size="44" font-weight="600" fill="#2563EB" text-anchor="middle">19,0 %</text>
 <path d="M 0 477 H 1680" stroke="#E2E8F0" stroke-width="2"/>
 <rect x="0" y="478" width="1680" height="106" rx="0" fill="#EFF6FF"/>
-<text x="30" y="544" font-family="Arial, sans-serif" font-size="38" font-weight="700" fill="#111827" text-anchor="start">Bosque propio</text>
+<text x="30" y="544" font-family="Arial, sans-serif" font-size="38" font-weight="700" fill="#111827" text-anchor="start">Random Forest propio</text>
 <text x="600" y="544" font-family="Arial, sans-serif" font-size="44" font-weight="400" fill="#111827" text-anchor="middle">76,2 %</text>
 <text x="860" y="544" font-family="Arial, sans-serif" font-size="44" font-weight="400" fill="#111827" text-anchor="middle">23,8 %</text>
 <text x="1250" y="544" font-family="Arial, sans-serif" font-size="44" font-weight="600" fill="#2563EB" text-anchor="middle">80,4 %</text>

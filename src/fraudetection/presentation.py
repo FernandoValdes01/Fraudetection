@@ -345,7 +345,7 @@ def create_deck(cv, test, results_dir: Path, deck_path: Path, figures: DeckFigur
     add_card(slide, 9.6, 3.5, 2.8, 1.7, "8", "condiciones", color=ORANGE)
     add_text(
         slide,
-        "k-NN · árbol · SVM · Random Forest propio",
+        "k-NN · árbol de decisión · SVM · Random Forest propio",
         8.8,
         5.7,
         3.8,
@@ -491,7 +491,7 @@ def create_deck(cv, test, results_dir: Path, deck_path: Path, figures: DeckFigur
     slide = new_slide(prs, "Random Forest implementado por la dupla", "04 · Ensamble", 5)
     steps = [
         ("01", "Bootstrap", "n extracciones con reemplazo"),
-        ("02", "Árbol independiente", "max_features = √p por división"),
+        ("02", "Árbol de decisión independiente", "max_features = √p por división"),
         ("03", "Votación", "mayoría; empate a favor del fraude"),
     ]
     for index, (number, heading, detail) in enumerate(steps):
@@ -689,7 +689,7 @@ def create_deck(cv, test, results_dir: Path, deck_path: Path, figures: DeckFigur
         3.4,
         1.85,
         f"{fmt(forest_plain['sensitivity_mean'])} → {fmt(forest_balanced['sensitivity_mean'])}",
-        "sensibilidad del bosque",
+        "sensibilidad de Random Forest",
         color=TEAL,
         detail="Sin compensación → con submuestreo.",
     )
@@ -700,7 +700,7 @@ def create_deck(cv, test, results_dir: Path, deck_path: Path, figures: DeckFigur
         3.4,
         1.85,
         f"{fmt(forest_balanced['precision_mean'])}",
-        "precisión del bosque compensado",
+        "precisión de Random Forest compensado",
         color=ORANGE,
         detail="La parte restante de alertas son falsas alarmas.",
     )
@@ -713,9 +713,10 @@ def create_deck(cv, test, results_dir: Path, deck_path: Path, figures: DeckFigur
                 f"alarmas las {es_number(figures.test_negatives)} transacciones legítimas del test."
             ),
             (
-                "El bosque con submuestreo detecta "
+                "Random Forest con submuestreo detecta "
                 f"{es_number(abs(sensitivity_gap), 1)} puntos porcentuales "
-                f"{'menos' if sensitivity_gap < 0 else 'más'} que el árbol compensado, pero eleva "
+                f"{'menos' if sensitivity_gap < 0 else 'más'} "
+                "que el árbol de decisión compensado, pero eleva "
                 f"la precisión de {es_number(tree_balanced['precision_mean'], 3)} a "
                 f"{es_number(forest_balanced['precision_mean'], 3)}."
             ),
@@ -821,7 +822,7 @@ def create_deck(cv, test, results_dir: Path, deck_path: Path, figures: DeckFigur
     )
     add_text(
         slide,
-        (f"Rangos evaluados: {describe_search_space()} El bosque usa max_features=√p."),
+        (f"Rangos evaluados: {describe_search_space()} Random Forest usa max_features=√p."),
         0.6,
         6.38,
         12.0,

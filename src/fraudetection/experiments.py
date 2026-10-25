@@ -416,7 +416,12 @@ def save_plots(
     fig.savefig(plot_dir / "distribucion_clases.png", dpi=180)
     plt.close(fig)
 
-    short_model_labels = {"knn": "k-NN", "tree": "Árbol", "svm": "SVM", "forest": "Bosque"}
+    short_model_labels = {
+        "knn": "k-NN",
+        "tree": "Árbol de decisión",
+        "svm": "SVM",
+        "forest": "Random Forest",
+    }
     labels = [
         f"{short_model_labels[row.model]}\n{'subm.' if row.compensated else 'sin comp.'}"
         for row in cv_results.itertuples()
