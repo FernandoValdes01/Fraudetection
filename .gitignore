@@ -13,3 +13,10 @@ data/raw/*
 *.joblib
 entrega/*.zip
 .ruff_cache/
+
+# teach-project: artefactos locales de la guía
+/teach
+/.teach/
+/tutorial.json
+/diagramas/
+# fin teach-project
