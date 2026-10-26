@@ -4,7 +4,7 @@ Proyecto INFO1185 de Fernando Alonso Valdés Gómez y Juan Francisco Muñoz Velo
 
 ## Contenido
 
-El ZIP incluye código en `src/`, pruebas en `tests/`, scripts, dependencias fijadas en `uv.lock`, resultados y una única presentación final en `documentacion/presentacion/canva/Detección de fraude.pdf`. Es una exportación nativa del [diseño Canva](https://canva.link/g838er8qsmu3bic), con 12 diapositivas principales y cuatro de respaldo. No incluye material de estudio, guiones, antecedentes, dataset ni modelos binarios. `manifest.json` contiene las huellas SHA256 de los archivos entregados; este documento se incluye como `README.md` en la raíz del ZIP.
+El ZIP incluye código en `src/`, pruebas en `tests/`, scripts, dependencias fijadas en `uv.lock`, resultados y una única presentación final en `documentacion/presentacion/canva/Detección de fraude.pdf`. Es una exportación nativa del [diseño Canva](https://canva.link/g838er8qsmu3bic), con 18 diapositivas principales y cuatro de respaldo. No incluye material de estudio, guiones, antecedentes, dataset ni modelos binarios. `manifest.json` contiene las huellas SHA256 de los archivos entregados; este documento se incluye como `README.md` en la raíz del ZIP.
 
 ## Preparar el entorno
 

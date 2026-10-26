@@ -1,14 +1,15 @@
 # Presentación principal
 
-**Canva tiene ahora 22 diapositivas guardadas: 18 principales y 4 respaldos.** Incluye seis láminas didácticas nuevas y resultados simplificados con RF destacado. El PDF nativo local, las copias automáticas y Beamer corresponden a versiones anteriores; aún debe exportarse la actualización de Canva.
+La presentación final y el PDF nativo de Canva tienen 22 diapositivas: 18 principales y cuatro respaldos. La exportación del 25 de octubre de 2026 incluye las explicaciones de k-NN, árbol de decisión, SVM lineal, RF y ANOVA, y la lectura de métricas. El ZIP incorpora este PDF.
 
-Las dos versiones usan el protocolo principal: 283.726 filas limpias, 198.608 de entrenamiento y 85.118 de prueba. Los resultados auxiliares se conservan en [contexto](../contexto/README.md#presentaciones-anteriores).
+Las versiones usan el protocolo principal: 283.726 filas limpias, 198.608 de entrenamiento y 85.118 de prueba. Los resultados auxiliares se conservan en [contexto](../contexto/README.md#presentaciones-anteriores).
 
-| Versión | Edición y archivos | Diferencia |
+| Versión | Edición y archivos | Estado |
 | --- | --- | --- |
-| [Canva](canva/README.md) | [Diseño en línea](https://canva.link/g838er8qsmu3bic), [PDF final exportado](canva/Detección%20de%20fraude.pdf). | Es la presentación incluida en el ZIP; 12 diapositivas principales y cuatro respaldos. |
-| [Beamer](beamer/README.md) | [Fuente LaTeX](beamer/defensa_fraude.tex) y [PDF](beamer/defensa_fraude.pdf). | Versión anterior del protocolo principal, compilada desde LaTeX. |
+| [Canva](canva/README.md) | [Diseño en línea](https://canva.link/g838er8qsmu3bic), [PDF final exportado](canva/Detección%20de%20fraude.pdf). | Presentación de entrega, 22 páginas. |
+| [Respaldos automáticos](canva/README.md#respaldos-automáticos) | PDF y PPTX generados con Python y LibreOffice. | Versión anterior de 16 páginas, con composición diferente; fuera del ZIP. |
+| [Beamer](beamer/README.md) | [Fuente LaTeX](beamer/defensa_fraude.tex) y [PDF](beamer/defensa_fraude.pdf). | Versión anterior del protocolo principal; fuera del ZIP. |
 
-El [guion principal](../estudio/guion_defensa_principal.md) acompaña la versión Canva y las copias locales de 12 diapositivas principales y cuatro respaldos. Los conceptos y las preguntas están en [estudio](../estudio/README.md).
+El [guion principal](../estudio/guion_defensa_principal.md) sigue las 22 páginas del PDF y propone 11 minutos con participación de ambos integrantes. Las páginas 19 a 22 son respaldos para preguntas. Los conceptos y las respuestas están en [estudio](../estudio/README.md).
 
-Los [respaldos automáticos](canva/README.md) y Beamer se conservan en el repositorio. El ZIP incluye únicamente el PDF nativo final y las instrucciones de ejecución, junto con código, pruebas y resultados; excluye el material de estudio y los antecedentes.
+El ZIP contiene código, pruebas, dependencias, resultados, el PDF final y un README de ejecución. Los guiones, apuntes y antecedentes se conservan solo en el repositorio.

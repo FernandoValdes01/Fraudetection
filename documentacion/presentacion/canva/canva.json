@@ -33,7 +33,7 @@
   "native_pdf": "Detección de fraude.pdf",
   "delivery_pdf": "Detección de fraude.pdf",
   "native_pdf_is_canva_export": true,
-  "native_pdf_sha256": "298943af49bfcb7dab8c4c8ad76a7cbb1dc50324540713d71cfaedd56e523e7d",
+  "native_pdf_sha256": "a2f2ccf930c87309d96fddf06834a480fd869930cb24709eedeece387e169cd3",
   "clarity_revision": {
     "date": "2026-10-24",
     "pages": [
@@ -55,9 +55,9 @@
     "saved": true,
     "transaction_id": "4970242298443680891",
     "verification": "Contenido guardado comprobado mediante get_design_content después del commit.",
-    "native_pdf_updated": false,
-    "export_blocker": "El conector no ofrece exportación y Compartir en el navegador solicita iniciar sesión.",
-    "delivery_archive_updated": false
+    "native_pdf_updated": true,
+    "delivery_archive_updated": true,
+    "export_blocker_resolved": "PDF nativo proporcionado por el usuario el 25 de octubre de 2026."
   },
   "pedagogical_revision_draft": {
     "transaction_id": "5264102183200822686",
@@ -142,7 +142,7 @@
       ]
     },
     "saved": true,
-    "native_pdf_updated": false,
+    "native_pdf_updated": true,
     "historical_metrics": {
       "selected_by_cv": "forest_submuestreo",
       "cv_sensitivity_percent": 87.9,
@@ -158,7 +158,11 @@
       "rf": 9,
       "anova": 10,
       "metrics": 15
-    }
+    },
+    "native_pdf_export_date": "2026-10-25"
   },
-  "offline_copies_match_current_design": false
+  "offline_copies_match_current_design": false,
+  "native_pdf_page_count": 22,
+  "native_pdf_matches_current_design": true,
+  "native_pdf_export_date": "2026-10-25"
 }
