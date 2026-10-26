@@ -52,7 +52,8 @@
     "transaction_id": "4970242298443680891",
     "verification": "Contenido guardado comprobado mediante get_design_content después del commit.",
     "native_pdf_updated": true,
-    "delivery_archive_updated": true
+    "delivery_archive_updated": true,
+    "export_blocker_resolved": "PDF nativo proporcionado por el usuario el 25 de octubre de 2026."
   },
   "pedagogical_revision_draft": {
     "transaction_id": "5264102183200822686",
@@ -153,7 +154,8 @@
       "rf": 9,
       "anova": 10,
       "metrics": 15
-    }
+    },
+    "native_pdf_export_date": "2026-10-25"
   },
   "native_export_verified": {
     "date": "2026-10-25",
@@ -161,5 +163,8 @@
     "page_count": 22,
     "creator": "Canva",
     "delivery_path": "Presentacion.pdf"
-  }
+  },
+  "native_pdf_page_count": 22,
+  "native_pdf_matches_current_design": true,
+  "native_pdf_export_date": "2026-10-25"
 }
