@@ -1,4 +1,4 @@
-"""Empaquetar código y resultados con instrucciones y una única presentación final."""
+"""Empaquetar el proyecto y sus resultados principales para revisión académica."""
 
 import hashlib
 import json
@@ -6,29 +6,37 @@ from pathlib import Path
 from zipfile import ZIP_DEFLATED, ZipFile
 
 ROOT = Path(__file__).resolve().parents[1]
-FINAL_PDF = Path("documentacion/presentacion/canva/Detección de fraude.pdf")
+FINAL_PDF = Path("documentacion/presentacion/canva/Detección de fraude_FINAL.pdf")
+DELIVERY_PDF = "Presentacion.pdf"
 
 
 def build_delivery(root: Path = ROOT) -> Path:
-    # Lista explícita: los apuntes y antecedentes nunca se recorren al empaquetar.
     files = {
         "README.md": root / "documentacion/ejecucion.md",
-        FINAL_PDF.as_posix(): root / FINAL_PDF,
+        DELIVERY_PDF: root / FINAL_PDF,
     }
     for name in ("pyproject.toml", "uv.lock", ".python-version", ".gitignore"):
         files[name] = root / name
-    for directory in ("src", "tests", "scripts", "resultados"):
+    for directory in ("src", "tests"):
         for path in (root / directory).rglob("*"):
+            relative = path.relative_to(root)
             if (
                 path.is_file()
                 and not any(
-                    part.startswith(".") or part == "__pycache__"
-                    for part in path.relative_to(root).parts
+                    part.startswith(".") or part == "__pycache__" for part in relative.parts
                 )
-                and path.suffix not in (".pyc", ".joblib", ".md", ".html")
+                and relative.as_posix() != "tests/test_delivery.py"
+                and path.suffix in {".py", ".typed"}
             ):
-                files[path.relative_to(root).as_posix()] = path
-    # Comprobar entradas antes de reemplazar una entrega previa.
+                files[relative.as_posix()] = path
+    files["scripts/build_minimal_presentation.py"] = root / "scripts/build_minimal_presentation.py"
+    for path in (root / "resultados").glob("*"):
+        if path.is_file() and path.suffix in {".csv", ".json"}:
+            files[path.relative_to(root).as_posix()] = path
+    for path in (root / "resultados/graficos").glob("*"):
+        if path.is_file() and path.suffix == ".png":
+            files[path.relative_to(root).as_posix()] = path
+
     for path in files.values():
         if not path.is_file():
             raise FileNotFoundError(f"Falta un archivo de entrega: {path}")
@@ -49,7 +57,7 @@ def build_delivery(root: Path = ROOT) -> Path:
     finally:
         temporary.unlink(missing_ok=True)
     (destination / "manifest.json").write_text(manifest_text, encoding="utf-8")
-    print(f"Entrega: {archive_path} ({len(files)} archivos; sin material de estudio ni dataset)")
+    print(f"Entrega: {archive_path} ({len(files)} archivos; sin dataset)")
     return archive_path
 
 

@@ -1,27 +1,33 @@
 # Guion de la defensa principal
 
-Este guion conserva la numeración de la versión de 16 diapositivas. La edición actual de Canva tiene 22: las nuevas páginas 6–10 desarrollan los modelos y ANOVA, y la 15 explica las métricas. Consultar el [estado de las presentaciones](../presentacion/README.md) antes de usar el reparto y los tiempos de esta versión.
+Este guion sigue las 22 páginas del PDF nativo de Canva exportado el 25 de octubre de 2026: 18 principales y cuatro respaldos. Usa exclusivamente el protocolo principal, con 283.726 filas limpias, 198.608 de entrenamiento y 85.118 de prueba, que contienen 142 fraudes. El [guion auxiliar](guion_defensa.md) corresponde a otra ejecución y sus cifras no se mezclan con esta presentación.
 
-La presentación usa exclusivamente el protocolo principal: 283.726 filas limpias, 198.608 de entrenamiento y 85.118 de prueba, con 142 fraudes. Los archivos [fraudetection.pdf](../contexto/presentaciones_anteriores/fraudetection.pdf) y [guion_defensa.md](guion_defensa.md) corresponden al protocolo auxiliar de 100.000 filas; sus cifras no se mezclan.
-
-La nueva presentación tiene 12 diapositivas principales y cuatro respaldos. El siguiente reparto propone 11 minutos y debe comprobarse mediante ensayo con cronómetro. Ambos integrantes deben conocer todo el código.
+El recorrido propone 11 minutos, 660 segundos, y deja un minuto de margen hasta el máximo de 12. Fernando presenta las páginas 1 a 10 en 5 minutos y 35 segundos; Juan Francisco, las páginas 11 a 18 en 5 minutos y 25 segundos. Los tiempos incluyen las transiciones y deben comprobarse con cronómetro. Ambos deben conocer todo el desarrollo y poder responder preguntas de cualquier página.
 
 | Página | Expone | Tiempo sugerido | Qué explicar |
 | --- | --- | --- | --- |
-| 1 · Portada | Fernando | 20 s | Integrantes, clasificación supervisada y prioridad de minimizar falsos negativos. |
-| 2 · Problema | Fernando | 45 s | Siempre legítimo alcanza 99,827 % de exactitud original, pero detecta cero fraudes. |
-| 3 · Datos | Fernando | 55 s | Fuente, 30 predictores, Class fuera de X, duplicados eliminados antes de dividir y ausencia de un nuevo PCA. |
-| 4 · Partición | Fernando | 70 s | Estratificación 70/30 con semilla 42; CV de cinco pliegues compartidos sobre 50.000 filas de train. Test reservado; reajuste con todo el entrenamiento. |
-| 5 · Método | Fernando | 65 s | Ocho condiciones; escalado, ANOVA y submuestreo aprendidos solo en train del pliegue. Justificar sus beneficios y límites. |
-| 6 · Random Forest propio | Fernando | 80 s | Bootstrap con reemplazo del tamaño disponible, semillas distintas, variables por división y voto; explicar bagging y parámetros configurables. |
-| 7 · Selección | Juan Francisco | 60 s | Grilla prefijada; maximizar sensibilidad CV y desempatar por precisión. Ganador: Random Forest compensado de 21 árboles, profundidad 6. |
-| 8 · Validación | Juan Francisco | 50 s | Comparar las ocho sensibilidades CV. El ganador obtiene 87,9 % ± 5,5 pp. |
-| 9 · Prueba | Juan Francisco | 55 s | Cinco reajustes sobre el mismo test con semillas 42, 101, 202, 303 y 404. La desviación mide variación del ajuste. |
-| 10 · Alertas | Juan Francisco | 60 s | El Random Forest compensado detecta menos fraude que el árbol compensado, pero genera menos falsas alarmas. Mantener el ganador de CV. |
-| 11 · Matriz | Juan Francisco | 50 s | Semilla 42: TN 84.923, FP 53, FN 27, TP 115. Esta matriz es un ajuste; los resúmenes promedian cinco. |
-| 12 · Conclusión | Juan Francisco | 50 s | Sensibilidad 80,4 %, FNR 19,6 %, precisión 67,5 %. Límites y mejoras que requieren un test nuevo. |
+| 1 · Portada | Fernando | 15 s | Integrantes, clasificación supervisada y prioridad de minimizar falsos negativos. |
+| 2 · Problema | Fernando | 30 s | Siempre legítimo obtiene 99,827 % de exactitud en el original, pero sensibilidad 0 %. |
+| 3 · Datos | Fernando | 35 s | 30 predictores, Class fuera de X, cero faltantes y duplicados eliminados antes de dividir para evitar copias entre train y test. No se aplica otro PCA. |
+| 4 · Partición y validación | Fernando | 55 s | Separación estratificada 70/30, semilla 42. Dentro de train, muestra de 50.000: cinco rondas de 40.000 para ajustar y 10.000 para validar. El test queda fuera de la búsqueda. |
+| 5 · Ocho condiciones | Fernando | 40 s | Cuatro métodos con y sin submuestreo. Escalado para k-NN/SVM y ANOVA dentro del pliegue. Ajuste final compensado con 331 fraudes y 3.310 legítimas; validación y test no se remuestrean. |
+| 6 · k-NN | Fernando | 30 s | Predice con vecinos cercanos y pesos por distancia. En el ejemplo, un vecino legítimo de peso 10 supera dos fraudes de peso total 2. Se comparan k=3, 5 y 7. |
+| 7 · Árbol de decisión | Fernando | 30 s | Preguntas sobre variables hasta llegar a una hoja. Profundidad y tamaño mínimo de hoja controlan complejidad. El umbral V14 ilustrado es didáctico. |
+| 8 · SVM lineal | Fernando | 30 s | Frontera y margen; C controla la penalización de errores y casos dentro del margen. Se comparan 0,1, 1 y 10 con validación. |
+| 9 · Idea de RF | Fernando | 35 s | Combinar árboles diversos mediante voto mayoritario. Nuestro código organiza muestras, semillas y votos; DecisionTreeClassifier construye cada árbol. El ejemplo de votos es didáctico. |
+| 10 · ANOVA | Fernando | 35 s | Compara diferencias entre medias con dispersión dentro de clases. Conserva 20 de 30 variables, ajustadas solo con train. Es marginal y puede perder interacciones. Ceder la palabra a Juan Francisco. |
+| 11 · Implementación propia | Juan Francisco | 50 s | Bootstrap con reemplazo y tamaño del train disponible, ya submuestreado cuando corresponde. Filas repetidas, semillas distintas, variables aleatorias por división y mayoría; empate a favor de fraude. Relacionar con fit y predict de forest.py. |
+| 12 · Grid Search | Juan Francisco | 35 s | Grillas acotadas, cinco pliegues compartidos. Maximizar sensibilidad media y desempatar por precisión. Ganador: RF compensado, 21 árboles y profundidad 6. |
+| 13 · Resultado de CV | Juan Francisco | 40 s | Sensibilidad CV 87,9 % ± 5,5 pp. Es la mayor media observada; la desviación entre pliegues no prueba superioridad estadística ni garantiza resultados futuros. |
+| 14 · Evaluación final | Juan Francisco | 35 s | Parámetros elegidos antes de test. Cinco reajustes con semillas 42, 101, 202, 303 y 404 sobre el mismo test. Distinguir semillas finales de pliegues de CV. |
+| 15 · Lectura de métricas | Juan Francisco | 45 s | Sensibilidad 80,4 % de los fraudes detectados; precisión 67,5 % de las alertas que son fraude; FNR 19,6 % de fraudes omitidos. ±0,3 pp mide variación de sensibilidad entre ajustes. |
+| 16 · Falsas alarmas | Juan Francisco | 40 s | Compensar mejora detección y aumenta FP. RF compensado: 80,4 % y 55,6 FP promedio; árbol compensado: 83,1 % y 261,6 FP. Mantener el ganador de CV aunque otro modelo detecte más en test. |
+| 17 · Matriz del ganador | Juan Francisco | 45 s | Semilla 42: TN 84.923, FP 53, FN 27 y TP 115. 115/142 equivale a 81,0 % de sensibilidad en ese ajuste; 80,4 % es la media de cinco. |
+| 18 · Conclusión | Juan Francisco | 35 s | RF con submuestreo detecta cerca de cuatro de cada cinco fraudes. Límites: 142 fraudes en test, ANOVA marginal, grilla acotada y falta de validación temporal. Proponer más datos y otro período con un nuevo test. |
 
-Las páginas 13–16 son respaldos para preguntas: parámetros y CV; seis métricas sin compensación; seis métricas con compensación; clasificadores triviales y decisiones. No consumir el tiempo principal leyendo todas las celdas.
+Las páginas 19 a 22 son respaldos para preguntas: parámetros y CV, seis métricas sin compensación, seis métricas con compensación, y clasificadores triviales. Las seis métricas y sus desviaciones están disponibles para los ocho experimentos. No leer todas las celdas durante la exposición principal.
+
+La pauta sugiere 10 a 12 diapositivas principales; las 18 actuales requieren un recorrido breve. Durante el ensayo, comprobar el minuto 5:35 al cambiar de expositor y el minuto 11:00 al terminar. Si se exceden los tiempos, resumir los ejemplos didácticos de las páginas 6 a 10 y evitar repetir la explicación de RF entre las páginas 9 y 11. Conservar la explicación del protocolo, el bosque propio, los resultados y el análisis.
 
 ## Entrenamiento, validación interna y test
 

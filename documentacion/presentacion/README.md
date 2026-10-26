@@ -1,14 +1,11 @@
-# Presentación principal
+# Presentación final
 
-**Canva tiene ahora 22 diapositivas guardadas: 18 principales y 4 respaldos.** Incluye seis láminas didácticas nuevas y resultados simplificados con RF destacado. El PDF nativo local, las copias automáticas y Beamer corresponden a versiones anteriores; aún debe exportarse la actualización de Canva.
+La única presentación conservada es la de Canva, con 22 diapositivas: 18 principales y cuatro de respaldo.
 
-Las dos versiones usan el protocolo principal: 283.726 filas limpias, 198.608 de entrenamiento y 85.118 de prueba. Los resultados auxiliares se conservan en [contexto](../contexto/README.md#presentaciones-anteriores).
+- [PDF final](canva/Detección%20de%20fraude_FINAL.pdf), incluido en el ZIP como `Presentacion.pdf`.
+- [Diseño editable en Canva](https://canva.link/g838er8qsmu3bic).
+- [Datos de la exportación y recursos](canva/README.md).
 
-| Versión | Edición y archivos | Diferencia |
-| --- | --- | --- |
-| [Canva](canva/README.md) | [Diseño en línea](https://canva.link/g838er8qsmu3bic), [PDF final exportado](canva/Detección%20de%20fraude.pdf). | Es la presentación incluida en el ZIP; 12 diapositivas principales y cuatro respaldos. |
-| [Beamer](beamer/README.md) | [Fuente LaTeX](beamer/defensa_fraude.tex) y [PDF](beamer/defensa_fraude.pdf). | Versión anterior del protocolo principal, compilada desde LaTeX. |
+Usa el protocolo principal: 283.726 filas limpias, 198.608 de entrenamiento y 85.118 de prueba. El bosque compensado fue seleccionado por validación cruzada, con sensibilidad de 87,9 %; en prueba obtuvo 80,4 %.
 
-El [guion principal](../estudio/guion_defensa_principal.md) acompaña la versión Canva y las copias locales de 12 diapositivas principales y cuatro respaldos. Los conceptos y las preguntas están en [estudio](../estudio/README.md).
-
-Los [respaldos automáticos](canva/README.md) y Beamer se conservan en el repositorio. El ZIP incluye únicamente el PDF nativo final y las instrucciones de ejecución, junto con código, pruebas y resultados; excluye el material de estudio y los antecedentes.
+Los [materiales de estudio](../estudio/README.md) se conservan fuera de la entrega. El ZIP contiene código, instrucciones, resultados principales, pruebas y el PDF final.

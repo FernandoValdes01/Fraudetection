@@ -8,11 +8,7 @@
   "style": "Blanco y negro editorial con acento azul",
   "protocol": "principal",
   "results_directory": "resultados",
-  "offline_presentation": "presentacion.pptx",
-  "offline_pdf": "presentacion.pdf",
-  "offline_source": "../../../scripts/build_minimal_presentation.py",
-  "offline_files_are_native_canva_exports": false,
-  "native_export_instructions": "Exportar desde Canva a Detección de fraude.pdf y regenerar el ZIP. presentacion.pdf y presentacion.pptx son respaldos automáticos de composición diferente.",
+  "native_export_instructions": "Exportar desde Canva a Detección de fraude_FINAL.pdf y regenerar el ZIP; se incluye como Presentacion.pdf.",
   "final_edits_pending_user_approval": false,
   "final_edits_saved": true,
   "aesthetic_refinement": {
@@ -30,10 +26,10 @@
       "recursos/prueba.svg"
     ]
   },
-  "native_pdf": "Detección de fraude.pdf",
-  "delivery_pdf": "Detección de fraude.pdf",
+  "native_pdf": "Detección de fraude_FINAL.pdf",
+  "delivery_pdf": "Detección de fraude_FINAL.pdf",
   "native_pdf_is_canva_export": true,
-  "native_pdf_sha256": "298943af49bfcb7dab8c4c8ad76a7cbb1dc50324540713d71cfaedd56e523e7d",
+  "native_pdf_sha256": "ab285a2d45dac0a4ddb834ab2820761656a3e469a2201aa8e304bd0a551ea32d",
   "clarity_revision": {
     "date": "2026-10-24",
     "pages": [
@@ -55,9 +51,8 @@
     "saved": true,
     "transaction_id": "4970242298443680891",
     "verification": "Contenido guardado comprobado mediante get_design_content después del commit.",
-    "native_pdf_updated": false,
-    "export_blocker": "El conector no ofrece exportación y Compartir en el navegador solicita iniciar sesión.",
-    "delivery_archive_updated": false
+    "native_pdf_updated": true,
+    "delivery_archive_updated": true
   },
   "pedagogical_revision_draft": {
     "transaction_id": "5264102183200822686",
@@ -142,7 +137,7 @@
       ]
     },
     "saved": true,
-    "native_pdf_updated": false,
+    "native_pdf_updated": true,
     "historical_metrics": {
       "selected_by_cv": "forest_submuestreo",
       "cv_sensitivity_percent": 87.9,
@@ -160,5 +155,11 @@
       "metrics": 15
     }
   },
-  "offline_copies_match_current_design": false
+  "native_export_verified": {
+    "date": "2026-10-25",
+    "downloaded_by": "user",
+    "page_count": 22,
+    "creator": "Canva",
+    "delivery_path": "Presentacion.pdf"
+  }
 }
