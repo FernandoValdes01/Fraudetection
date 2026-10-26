@@ -38,6 +38,8 @@ uv run --locked fraudetection-report
 
 Tras eliminar 1.081 duplicados quedan 283.726 transacciones, 473 fraudulentas. La partición estratificada 70/30 usa semilla 42: 198.608 filas para entrenamiento y 85.118 para test. La búsqueda compara los cuatro clasificadores con y sin submuestreo aleatorio 1:10, mediante cinco pliegues comunes sobre una muestra de 50.000 filas del entrenamiento. El escalado, la selección ANOVA F de 20 características y el submuestreo se ajustan dentro de cada pliegue. Se elige por sensibilidad de validación y, en empate, por precisión. Los reajustes finales usan todo el entrenamiento y las semillas 42, 101, 202, 303 y 404 sobre el mismo test reservado.
 
+El submuestreo usa `RandomUnderSampler(sampling_strategy=0.1)` y conserva todos los fraudes disponibles. En el reajuste final, el entrenamiento pasa de 198.277 legítimas y 331 fraudes a 3.310 legítimas y 331 fraudes. En los pliegues 1 y 2, cada entrenamiento pasa de 39.933 legítimas y 67 fraudes a 670 y 67; en los pliegues 3, 4 y 5, de 39.934 y 66 a 660 y 66. Estos recuentos son comunes a los cuatro clasificadores. Sin compensación se conservan los recuentos originales; validación y test nunca se remuestrean.
+
 Para revisar los resultados sin entrenar, abra `resultados/cv_resumen.csv` y `resultados/test_resumen.csv`. `test_repeticiones.csv` contiene los cinco reajustes y `caracteristicas_seleccionadas.csv`, las variables seleccionadas.
 
 El ganador de validación es el bosque compensado de 21 árboles y profundidad 6, con sensibilidad de 87,9 % ± 5,5 puntos porcentuales. En el test obtiene sensibilidad de 80,4 % ± 0,3 pp y precisión de 67,5 % ± 4,6 pp. Las variaciones corresponden a cinco reajustes sobre el mismo test.

@@ -4,7 +4,7 @@ Este documento corresponde al protocolo auxiliar de 100.000 filas y tres semilla
 
 Proyecto de INFO1185 de **Fernando Alonso Valdés Gómez** y **Juan Francisco Muñoz Veloso**. Compara k-NN, árbol de decisión, SVM y un Random Forest propio para detectar fraude en tarjetas de crédito. Se elige por sensibilidad del fraude y se desempata por precisión, conforme a [la consigna](../../IA_2026_P2.pdf).
 
-El procedimiento está implementado y ejecutado con datos reales. Se incluyen los ocho experimentos, búsquedas, métricas, gráficos, análisis y presentación. No se necesita informe escrito.
+El procedimiento está implementado y ejecutado con datos reales. El repositorio conserva sus ocho experimentos, búsquedas, métricas, gráficos y análisis. Las presentaciones auxiliares se pueden regenerar localmente con los comandos de este documento; quedan fuera de la entrega. No se necesita informe escrito.
 
 ## Ejecución
 
@@ -83,7 +83,7 @@ La desviación de CV usa `ddof=0` entre cinco pliegues. La de test usa `ddof=1` 
 - `prueba_repeticiones.csv`, `prueba_resumen.csv`, `predicciones.csv.gz`: valores individuales, agregados y predicciones auditables.
 - `graficos/`, `analisis.html`, `analisis.md`: gráficos, matrices y análisis derivados de esos datos.
 - `modelo_elegido.joblib`: pipeline local del ganador con semilla 42, generado por `run`, excluido de Git y del ZIP.
-- [Presentación PPTX](presentaciones_anteriores/fraudetection.pptx), [PDF](presentaciones_anteriores/fraudetection.pdf) y [guion](../estudio/guion_defensa.md): 12 diapositivas principales y cuatro de respaldo, con nombres de ambos integrantes.
+- [Guion auxiliar](../estudio/guion_defensa.md): 12 diapositivas principales y cuatro de respaldo. Los PPTX y PDF auxiliares anteriores se retiraron del repositorio; los comandos de arriba permiten regenerarlos localmente. La única presentación de entrega es el [PDF final de Canva](../presentacion/canva/Detección%20de%20fraude_FINAL.pdf), que corresponde al protocolo principal.
 
 ```bash
 uv run --locked ruff check src tests scripts
@@ -108,7 +108,7 @@ La [revisión final](revision_final.md) documenta el cumplimiento de la consigna
 uv run --locked python scripts/package_delivery.py
 ```
 
-Crea `entrega/fraudetection_entrega.zip` con código, dependencias, pruebas, resultados, instrucciones de ejecución, el PDF final de Canva y un manifiesto SHA256. Excluye material de estudio, guiones, antecedentes y presentaciones anteriores. Excluye el CSV, el entorno y los modelos binarios locales. Para reproducirlo, descomprimir, abrir una terminal en esa carpeta y seguir los comandos de ejecución. La descarga y el entrenamiento regeneran el modelo.
+Crea `entrega/fraudetection_entrega.zip` con código, dependencias, pruebas, resultados principales, instrucciones de ejecución, el PDF final de Canva como `Presentacion.pdf` y un manifiesto SHA256. Excluye los resultados auxiliares de `resultados/ejecucion/`, material de estudio, guiones, antecedentes y presentaciones anteriores. Excluye el CSV, el entorno y los modelos binarios locales. Para reproducirlo, descomprimir, abrir una terminal en esa carpeta y seguir los comandos de ejecución. La descarga y el entrenamiento regeneran el modelo.
 
 La entrega es por Blackboard el 26 de octubre de 2026 a las 23:59. La reserva de defensa corresponde al 27–28 de octubre. Ambos integrantes deben estudiar el código y practicar una exposición de 10–12 minutos; la ejecución automática no reemplaza la defensa. No se ha subido ningún archivo a Blackboard.
 
