@@ -1,14 +1,56 @@
-# Fraudetection
+<div align="center">
+
+# 🛡️ Fraudetection
 
 **Detección de fraude en tarjetas de crédito con clasificadores supervisados bajo desbalance extremo.**
 
+Solo 1 de cada 600 transacciones es fraude. Este proyecto mide cuántas se detectan, y a qué costo en falsas alarmas, sin fuga de información.
+
 [![CI](https://github.com/FernandoValdes01/Fraudetection/actions/workflows/ci.yml/badge.svg)](https://github.com/FernandoValdes01/Fraudetection/actions/workflows/ci.yml)
-![Python 3.12](https://img.shields.io/badge/python-3.12-3776AB)
-![scikit-learn](https://img.shields.io/badge/scikit--learn-1.x-F7931E)
-![Gestor uv](https://img.shields.io/badge/gestor-uv-DE5FE9)
-![Estilo ruff](https://img.shields.io/badge/estilo-ruff-D7FF64)
+![Python 3.12](https://img.shields.io/badge/python-3.12-3776AB?logo=python&logoColor=white)
+![scikit-learn](https://img.shields.io/badge/scikit--learn-1.x-F7931E?logo=scikitlearn&logoColor=white)
+![imbalanced-learn](https://img.shields.io/badge/imbalanced--learn-0.14-0F766E)
+![Gestor uv](https://img.shields.io/badge/gestor-uv-DE5FE9?logo=uv&logoColor=white)
+![Estilo ruff](https://img.shields.io/badge/estilo-ruff-D7FF64?logo=ruff&logoColor=black)
+![Pruebas](https://img.shields.io/badge/pruebas-43-2EA043)
+[![Dataset Kaggle](https://img.shields.io/badge/dataset-Kaggle-20BEFF?logo=kaggle&logoColor=white)](https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud)
+[![Cite](https://img.shields.io/badge/citar-CITATION.cff-6E40C9)](CITATION.cff)
+
+![Sensibilidad en prueba](https://img.shields.io/badge/sensibilidad_en_prueba-80%2C4_%25-C2410C)
+![Precisión en prueba](https://img.shields.io/badge/precisión_en_prueba-67%2C5_%25-2E6F9E)
+![Fuga de información](https://img.shields.io/badge/fuga_de_información-ninguna-2EA043)
+![Random Forest propio](https://img.shields.io/badge/Random_Forest-implementado_a_mano-0F766E)
+
+[Resumen](#resumen) · [Resultados](#resultados) · [Protocolo](#protocolo-experimental) · [Reproducibilidad](#reproducibilidad) · [Presentación](#presentación-y-documentación) · [Cómo citar](#cómo-citar)
+
+</div>
 
 Proyecto de INFO1185 Inteligencia Artificial. Autores: Fernando Alonso Valdés Gómez y Juan Francisco Muñoz Veloso.
+
+## Vista general
+
+```mermaid
+flowchart LR
+    A[("Kaggle<br/>284.807 transacciones<br/>492 fraudes")] --> B["Limpieza<br/>−1.081 duplicados"]
+    B --> C{"Partición<br/>estratificada"}
+    C -->|70 %| D["Entrenamiento<br/>198.608 filas"]
+    C -->|30 %| E["Prueba reservada<br/>85.118 filas"]
+    D --> F["Muestra de búsqueda<br/>50.000 filas"]
+    F --> G["8 experimentos<br/>4 modelos × 2 regímenes<br/>CV de 5 pliegues"]
+    G --> H["Selección<br/>por sensibilidad"]
+    H --> I["Reajuste<br/>5 semillas"]
+    D --> I
+    I --> J(["Evaluación única<br/>en prueba"])
+    E --> J
+    J --> K["Random Forest propio<br/>80,4 % sensibilidad<br/>67,5 % precisión"]
+
+    classDef dato fill:#E8F1F8,stroke:#2E6F9E,color:#0F2E44
+    classDef decision fill:#FDF0E3,stroke:#B45309,color:#4A2504
+    classDef final fill:#E3F4EC,stroke:#0F766E,color:#053B36
+    class A,D,E,F dato
+    class C,H decision
+    class J,K final
+```
 
 ## Resumen
 
@@ -52,7 +94,25 @@ La partición produce solo dos conjuntos, entrenamiento y prueba. No existe un t
 
 ![Validación cruzada de cinco pliegues y tubería por ronda](documentacion/figuras/validacion_cruzada.svg)
 
-En cada ronda se ajusta una tubería nueva con 40.000 filas y se evalúa con las 10.000 restantes. El orden de la tubería es escalado z (solo k-NN y SVM), submuestreo 1:10 (solo régimen compensado), selección ANOVA F de 20 variables y clasificador. Elegida la configuración, cada modelo se reajusta con el entrenamiento completo, y con submuestreo 1:10 recibe 331 fraudes y 3.310 legítimas (3.641 filas). Los cinco reajustes finales usan las semillas 42, 101, 202, 303 y 404 y se evalúan sobre el mismo test.
+En cada ronda se ajusta una tubería nueva con 40.000 filas y se evalúa con las 10.000 restantes. El orden de la tubería es escalado z (solo k-NN y SVM), submuestreo 1:10 (solo régimen compensado), selección ANOVA F de 20 variables y clasificador.
+
+```mermaid
+flowchart LR
+    subgraph ronda["Una ronda de validación cruzada (se repite 5 veces)"]
+        direction LR
+        subgraph ajuste["Solo con las 40.000 filas de ajuste"]
+            direction LR
+            P1["Escalado z<br/>solo k-NN y SVM"] --> P2["Submuestreo 1:10<br/>solo régimen compensado"] --> P3["ANOVA F<br/>20 variables"] --> P4["Clasificador"]
+        end
+        P4 --> M["Sensibilidad<br/>sobre las 10.000<br/>filas de validación"]
+    end
+    T["Prueba reservada"] -.-x|"no interviene"| ronda
+
+    classDef bloqueado fill:#FBE9E7,stroke:#C2410C,color:#5A1E08,stroke-dasharray:4 3
+    class T bloqueado
+```
+
+Elegida la configuración, cada modelo se reajusta con el entrenamiento completo, y con submuestreo 1:10 recibe 331 fraudes y 3.310 legítimas (3.641 filas). Los cinco reajustes finales usan las semillas 42, 101, 202, 303 y 404 y se evalúan sobre el mismo test.
 
 ### Modelos y espacio de búsqueda
 
@@ -100,6 +160,23 @@ Valores en porcentaje, salvo los conteos de errores. Los conteos son la media de
   <img src="documentacion/figuras/matriz_confusion.png" alt="Matriz de confusión del modelo seleccionado en el test reservado" width="460">
 </p>
 
+```mermaid
+flowchart TB
+    Q{"¿Qué error cuesta más?"}
+    Q -->|"Un fraude sin alerta"| S["Submuestreo 1:10"]
+    Q -->|"Una falsa alarma"| N["Sin compensación"]
+    S --> S1["Random Forest propio<br/>80,4 % sensibilidad · 67,5 % precisión<br/>27,8 fraudes perdidos · 55,6 falsas alarmas"]
+    S --> S2["k-NN y árbol<br/>83 % sensibilidad · 31 a 34 % precisión<br/>más de 260 falsas alarmas"]
+    N --> N1["Random Forest propio<br/>76,2 % sensibilidad · 94,6 % precisión<br/>33,8 fraudes perdidos · 6,2 falsas alarmas"]
+
+    classDef elegido fill:#E3F4EC,stroke:#0F766E,color:#053B36,stroke-width:2px
+    classDef alterna fill:#E8F1F8,stroke:#2E6F9E,color:#0F2E44
+    classDef costoso fill:#FBE9E7,stroke:#C2410C,color:#5A1E08
+    class S1 elegido
+    class N1 alterna
+    class S2 costoso
+```
+
 Las desviaciones estándar de la tabla en prueba describen la variación del reajuste entre semillas sobre un mismo test, no la incertidumbre de muestreo. Para esa incertidumbre sirve el intervalo de Wilson.
 
 ## Limitaciones
@@ -115,6 +192,22 @@ Las desviaciones estándar de la tabla en prueba describen la variación del rea
 ## Reproducibilidad
 
 Requiere Python 3.12 y [uv](https://docs.astral.sh/uv/getting-started/installation/). `uv.lock` fija las versiones: NumPy 2, pandas 3, scikit-learn 1, imbalanced-learn 0.14 y Matplotlib 3.
+
+```mermaid
+flowchart LR
+    subgraph sin["Con el dataset"]
+        direction LR
+        D1["fraudetection download"] --> D2["fraudetection-inspect"] --> D3["fraudetection-run"] --> D4["fraudetection-report"]
+    end
+    D3 --> R[("resultados/<br/>tablas, metadatos, SHA-256")]
+    R --> F["scripts/build_figures.py"]
+    F --> G["documentacion/figuras/"]
+    subgraph solo["Sin el dataset"]
+        direction LR
+        F
+        G
+    end
+```
 
 ```bash
 uv sync --locked
@@ -139,6 +232,17 @@ uv run --locked ruff format --check .
 ```
 
 ## Estructura del repositorio
+
+```mermaid
+flowchart LR
+    SRC["src/fraudetection/<br/>protocolo, Random Forest, CLI"] --> RES["resultados/"]
+    REP["src/fraudetection/reproduction/<br/>protocolo auxiliar"] -.->|"sin mezclar"| RES
+    RES --> SCR["scripts/"]
+    SCR --> FIG["documentacion/figuras/"]
+    FIG --> README["README.md"]
+    TST["tests/"] -.->|"verifica"| SRC
+    TST -.->|"verifica"| RES
+```
 
 | Ruta | Contenido |
 | --- | --- |
