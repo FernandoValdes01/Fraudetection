@@ -5,6 +5,7 @@
 | [estudio/](estudio/README.md) | Guiones, conceptos y preguntas para preparar la defensa. |
 | [contexto/](contexto/README.md) | Pauta, exploración, reproducción, integración y estado de entrega. |
 | [presentacion/](presentacion/README.md) | Presentación final de Canva del protocolo principal. |
+| [figuras/](figuras/) | Diagramas y gráficos del README, generados con `scripts/build_figures.py`. |
 
 El [enunciado original](../IA_2026_P2.pdf) prevalece si surge una diferencia de interpretación.
 

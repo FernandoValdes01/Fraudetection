@@ -1,0 +1,16 @@
+cff-version: 1.2.0
+message: Si usas este trabajo, cítalo con estos metadatos.
+title: "Fraudetection: detección de fraude en tarjetas de crédito con clasificadores supervisados"
+type: software
+version: 0.1.0
+repository-code: "https://github.com/FernandoValdes01/Fraudetection"
+authors:
+  - family-names: Valdés Gómez
+    given-names: Fernando Alonso
+  - family-names: Muñoz Veloso
+    given-names: Juan Francisco
+keywords:
+  - fraud detection
+  - imbalanced classification
+  - random forest
+  - scikit-learn
