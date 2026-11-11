@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1230 730" width="1230" height="730" role="img" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title>Protocolo experimental</title>
+  <desc>Siete etapas: limpieza, partición 70/30, muestra de búsqueda, validación cruzada de cinco pliegues, selección, reajuste con cinco semillas y evaluación en el test reservado.</desc>
+  <defs><marker id="head-2E6F9E" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#2E6F9E"/></marker><marker id="head-B45309" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#B45309"/></marker><marker id="head-64748B" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#64748B"/></marker></defs>
+  <rect width="1230" height="730" fill="#FFFFFF"/>
+  <text x="40" y="46" font-size="24" font-weight="700" fill="#1F2A37" text-anchor="start">Protocolo experimental</text>
+  <text x="40" y="72" font-size="14" font-weight="400" fill="#64748B" text-anchor="start">El test reservado queda fuera de la búsqueda y se evalúa al fijar la configuración.</text>
+  <rect x="40" y="105" width="320" height="118" rx="10" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.5"/>
+  <rect x="40" y="115" width="4" height="98" rx="2" fill="#2E6F9E"/>
+  <text x="64" y="138" font-size="16" font-weight="700" fill="#1F2A37" text-anchor="start">Dataset original</text>
+  <text x="64" y="167" font-size="13.5" font-weight="400" fill="#64748B" text-anchor="start">284.807 transacciones</text>
+  <text x="64" y="189" font-size="13.5" font-weight="400" fill="#64748B" text-anchor="start">492 fraudes (0,173 %)</text>
+  <text x="64" y="211" font-size="13.5" font-weight="400" fill="#64748B" text-anchor="start">30 predictores, sin faltantes</text>
+  <rect x="440" y="105" width="320" height="118" rx="10" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.5"/>
+  <rect x="440" y="115" width="4" height="98" rx="2" fill="#2E6F9E"/>
+  <circle cx="468" cy="133" r="13" fill="#2E6F9E"/>
+  <text x="468" y="138" font-size="14" font-weight="700" fill="#FFFFFF" text-anchor="middle">1</text>
+  <text x="492" y="138" font-size="16" font-weight="700" fill="#1F2A37" text-anchor="start">Limpieza</text>
+  <text x="464" y="167" font-size="13.5" font-weight="400" fill="#64748B" text-anchor="start">1.081 duplicados exactos eliminados</text>
+  <text x="464" y="189" font-size="13.5" font-weight="400" fill="#64748B" text-anchor="start">283.726 transacciones</text>
+  <text x="464" y="211" font-size="13.5" font-weight="400" fill="#64748B" text-anchor="start">473 fraudes (0,167 %)</text>
+  <rect x="820" y="105" width="320" height="118" rx="10" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.5"/>
+  <rect x="820" y="115" width="4" height="98" rx="2" fill="#2E6F9E"/>
+  <circle cx="848" cy="133" r="13" fill="#2E6F9E"/>
+  <text x="848" y="138" font-size="14" font-weight="700" fill="#FFFFFF" text-anchor="middle">2</text>
+  <text x="872" y="138" font-size="16" font-weight="700" fill="#1F2A37" text-anchor="start">Partición 70/30</text>
+  <text x="844" y="167" font-size="13.5" font-weight="400" fill="#64748B" text-anchor="start">Estratificada, semilla 42</text>
+  <text x="844" y="189" font-size="13.5" font-weight="400" fill="#64748B" text-anchor="start">Se aplica antes de cualquier</text>
+  <text x="844" y="211" font-size="13.5" font-weight="400" fill="#64748B" text-anchor="start">ajuste o selección</text>
+  <rect x="820" y="290" width="320" height="118" rx="10" fill="#E6F0F8" stroke="#2E6F9E" stroke-width="1.5"/>
+  <rect x="820" y="300" width="4" height="98" rx="2" fill="#2E6F9E"/>
+  <text x="844" y="323" font-size="16" font-weight="700" fill="#1F2A37" text-anchor="start">Entrenamiento</text>
+  <text x="844" y="352" font-size="13.5" font-weight="400" fill="#64748B" text-anchor="start">198.608 filas</text>
+  <text x="844" y="374" font-size="13.5" font-weight="400" fill="#64748B" text-anchor="start">331 fraudes</text>
+  <text x="844" y="396" font-size="13.5" font-weight="400" fill="#64748B" text-anchor="start">Única fuente de toda decisión</text>
+  <rect x="440" y="290" width="320" height="118" rx="10" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.5"/>
+  <rect x="440" y="300" width="4" height="98" rx="2" fill="#2E6F9E"/>
+  <circle cx="468" cy="318" r="13" fill="#2E6F9E"/>
+  <text x="468" y="323" font-size="14" font-weight="700" fill="#FFFFFF" text-anchor="middle">3</text>
+  <text x="492" y="323" font-size="16" font-weight="700" fill="#1F2A37" text-anchor="start">Muestra de búsqueda</text>
+  <text x="464" y="352" font-size="13.5" font-weight="400" fill="#64748B" text-anchor="start">50.000 filas del entrenamiento</text>
+  <text x="464" y="374" font-size="13.5" font-weight="400" fill="#64748B" text-anchor="start">83 fraudes</text>
+  <text x="464" y="396" font-size="13.5" font-weight="400" fill="#64748B" text-anchor="start">Acota el costo de la rejilla</text>
+  <rect x="40" y="290" width="320" height="118" rx="10" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.5"/>
+  <rect x="40" y="300" width="4" height="98" rx="2" fill="#2E6F9E"/>
+  <circle cx="68" cy="318" r="13" fill="#2E6F9E"/>
+  <text x="68" y="323" font-size="14" font-weight="700" fill="#FFFFFF" text-anchor="middle">4</text>
+  <text x="92" y="323" font-size="16" font-weight="700" fill="#1F2A37" text-anchor="start">Validación cruzada</text>
+  <text x="64" y="352" font-size="13.5" font-weight="400" fill="#64748B" text-anchor="start">5 pliegues estratificados</text>
+  <text x="64" y="374" font-size="13.5" font-weight="400" fill="#64748B" text-anchor="start">8 experimentos: 4 modelos</text>
+  <text x="64" y="396" font-size="13.5" font-weight="400" fill="#64748B" text-anchor="start">con y sin submuestreo 1:10</text>
+  <rect x="40" y="475" width="320" height="118" rx="10" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.5"/>
+  <rect x="40" y="485" width="4" height="98" rx="2" fill="#2E6F9E"/>
+  <circle cx="68" cy="503" r="13" fill="#2E6F9E"/>
+  <text x="68" y="508" font-size="14" font-weight="700" fill="#FFFFFF" text-anchor="middle">5</text>
+  <text x="92" y="508" font-size="16" font-weight="700" fill="#1F2A37" text-anchor="start">Selección</text>
+  <text x="64" y="537" font-size="13.5" font-weight="400" fill="#64748B" text-anchor="start">Máxima sensibilidad media</text>
+  <text x="64" y="559" font-size="13.5" font-weight="400" fill="#64748B" text-anchor="start">Desempate por precisión</text>
+  <text x="64" y="581" font-size="13.5" font-weight="400" fill="#64748B" text-anchor="start">Ganador: Random Forest, 1:10</text>
+  <rect x="440" y="475" width="320" height="118" rx="10" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="1.5"/>
+  <rect x="440" y="485" width="4" height="98" rx="2" fill="#2E6F9E"/>
+  <circle cx="468" cy="503" r="13" fill="#2E6F9E"/>
+  <text x="468" y="508" font-size="14" font-weight="700" fill="#FFFFFF" text-anchor="middle">6</text>
+  <text x="492" y="508" font-size="16" font-weight="700" fill="#1F2A37" text-anchor="start">Reajuste final</text>
+  <text x="464" y="537" font-size="13.5" font-weight="400" fill="#64748B" text-anchor="start">Entrenamiento completo</text>
+  <text x="464" y="559" font-size="13.5" font-weight="400" fill="#64748B" text-anchor="start">5 semillas: 42, 101, 202,</text>
+  <text x="464" y="581" font-size="13.5" font-weight="400" fill="#64748B" text-anchor="start">303 y 404</text>
+  <rect x="820" y="475" width="320" height="118" rx="10" fill="#FEF3E2" stroke="#B45309" stroke-width="1.5"/>
+  <rect x="820" y="485" width="4" height="98" rx="2" fill="#B45309"/>
+  <circle cx="848" cy="503" r="13" fill="#B45309"/>
+  <text x="848" y="508" font-size="14" font-weight="700" fill="#FFFFFF" text-anchor="middle">7</text>
+  <text x="872" y="508" font-size="16" font-weight="700" fill="#1F2A37" text-anchor="start">Evaluación en test</text>
+  <text x="844" y="537" font-size="13.5" font-weight="400" fill="#64748B" text-anchor="start">85.118 filas, 142 fraudes</text>
+  <text x="844" y="559" font-size="13.5" font-weight="400" fill="#64748B" text-anchor="start">Prevalencia original intacta</text>
+  <text x="844" y="581" font-size="13.5" font-weight="400" fill="#64748B" text-anchor="start">Sin reuso para ajustar</text>
+  <path d="M364 164.0 L434 164.0" fill="none" stroke="#64748B" stroke-width="2" marker-end="url(#head-64748B)"/>
+  <path d="M764 164.0 L814 164.0" fill="none" stroke="#64748B" stroke-width="2" marker-end="url(#head-64748B)"/>
+  <path d="M980.0 227 L980.0 284" fill="none" stroke="#64748B" stroke-width="2" marker-end="url(#head-64748B)"/>
+  <path d="M816 349.0 L766 349.0" fill="none" stroke="#64748B" stroke-width="2" marker-end="url(#head-64748B)"/>
+  <path d="M436 349.0 L366 349.0" fill="none" stroke="#64748B" stroke-width="2" marker-end="url(#head-64748B)"/>
+  <path d="M200.0 412 L200.0 469" fill="none" stroke="#64748B" stroke-width="2" marker-end="url(#head-64748B)"/>
+  <path d="M364 534.0 L434 534.0" fill="none" stroke="#64748B" stroke-width="2" marker-end="url(#head-64748B)"/>
+  <path d="M764 534.0 L814 534.0" fill="none" stroke="#64748B" stroke-width="2" marker-end="url(#head-64748B)"/>
+  <path d="M1144 164.0 L1172 164.0 L1172 534.0 L1146 534.0" fill="none" stroke="#B45309" stroke-width="2" marker-end="url(#head-B45309)" stroke-dasharray="6 5"/>
+  <text transform="translate(1196 349.0) rotate(-90)" font-size="12" font-weight="600" fill="#B45309" text-anchor="middle">test reservado</text>
+  <rect x="40" y="625" width="1150" height="80" rx="10" fill="#F1F5F9" stroke="#F1F5F9" stroke-width="1.5"/>
+  <text x="64" y="655" font-size="14" font-weight="700" fill="#1F2A37" text-anchor="start">Controles contra fuga de información</text>
+  <text x="64" y="683" font-size="13" font-weight="400" fill="#64748B" text-anchor="start">Duplicados eliminados antes de partir   ·   Escalado, selección de variables y submuestreo ajustados dentro de cada pliegue   ·   Test fuera de la búsqueda</text>
+</svg>
